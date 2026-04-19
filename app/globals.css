@@ -1,0 +1,203 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --zibara-black:    #030303;
+  --zibara-deep:     #0a0806;
+  --zibara-crimson:  #4E0000;
+  --zibara-blood:    #640017;
+  --zibara-olive:    #5A5E27;
+  --zibara-espresso: #2F1B1A;
+  --zibara-cream:    #EFEFC9;
+  --zibara-white:    #F5F5F0;
+  --zibara-gold:     #C9A96E;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html,
+  body {
+    max-width: 100%;
+    overflow-x: hidden;
+    background-color: var(--zibara-black);
+    color: var(--zibara-cream);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-space-mono), monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  button {
+    border: none;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  input, textarea, select {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: var(--zibara-crimson);
+    color: var(--zibara-cream);
+  }
+
+  *:focus-visible {
+    outline: 1px solid color-mix(in srgb, var(--zibara-gold) 90%, transparent);
+    outline-offset: 3px;
+  }
+}
+
+/* ── SCROLLBAR ────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 2px;
+}
+::-webkit-scrollbar-track {
+  background: var(--zibara-black);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(239, 239, 201, 0.25);
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── PRELOADER ────────────────────────────────── */
+#zibara-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--zibara-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#zibara-preloader .preloader-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  background: rgba(239, 239, 201, 0.55);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+#zibara-preloader .preloader-wordmark {
+  font-family: var(--font-cormorant), serif;
+  font-size: clamp(2.5rem, 8vw, 7rem);
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--zibara-cream);
+  text-transform: uppercase;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+#zibara-preloader .preloader-wordmark span {
+  display: inline-block;
+  transform: translateY(110%);
+}
+
+/* ── ANIMATED TEXT CLIPPING ───────────────────── */
+.line-wrap {
+  overflow: hidden;
+  display: block;
+}
+
+/* ── HORIZONTAL MARQUEE ───────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+  will-change: transform;
+}
+
+/* ── PAGE TRANSITIONS ─────────────────────────── */
+::view-transition-old(root) {
+  animation: zibara-out 0.8s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+}
+::view-transition-new(root) {
+  animation: zibara-in 0.8s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+}
+
+@keyframes zibara-out {
+  to {
+    opacity: 0.3;
+    transform: scale(0.97);
+  }
+}
+
+@keyframes zibara-in {
+  from {
+    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+  }
+  to {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+/* ── UTILITY ──────────────────────────────────── */
+.will-change-transform {
+  will-change: transform;
+}
+
+select {
+  background: url(/arrow.svg) no-repeat calc(100% - 10px) 50%;
+  -webkit-appearance: none;
+}
+
+/* ── POPUP ANIMATIONS ─────────────────────────── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.animate-fadeIn  { animation: fadeIn  0.4s ease-out forwards; }
+.animate-scaleIn { animation: scaleIn 0.4s ease-out forwards; }
