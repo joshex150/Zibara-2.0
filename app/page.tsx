@@ -88,12 +88,18 @@ export default function Home() {
               Silhouette over decoration. Form over noise.
             </AnimatedText>
 
-            <div className="mt-8 flex items-center gap-6">
+            <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <Link
                 href="/shop"
-                className="inline-flex items-center gap-3 text-[11px] tracking-[0.35em] uppercase font-mono text-zibara-cream/80 hover:text-zibara-cream border-b border-zibara-cream/40 hover:border-zibara-cream pb-0.5 transition-all duration-300"
+                className="inline-block px-8 py-3 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black hover:border-zibara-cream transition-all duration-300"
               >
-                Explore the collection <span className="text-base">→</span>
+                Shop the Collection
+              </Link>
+              <Link
+                href="/collections"
+                className="text-[9px] tracking-[0.35em] uppercase font-mono text-zibara-cream/45 hover:text-zibara-cream/75 transition-colors"
+              >
+                View Collections →
               </Link>
             </div>
           </div>
@@ -123,7 +129,7 @@ export default function Home() {
           </AnimatedHeading>
           <AnimatedText
             onScroll
-            className="mt-6 text-[12px] tracking-widest font-mono text-zibara-cream/55 text-center uppercase"
+            className="mt-6 text-[12px] tracking-widest font-mono text-zibara-cream/70 text-center uppercase"
           >
             Shape over pattern. Form over graphics. Presence over noise.
           </AnimatedText>
@@ -133,12 +139,12 @@ export default function Home() {
         {!isLoading && featuredProducts.length > 0 && (
           <section className="px-6 md:px-8 mb-24 max-w-[1400px] mx-auto">
             <div className="flex items-baseline justify-between mb-10">
-              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">
+              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase">
                 New Season
               </span>
               <Link
                 href="/shop"
-                className="text-[11px] tracking-[0.3em] font-mono text-zibara-cream/55 hover:text-zibara-cream transition-colors uppercase"
+                className="text-[11px] tracking-[0.3em] font-mono text-zibara-cream/65 hover:text-zibara-cream transition-colors uppercase"
               >
                 View All →
               </Link>
@@ -165,7 +171,7 @@ export default function Home() {
                       </span>
                     </div>
                     {i === 0 && (
-                      <span className="absolute top-3 left-3 text-[8px] tracking-[0.3em] font-mono bg-zibara-crimson text-zibara-cream px-2 py-1 uppercase">
+                      <span className="absolute top-3 left-3 text-[8px] tracking-[0.3em] font-mono border border-zibara-cream/40 text-zibara-cream/80 px-2 py-1 uppercase">
                         New
                       </span>
                     )}
@@ -173,7 +179,7 @@ export default function Home() {
                   <p className="text-[10px] md:text-[11px] uppercase tracking-wider font-mono text-zibara-cream/70 mb-1">
                     {product.name}
                   </p>
-                  <p className="text-[12px] md:text-sm font-mono text-zibara-cream">
+                  <p className="text-[12px] md:text-sm font-mono text-zibara-gold">
                     {formatPrice(product.price)}
                   </p>
                 </Link>
@@ -197,7 +203,7 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zibara-black/70 to-transparent" />
               <div className="absolute bottom-8 left-8">
-                <p className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/60 uppercase mb-2">
+                <p className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/70 uppercase mb-2">
                   Season III
                 </p>
                 <p
@@ -228,7 +234,7 @@ export default function Home() {
                 </AnimatedHeading>
                 <AnimatedText
                   onScroll
-                  className="text-[12px] font-mono text-zibara-cream/65 leading-loose tracking-wide"
+                  className="text-[12px] font-mono text-zibara-cream/75 leading-loose tracking-wide"
                 >
                   Is this the version of me I want the world to see tonight?
                   That exact moment — composed, poised, certain — is where
@@ -259,7 +265,7 @@ export default function Home() {
                           className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
-                      <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/60">
+                      <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/75">
                         {product.name}
                       </p>
                     </Link>
@@ -274,7 +280,7 @@ export default function Home() {
         {!isLoading && categoryCards.length > 0 && (
           <section className="px-6 md:px-8 mb-24 max-w-[1400px] mx-auto">
             <div className="flex items-baseline justify-between mb-10">
-              <p className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">
+              <p className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase">
                 Shop by Category
               </p>
             </div>
@@ -309,7 +315,7 @@ export default function Home() {
                         <p className="text-[11px] uppercase tracking-wider font-mono text-zibara-cream mb-0.5">
                           {cat.name}
                         </p>
-                        <p className="text-[10px] font-mono text-zibara-cream/60">
+                        <p className="text-[10px] font-mono text-zibara-cream/70">
                           {cat.count} pieces
                         </p>
                       </div>
@@ -334,7 +340,7 @@ export default function Home() {
             />
             <div className="absolute inset-0 bg-zibara-black/55" />
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
-              <p className="text-[11px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-4">
+              <p className="text-[11px] tracking-[0.5em] font-mono text-zibara-cream/70 uppercase mb-4">
                 Bespoke
               </p>
               <AnimatedHeading
@@ -363,7 +369,7 @@ export default function Home() {
         {!isLoading && products.length >= 5 && (
           <section className="px-6 md:px-8 mb-24 max-w-[1400px] mx-auto">
             <div className="flex items-baseline justify-between mb-10">
-              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">
+              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase">
                 Curated for you
               </span>
             </div>
@@ -437,7 +443,7 @@ export default function Home() {
                       className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/65">
+                  <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/75">
                     {p.name}
                   </p>
                   <p className="text-[11px] font-mono text-zibara-cream/90">

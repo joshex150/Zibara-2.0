@@ -149,7 +149,7 @@ export default function Footer() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
-                    className="flex-1 text-[11px] font-mono text-zibara-cream placeholder:text-zibara-cream/35 bg-transparent focus:outline-none"
+                    className="flex-1 text-[11px] font-mono text-zibara-cream placeholder:text-zibara-cream/45 bg-transparent focus:outline-none"
                   />
                   <button
                     type="submit"
@@ -183,7 +183,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pt-6 border-t border-zibara-cream/5">
-          <p className="text-[10px] tracking-widest font-mono text-zibara-cream/35 uppercase">
+          <p className="text-[10px] tracking-widest font-mono text-zibara-cream/45 uppercase">
             © 2026 ZIBARASTUDIO. All rights reserved.
           </p>
           <div className="flex gap-6">
@@ -193,7 +193,7 @@ export default function Footer() {
               { href: '/admin/login', label: 'Owner' },
             ].map((l) => (
               <Link key={l.href} href={l.href}
-                className="text-[10px] tracking-widest font-mono text-zibara-cream/35 hover:text-zibara-cream/60 transition-colors uppercase">
+                className="text-[10px] tracking-widest font-mono text-zibara-cream/45 hover:text-zibara-cream/65 transition-colors uppercase">
                 {l.label}
               </Link>
             ))}

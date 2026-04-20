@@ -3,7 +3,6 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { CheckCircle } from 'lucide-react';
 import { useCurrency } from '@/context/CurrencyContext';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
 import BrandLoader from '@/components/BrandLoader';
@@ -127,8 +126,13 @@ function OrderConfirmationContent() {
 
         {/* SUCCESS */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-14 h-14 border border-zibara-cream/20 mb-6">
-            <CheckCircle size={28} className="text-zibara-cream/70" />
+          <div className="mb-8">
+            <span
+              className="font-display font-light text-[4rem] text-zibara-cream/45 leading-none"
+              style={{ fontFamily: 'var(--font-cormorant), serif' }}
+            >
+              ✓
+            </span>
           </div>
           <h1 className="text-3xl md:text-4xl font-light uppercase tracking-[0.3em] mb-4"
             style={{ fontFamily: 'var(--font-cormorant), serif' }}>
@@ -137,13 +141,13 @@ function OrderConfirmationContent() {
           <p className="text-[11px] font-mono text-zibara-cream/65 mb-1">
             Thank you, {orderDetails.customer.firstName}.
           </p>
-          <p className="text-[10px] font-mono text-zibara-cream/40 uppercase tracking-widest">
+          <p className="text-[10px] font-mono text-zibara-cream/50 uppercase tracking-widest">
             Order: {orderDetails.orderNumber || orderDetails.orderId || orderDetails._id}
           </p>
         </div>
 
         {/* ORDER DETAILS */}
-        <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8 mb-6">
+        <div className="border-t border-zibara-cream/8 pt-8 mb-14">
           <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-6">Order Details</p>
 
           <div className="space-y-5 mb-6">
@@ -174,14 +178,14 @@ function OrderConfirmationContent() {
               <span className="text-[10px] font-mono text-zibara-cream/55 uppercase tracking-wider">Total Paid</span>
               <span className="text-base font-mono text-zibara-cream">{formatPrice(orderDetails.total, 'USD')}</span>
             </div>
-            <p className="text-[9px] font-mono text-zibara-cream/40 uppercase tracking-wider mt-2">
+            <p className="text-[9px] font-mono text-zibara-cream/50 uppercase tracking-wider mt-2">
               Via {orderDetails.paymentMethod}
             </p>
           </div>
         </div>
 
         {/* SHIPPING */}
-        <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8 mb-6">
+        <div className="border-t border-zibara-cream/8 pt-8 mb-14">
           <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-5">Shipping To</p>
           <div className="text-[11px] font-mono text-zibara-cream/70 space-y-1">
             <p className="text-zibara-cream/90">{orderDetails.customer.firstName} {orderDetails.customer.lastName}</p>
@@ -194,7 +198,7 @@ function OrderConfirmationContent() {
         </div>
 
         {/* WHAT'S NEXT */}
-        <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8 mb-10">
+        <div className="border-t border-zibara-cream/8 pt-8 mb-14">
           <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-6">What&apos;s Next</p>
           <ul className="space-y-5">
             {[
@@ -203,7 +207,7 @@ function OrderConfirmationContent() {
               { n: '03', title: 'Shipping & Tracking', body: "You'll receive tracking information once your order ships (7–10 business days)" },
             ].map(({ n, title, body }) => (
               <li key={n} className="flex gap-4">
-                <span className="text-[8px] tracking-widest font-mono text-zibara-cream/35 pt-0.5 flex-shrink-0">{n}</span>
+                <span className="text-[8px] tracking-widest font-mono text-zibara-cream/45 pt-0.5 flex-shrink-0">{n}</span>
                 <div>
                   <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/80 mb-0.5">{title}</p>
                   <p className="text-[10px] font-mono text-zibara-cream/50">{body}</p>
@@ -236,7 +240,7 @@ function OrderConfirmationContent() {
         </div>
 
         <div className="text-center mt-10 pt-8 border-t border-zibara-cream/5">
-          <p className="text-[10px] font-mono text-zibara-cream/40">
+          <p className="text-[10px] font-mono text-zibara-cream/50">
             Need help?{' '}
             <Link href="/contact" className="text-zibara-cream/60 underline hover:text-zibara-cream transition-colors">
               Contact our support team

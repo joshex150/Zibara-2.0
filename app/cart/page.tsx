@@ -47,7 +47,7 @@ export default function CartPage() {
               {cart.map((item, i) => (
                 <div
                   key={`${item.id}-${item.size}-${item.color}`}
-                  className="flex gap-5 py-6 border-b border-zibara-cream/5"
+                  className="flex gap-5 py-6 border-b border-zibara-cream/10"
                 >
                   {/* Image */}
                   <div className="w-24 md:w-32 flex-shrink-0 aspect-[3/4] overflow-hidden bg-zibara-espresso">
@@ -111,8 +111,8 @@ export default function CartPage() {
 
             {/* Order summary */}
             <div className="lg:col-span-1">
-              <div className="border border-zibara-cream/15 p-6 space-y-4">
-                <p className="text-[9px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase mb-6">Order Summary</p>
+              <div className="space-y-4 pt-0">
+                <p className="text-[9px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase border-t border-zibara-cream/10 pt-6 pb-2">Order Summary</p>
 
                 <div className="flex justify-between text-[10px] font-mono text-zibara-cream/75">
                   <span>Subtotal</span>
@@ -137,7 +137,7 @@ export default function CartPage() {
 
                 <Link
                   href="/checkout"
-                  className="block w-full mt-4 py-4 bg-zibara-crimson text-zibara-cream text-[10px] tracking-[0.4em] uppercase font-mono text-center hover:bg-zibara-blood transition-colors duration-300"
+                  className="block w-full mt-6 py-4 border border-zibara-cream/35 text-[10px] tracking-[0.4em] uppercase font-mono text-zibara-cream/80 text-center hover:bg-zibara-cream hover:text-zibara-black hover:border-zibara-cream transition-all duration-300"
                 >
                   Proceed to Checkout
                 </Link>

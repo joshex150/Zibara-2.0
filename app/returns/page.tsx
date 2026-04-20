@@ -51,7 +51,7 @@ export default function ReturnsPage() {
                 { step: '04', title: 'Receive Your Refund', body: "Once we receive and inspect your return, we'll process your refund within 5–7 business days to your original payment method." },
               ].map(({ step, title, body }) => (
                 <div key={step} className="flex gap-4">
-                  <span className="text-[8px] tracking-widest font-mono text-zibara-cream/40 pt-0.5 flex-shrink-0">{step}</span>
+                  <span className="text-[8px] tracking-widest font-mono text-zibara-cream/50 pt-0.5 flex-shrink-0">{step}</span>
                   <div>
                     <p className="text-zibara-cream/90 mb-1">{title}</p>
                     <p>{body}</p>

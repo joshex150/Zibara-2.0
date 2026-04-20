@@ -84,14 +84,16 @@ export default function AboutPage() {
               {getContentValue('about_story_text', 'ZIBARASTUDIO was built for the woman who moves through spaces where taste is the currency. Afro-futurism, not through the lens of tradition, but through silhouette, intention, and the architecture of the woman wearing it. Shape over pattern. Form over graphics. The African story pushed ahead of time.')}
             </AnimatedText>
 
-            <div className="space-y-3 pt-2">
+            <div className="border-l-2 border-zibara-cream/20 pl-6 mt-6 space-y-2">
               {[
                 '(African Influence)',
                 '+ (Future Thinking)',
                 '+ (Intentional Design)',
                 '− (Noise)',
               ].map((line) => (
-                <p key={line} className="text-[11px] font-mono text-zibara-cream/55 tracking-wide">
+                <p key={line}
+                  className="font-display font-light italic text-[clamp(1rem,1.6vw,1.35rem)] text-zibara-cream/70 leading-tight"
+                  style={{ fontFamily: 'var(--font-cormorant), serif' }}>
                   {line}
                 </p>
               ))}

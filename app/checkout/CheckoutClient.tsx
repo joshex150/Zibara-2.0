@@ -9,7 +9,7 @@ import { usePaystackPayment } from 'react-paystack';
 import toast from 'react-hot-toast';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
 
-const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors';
+const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors';
 const labelClass = 'block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2';
 
 export default function CheckoutClient() {

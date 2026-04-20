@@ -124,7 +124,7 @@ export default function ContactPage() {
                     onChange={handleChange}
                     required={field.required}
                     placeholder={field.placeholder}
-                    className="w-full text-[11px] font-mono text-zibara-cream placeholder:text-zibara-cream/35 bg-transparent focus:outline-none"
+                    className="w-full text-[11px] font-mono text-zibara-cream placeholder:text-zibara-cream/45 bg-transparent focus:outline-none"
                   />
                 </div>
               ))}
@@ -140,7 +140,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   required
                   placeholder="Tell us about your inquiry, custom order vision, or anything else..."
-                  className="w-full text-[11px] font-mono text-zibara-cream placeholder:text-zibara-cream/35 bg-transparent focus:outline-none resize-none"
+                  className="w-full text-[11px] font-mono text-zibara-cream placeholder:text-zibara-cream/45 bg-transparent focus:outline-none resize-none"
                 />
               </div>
 
@@ -185,18 +185,24 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* FAQ */}
-            <div>
-              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-6">Frequently asked</p>
-              <div className="space-y-6">
-                {faqs.map((faq, i) => (
-                  <div key={i} className="border-t border-zibara-cream/10 pt-5">
-                    <p className="text-[11px] font-mono text-zibara-cream/90 mb-2">{faq.q}</p>
-                    <p className="text-[10px] font-mono text-zibara-cream/60 leading-loose">{faq.a}</p>
-                  </div>
-                ))}
+          </div>
+        </div>
+
+        {/* Full-width FAQ */}
+        <div className="border-t border-zibara-cream/5 pt-16 pb-24">
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/50 uppercase mb-12">Frequently Asked</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-0">
+            {faqs.map((faq, i) => (
+              <div key={i} className="border-t border-zibara-cream/10 py-8">
+                <p
+                  className="font-display font-light italic text-[clamp(0.95rem,1.4vw,1.2rem)] text-zibara-cream/80 mb-3 leading-snug"
+                  style={{ fontFamily: 'var(--font-cormorant), serif' }}
+                >
+                  {faq.q}
+                </p>
+                <p className="text-[10px] font-mono text-zibara-cream/50 leading-loose">{faq.a}</p>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

@@ -35,6 +35,9 @@ export default function CategoryPage() {
           >
             Categories
           </AnimatedHeading>
+          <p className="mt-4 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/50 uppercase">
+            Every silhouette, indexed.
+          </p>
         </div>
 
         {/* Empty state */}
@@ -74,7 +77,7 @@ export default function CategoryPage() {
                       className="w-full h-full group-hover:scale-105 transition-transform duration-700"
                     />
                     {i === 0 && (
-                      <span className="absolute top-3 left-3 text-[7px] tracking-[0.3em] font-mono bg-zibara-crimson text-zibara-cream px-1.5 py-0.5 uppercase">
+                      <span className="absolute top-3 left-3 text-[7px] tracking-[0.3em] font-mono border border-zibara-cream/40 text-zibara-cream/80 px-1.5 py-0.5 uppercase">
                         New
                       </span>
                     )}

@@ -75,7 +75,11 @@ export default function CollectionsPage() {
                     className="w-full h-full"
                     speed={0.15}
                   />
-                  <div className="absolute inset-0 bg-zibara-black/50 group-hover:bg-zibara-black/35 transition-all duration-500" />
+                  <div className={`absolute inset-0 transition-all duration-500 ${
+                    i === 0
+                      ? 'bg-gradient-to-r from-zibara-black/65 to-zibara-black/10 group-hover:from-zibara-black/50'
+                      : 'bg-gradient-to-b from-transparent via-zibara-black/20 to-zibara-black/80 group-hover:to-zibara-black/60'
+                  }`} />
                   <div className="absolute inset-0 flex flex-col justify-end p-8 md:p-12">
                     <p className="text-[9px] tracking-[0.4em] font-mono text-zibara-cream/70 uppercase mb-2">
                       {col.season} {col.year}
@@ -105,38 +109,32 @@ export default function CollectionsPage() {
         {!collectionsLoading && remaining.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mt-2 mb-24">
             {remaining.map((col) => (
-              <Link key={col._id} href={`/collections/${col.slug}`} className="group relative overflow-hidden aspect-[4/3] [view-transition-name:none]">
-                {col.coverImage ? (
-                  <ZibaraPlaceholder
-                    label={col.name}
-                    sublabel={`${col.season} ${col.year}`}
-                    variant="default"
-                    tone="crimson"
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-700"
-                  />
-                ) : (
-                  <ZibaraPlaceholder
-                    label={col.name}
-                    sublabel={`${col.season} ${col.year}`}
-                    variant="default"
-                    tone="espresso"
-                    className="w-full h-full"
-                  />
-                )}
-                <div className="absolute inset-0 bg-zibara-black/50 group-hover:bg-zibara-black/35 transition-all duration-400" />
-                <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                  <p className="text-[8px] tracking-[0.4em] font-mono text-zibara-cream/70 uppercase mb-1">
+              <Link key={col._id} href={`/collections/${col.slug}`} className="group [view-transition-name:none]">
+                <div className="relative overflow-hidden aspect-[4/3]">
+                  {col.coverImage ? (
+                    <ZibaraPlaceholder label={col.name} sublabel={`${col.season} ${col.year}`} variant="default" tone="crimson" className="w-full h-full group-hover:scale-105 transition-transform duration-700" />
+                  ) : (
+                    <ZibaraPlaceholder label={col.name} sublabel={`${col.season} ${col.year}`} variant="default" tone="espresso" className="w-full h-full group-hover:scale-105 transition-transform duration-700" />
+                  )}
+                  <div className="absolute inset-0 bg-zibara-black/30 group-hover:bg-zibara-black/15 transition-all duration-400" />
+                </div>
+                <div className="pt-4 pb-2">
+                  <p className="text-[8px] tracking-[0.4em] font-mono text-zibara-cream/45 uppercase mb-1.5">
                     {col.season} {col.year}
                   </p>
-                  <h2
-                    className="font-display font-light text-2xl md:text-3xl text-zibara-cream uppercase leading-tight"
-                    style={{ fontFamily: 'var(--font-cormorant), serif' }}
-                  >
+                  <h2 className="font-display font-light text-xl text-zibara-cream uppercase leading-tight"
+                    style={{ fontFamily: 'var(--font-cormorant), serif' }}>
                     {col.name}
                   </h2>
-                  <span className="mt-2 text-[8px] tracking-widest font-mono text-zibara-cream/65 uppercase">
-                    {col.productIds?.length ?? 0} pieces
-                  </span>
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className="text-[8px] tracking-widest font-mono text-zibara-cream/50 uppercase">
+                      {col.productIds?.length ?? 0} pieces
+                    </span>
+                    <span className="text-zibara-cream/20 text-[8px]">·</span>
+                    <span className="text-[8px] tracking-widest font-mono text-zibara-cream/50 uppercase group-hover:text-zibara-cream/75 transition-colors">
+                      Explore →
+                    </span>
+                  </div>
                 </div>
               </Link>
             ))}

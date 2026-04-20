@@ -102,9 +102,16 @@ export default function AdminPopupPage() {
       const result = await res.json();
       if (result.success) {
         toast.success('Popup settings saved successfully!');
-        // Clear localStorage so popup shows again for testing
-        localStorage.removeItem('popup_dismissed');
-        sessionStorage.removeItem('popup_dismissed');
+        // Clear all dismissal keys so popup shows again after save
+        ['localStorage', 'sessionStorage'].forEach((store) => {
+          const s = store === 'localStorage' ? localStorage : sessionStorage;
+          const keys: string[] = [];
+          for (let i = 0; i < s.length; i++) {
+            const k = s.key(i);
+            if (k && (k === 'popup_dismissed' || k.startsWith('popup_dismissed_'))) keys.push(k);
+          }
+          keys.forEach((k) => s.removeItem(k));
+        });
       } else {
         toast.error('Failed to save: ' + result.error);
       }

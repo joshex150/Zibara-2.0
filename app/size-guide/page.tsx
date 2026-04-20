@@ -72,7 +72,7 @@ export default function SizeGuidePage() {
         <div className="flex items-center gap-4 mb-8">
           <button 
             onClick={() => router.back()}
-            className="p-2 border border-zibara-cream/15 bg-zibara-deep rounded-lg hover:border-zibara-cream/35 hover:bg-zibara-espresso transition-colors"
+            className="p-2 border border-zibara-cream/15 bg-zibara-deep hover:border-zibara-cream/35 hover:bg-zibara-espresso transition-colors"
           >
             <ArrowLeft size={20} className="text-zibara-cream/80" />
           </button>
@@ -92,7 +92,7 @@ export default function SizeGuidePage() {
         {/* Unit Toggle */}
         <div className="flex items-center justify-end gap-2 mb-6">
           <span className="text-[10px] uppercase tracking-[0.3em] font-mono text-zibara-cream/60">Unit</span>
-          <div className="flex bg-zibara-deep border border-zibara-cream/10 rounded-lg overflow-hidden">
+          <div className="flex bg-zibara-deep border border-zibara-cream/10 overflow-hidden">
             <button
               onClick={() => setUnit('cm')}
               className={`px-4 py-2 text-[10px] tracking-[0.25em] uppercase font-mono transition-colors ${
@@ -116,7 +116,7 @@ export default function SizeGuidePage() {
         <div className="flex gap-2 mb-6">
           <button
             onClick={() => setActiveTab('product')}
-            className={`flex-1 py-3 px-4 rounded-lg text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] transition-colors border ${
+            className={`flex-1 py-3 px-4 text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] transition-colors border ${
               activeTab === 'product'
                 ? 'bg-zibara-crimson border-zibara-crimson text-zibara-cream'
                 : 'bg-zibara-deep border-zibara-cream/10 text-zibara-cream/65 hover:bg-zibara-espresso hover:text-zibara-cream'
@@ -126,7 +126,7 @@ export default function SizeGuidePage() {
           </button>
           <button
             onClick={() => setActiveTab('body')}
-            className={`flex-1 py-3 px-4 rounded-lg text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] transition-colors border ${
+            className={`flex-1 py-3 px-4 text-[10px] md:text-xs font-mono uppercase tracking-[0.3em] transition-colors border ${
               activeTab === 'body'
                 ? 'bg-zibara-crimson border-zibara-crimson text-zibara-cream'
                 : 'bg-zibara-deep border-zibara-cream/10 text-zibara-cream/65 hover:bg-zibara-espresso hover:text-zibara-cream'
@@ -137,7 +137,7 @@ export default function SizeGuidePage() {
         </div>
 
         {/* Size Table */}
-        <div className="bg-zibara-deep border border-zibara-cream/10 rounded-lg overflow-hidden mb-8">
+        <div className="bg-zibara-deep border border-zibara-cream/10 overflow-hidden mb-8">
           <div className="overflow-x-auto">
             {activeTab === 'product' ? (
               productMeasurements.length > 0 ? (
@@ -219,7 +219,7 @@ export default function SizeGuidePage() {
 
         {/* Fit Type */}
         {sizeGuide && (
-          <div className="bg-zibara-deep border border-zibara-cream/10 rounded-lg p-4 md:p-6 mb-6">
+          <div className="bg-zibara-deep border border-zibara-cream/10 p-4 md:p-6 mb-6">
             <h2 className="text-sm md:text-base font-light uppercase tracking-[0.25em] mb-4 text-zibara-cream" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
               Fit Information
             </h2>
@@ -254,7 +254,7 @@ export default function SizeGuidePage() {
 
         {/* How to Measure */}
         {measurementTips.length > 0 && (
-          <div className="bg-zibara-deep border border-zibara-cream/10 rounded-lg p-4 md:p-6 mb-6">
+          <div className="bg-zibara-deep border border-zibara-cream/10 p-4 md:p-6 mb-6">
             <div className="flex items-center gap-2 mb-4">
               <Ruler size={20} className="text-zibara-gold" />
               <h2 className="text-sm md:text-base font-light uppercase tracking-[0.25em] text-zibara-cream" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
@@ -265,7 +265,7 @@ export default function SizeGuidePage() {
             <div className="space-y-4">
               {measurementTips.map((tip, idx) => (
                 <div key={idx} className="flex gap-3">
-                  <div className="w-6 h-6 bg-zibara-crimson text-zibara-cream rounded-full flex items-center justify-center text-xs font-bold shrink-0">
+                  <div className="w-6 h-6 bg-zibara-crimson text-zibara-cream flex items-center justify-center text-xs font-mono shrink-0">
                     {idx + 1}
                   </div>
                   <p className="text-xs md:text-sm text-zibara-cream/72">{tip}</p>
@@ -277,7 +277,7 @@ export default function SizeGuidePage() {
 
         {/* Tips */}
         {sizeTips.length > 0 && (
-          <div className="bg-zibara-crimson text-zibara-cream rounded-lg p-4 md:p-6 border border-zibara-gold/15">
+          <div className="bg-zibara-crimson text-zibara-cream p-4 md:p-6 border border-zibara-gold/15">
             <h2 className="text-sm md:text-base font-light uppercase tracking-[0.25em] mb-3" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
               Size Tips
             </h2>

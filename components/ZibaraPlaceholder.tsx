@@ -10,6 +10,7 @@ interface ZibaraPlaceholderProps {
   variant?: PlaceholderVariant;
   className?: string;
   align?: 'start' | 'center' | 'end';
+  hideLabel?: boolean;
 }
 
 const toneMap: Record<PlaceholderTone, { background: string; glow: string; edge: string }> = {
@@ -71,6 +72,7 @@ export default function ZibaraPlaceholder({
   variant = 'default',
   className = '',
   align = 'center',
+  hideLabel = false,
 }: ZibaraPlaceholderProps) {
   const toneStyles = toneMap[tone];
   const variantStyles = variantMap[variant];
@@ -107,15 +109,17 @@ export default function ZibaraPlaceholder({
 
       <div className={`zibara-placeholder-panel absolute inset-0 flex ${alignmentClass} justify-center ${variantStyles.wrap} will-change-transform`}>
         <div className={`${variantStyles.panel} mx-auto text-center`}>
-          <p className={`${variantStyles.sub} font-mono uppercase text-zibara-cream/58 mb-2`}>
+          <p className={`${variantStyles.sub} font-mono uppercase text-zibara-cream/58 ${hideLabel ? '' : 'mb-2'}`}>
             {sublabel}
           </p>
-          <p
-            className={`${variantStyles.label} font-light uppercase text-zibara-cream/92 text-balance`}
-            style={{ fontFamily: 'var(--font-cormorant), serif', textWrap: 'balance' }}
-          >
-            {label}
-          </p>
+          {!hideLabel && (
+            <p
+              className={`${variantStyles.label} font-light uppercase text-zibara-cream/92 text-balance`}
+              style={{ fontFamily: 'var(--font-cormorant), serif', textWrap: 'balance' }}
+            >
+              {label}
+            </p>
+          )}
         </div>
       </div>
     </div>

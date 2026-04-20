@@ -96,7 +96,7 @@ function OrderTrackingContent() {
                 type="text"
                 value={orderNumber}
                 onChange={(event) => setOrderNumber(event.target.value)}
-                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors"
                 placeholder="CRL-XXXX-XXX"
                 required
               />
@@ -109,7 +109,7 @@ function OrderTrackingContent() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors"
                 placeholder="studio@zibarastudio.com"
                 required
               />
@@ -132,7 +132,7 @@ function OrderTrackingContent() {
         </form>
 
         {order && (
-          <div className="mt-8 bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
+          <div className="mt-12 border-t border-zibara-cream/10 pt-8">
             <h2 className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-2">Order</h2>
             <p className="text-xl font-light uppercase tracking-wider text-zibara-cream mb-1"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}>

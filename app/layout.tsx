@@ -56,21 +56,11 @@ export const metadata: Metadata = {
     siteName: 'ZIBARASTUDIO',
     title: 'ZIBARASTUDIO — For Nights That Matter',
     description: 'Afro-futurist fashion for the woman who arrives composed.',
-    images: [{ url: '/android-chrome-512x512.png', width: 512, height: 512, alt: 'ZIBARASTUDIO' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ZIBARASTUDIO — For Nights That Matter',
     description: 'Afro-futurist fashion for the woman who arrives composed.',
-    images: ['/android-chrome-512x512.png'],
-  },
-  icons: {
-    icon: [
-      { url: '/favicon.ico', type: 'image/x-icon', sizes: 'any' },
-      { url: '/favicon-16x16.png', type: 'image/png', sizes: '16x16' },
-      { url: '/favicon-32x32.png', type: 'image/png', sizes: '32x32' },
-    ],
-    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180' }],
   },
   manifest: '/site.webmanifest',
   alternates: { canonical: 'https://zibarastudio.com' },

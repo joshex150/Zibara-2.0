@@ -27,7 +27,7 @@ const colorOptions = [
   'Blue', 'Purple', 'Navy', 'Grey', 'Multicolor',
 ];
 
-const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors';
+const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors';
 const labelClass = 'block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2';
 const sectionClass = 'bg-zibara-deep/50 border border-zibara-cream/10 p-5 md:p-7';
 const sectionTitle = 'text-[9px] tracking-[0.45em] font-mono text-zibara-cream/45 uppercase mb-5';
@@ -128,8 +128,13 @@ export default function CustomOrderPage() {
     return (
       <div className="min-h-screen bg-zibara-black text-zibara-cream flex items-center justify-center px-4">
         <div className="bg-zibara-deep/60 border border-zibara-cream/10 p-8 md:p-12 max-w-md w-full text-center">
-          <div className="inline-flex items-center justify-center w-14 h-14 border border-zibara-cream/20 mb-6">
-            <CheckCircle className="w-6 h-6 text-zibara-cream/70" />
+          <div className="mb-6">
+            <span
+              className="font-display font-light text-[4rem] text-zibara-cream/45 leading-none"
+              style={{ fontFamily: 'var(--font-cormorant), serif' }}
+            >
+              ✓
+            </span>
           </div>
           <h1 className="text-2xl font-light text-zibara-cream uppercase tracking-[0.2em] mb-4"
             style={{ fontFamily: 'var(--font-cormorant), serif' }}>
@@ -173,7 +178,7 @@ export default function CustomOrderPage() {
         </div>
 
         {/* Intro */}
-        <div className={`${sectionClass} mb-8`}>
+        <div className="border-t border-zibara-cream/10 pt-8 mb-12">
           <p className="text-[11px] font-mono text-zibara-cream/65 leading-loose">
             {getContentValue('custom_order_intro_text', 'Ready to create something unique? Fill out the form below with as much detail as possible. Our studio team will review your request and contact you within 24–48 hours to discuss your vision, provide a quote, and timeline. A 50% deposit is required to begin work.')}
           </p>
@@ -238,7 +243,7 @@ export default function CustomOrderPage() {
                   required
                   rows={4}
                   placeholder="Describe the style, design, occasion, or any inspiration you have..."
-                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
+                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
                 />
               </div>
 
@@ -250,12 +255,13 @@ export default function CustomOrderPage() {
                       key={color}
                       type="button"
                       onClick={() => toggleColor(color)}
-                      className={`px-3 py-1.5 text-[9px] uppercase tracking-wider font-mono transition-colors ${
+                      className={`flex items-center gap-2 px-3 py-1.5 text-[9px] uppercase tracking-wider font-mono transition-colors ${
                         form.colors.includes(color)
                           ? 'bg-zibara-cream text-zibara-black'
                           : 'border border-zibara-cream/20 text-zibara-cream/55 hover:border-zibara-cream/45 hover:text-zibara-cream/75'
                       }`}
                     >
+                      <span className="w-2 h-2 flex-shrink-0 bg-zibara-cream/30" />
                       {color}
                     </button>
                   ))}
@@ -267,7 +273,7 @@ export default function CustomOrderPage() {
           {/* Reference Images */}
           <div className={sectionClass}>
             <p className={sectionTitle}>Reference Images (Optional)</p>
-            <p className="text-[10px] font-mono text-zibara-cream/40 mb-5">
+            <p className="text-[10px] font-mono text-zibara-cream/50 mb-5">
               Upload images of styles, designs, or inspiration you&apos;d like us to see
             </p>
 
@@ -331,11 +337,11 @@ export default function CustomOrderPage() {
           <div className={sectionClass}>
             <div className="flex items-baseline justify-between mb-5">
               <p className={sectionTitle} style={{ marginBottom: 0 }}>Measurements (cm)</p>
-              <Link href="/size-guide" className="text-[9px] font-mono text-zibara-cream/40 uppercase tracking-wider hover:text-zibara-cream/65 transition-colors underline">
+              <Link href="/size-guide" className="text-[9px] font-mono text-zibara-cream/50 uppercase tracking-wider hover:text-zibara-cream/70 transition-colors underline">
                 Size Guide
               </Link>
             </div>
-            <p className="text-[10px] font-mono text-zibara-cream/40 mb-5">
+            <p className="text-[10px] font-mono text-zibara-cream/50 mb-5">
               Optional — you can provide these later or we can guide you through measuring.
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -401,7 +407,7 @@ export default function CustomOrderPage() {
                 onChange={(e) => setForm(prev => ({ ...prev, additionalNotes: e.target.value }))}
                 rows={3}
                 placeholder="Any other details, questions, or special requests..."
-                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
               />
             </div>
           </div>
@@ -422,7 +428,7 @@ export default function CustomOrderPage() {
             )}
           </button>
 
-          <p className="text-[9px] text-center font-mono text-zibara-cream/35 uppercase tracking-wider">
+          <p className="text-[9px] text-center font-mono text-zibara-cream/45 uppercase tracking-wider">
             {getContentValue('custom_order_footer_text', 'By submitting, you agree to our terms. A 50% deposit is required before production begins.')}
           </p>
         </form>
