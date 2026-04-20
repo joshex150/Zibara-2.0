@@ -66,11 +66,11 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-zibara-black/30 via-transparent to-zibara-black/80" />
 
-          <div className="absolute bottom-12 left-6 md:left-12 max-w-xl">
+          <div className="absolute bottom-12 left-6 md:left-12 right-6 md:right-auto max-w-[min(90vw,640px)]">
             <AnimatedHeading
               tag="h1"
               delay={preloaderDone ? 0.1 : 2.8}
-              className="font-display font-light text-zibara-cream text-[clamp(3rem,10vw,8rem)] leading-[0.9] tracking-tight uppercase"
+              className="font-display font-light text-zibara-cream text-[clamp(2.4rem,6vw,6rem)] leading-[0.95] tracking-tight uppercase"
               style={
                 {
                   fontFamily: "var(--font-cormorant), serif",

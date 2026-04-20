@@ -65,7 +65,7 @@ export default function SizeGuidePage() {
   const sizeTips = sizeGuide?.sizeTips || [];
 
   return (
-    <div className="min-h-screen bg-zibara-black text-zibara-cream scroll-mt-32">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream scroll-mt-32 pt-24 md:pt-28">
       <div className="max-w-5xl mx-auto px-6 md:px-8 py-10 md:py-14">
         
         {/* Header */}

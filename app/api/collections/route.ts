@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import Collection from '@/models/Collection';
+import '@/models/Product';
 
 // GET all published collections (public)
 export async function GET() {

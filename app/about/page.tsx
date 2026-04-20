@@ -28,11 +28,11 @@ export default function AboutPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-zibara-black/40 via-zibara-black/10 to-zibara-black" />
 
-        <div className="absolute bottom-12 left-6 md:left-12 max-w-2xl">
+        <div className="absolute bottom-12 left-6 md:left-12 right-6 md:right-auto max-w-[min(90vw,720px)]">
           <AnimatedHeading
             tag="h1"
             delay={0.3}
-            className="font-display font-light text-[clamp(3.5rem,10vw,9rem)] leading-none tracking-tight uppercase text-zibara-cream"
+            className="font-display font-light text-[clamp(2.6rem,6.5vw,7rem)] leading-none tracking-tight uppercase text-zibara-cream"
             style={{ fontFamily: 'var(--font-cormorant), serif' } as React.CSSProperties}
           >
             The Studio
