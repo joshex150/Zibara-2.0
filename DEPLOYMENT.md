@@ -30,7 +30,7 @@ PAYSTACK_SECRET_KEY=sk_test_your-actual-secret-key-here
 
 ```env
 # MongoDB Connection
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/crochella
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/zibara
 
 # NextAuth Configuration
 NEXTAUTH_URL=https://yourdomain.com

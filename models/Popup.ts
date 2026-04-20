@@ -14,7 +14,7 @@ export interface IPopup extends Document {
 const PopupSchema: Schema = new Schema({
   enabled: { type: Boolean, default: false },
   title: { type: String, default: 'SPECIAL ANNOUNCEMENT' },
-  message: { type: String, default: 'Welcome to Crochellaa.ng!' },
+  message: { type: String, default: 'Welcome to ZIBARASTUDIO.' },
   showButton: { type: Boolean, default: true },
   buttonText: { type: String, default: 'Shop Now' },
   buttonLink: { type: String, default: '/shop' },

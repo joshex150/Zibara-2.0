@@ -14,7 +14,7 @@ brew install mongodb-community  # macOS
 ### 2. Create Environment File
 Create `.env.local` in the project root:
 ```env
-MONGODB_URI=mongodb://localhost:27017/crochella
+MONGODB_URI=mongodb://localhost:27017/zibara
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=supersecretkey123changethisinproduction
 
@@ -25,8 +25,9 @@ NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY=your-key
 ### 3. Seed Database
 ```bash
 npm run seed-db
+npm run seed-admin
 ```
-Follow the prompts to create your admin user.
+The first command seeds the ZIBARASTUDIO storefront. The second creates your admin user.
 
 ### 4. Start Server
 ```bash
@@ -44,7 +45,7 @@ Use the credentials you just created!
 
 If you want to manually create a test admin in MongoDB:
 
-**Email:** admin@crochellaa.ng  
+**Email:** admin@zibarastudio.com  
 **Password:** admin123
 
 ⚠️ **Change this immediately in production!**
@@ -52,9 +53,9 @@ If you want to manually create a test admin in MongoDB:
 To add this manually in MongoDB:
 ```javascript
 db.admins.insertOne({
-  email: "admin@crochellaa.ng",
+  email: "admin@zibarastudio.com",
   password: "$2a$10$YourHashedPasswordHere",
-  name: "Admin User",
+  name: "ZIBARA Admin",
   role: "super_admin",
   isActive: true,
   createdAt: new Date()
@@ -111,13 +112,13 @@ mongosh    # try connecting directly
 
 **Can't login?**
 1. Make sure `.env.local` exists with `NEXTAUTH_SECRET`
-2. Run `npm run seed-db` to create admin user
+2. Run `npm run seed-admin` to create an admin user
 3. Clear browser cookies
 4. Restart dev server
 5. Check browser console for errors
 
 **No products showing?**
-- Run `npm run seed-db` to add sample products
+- Run `npm run seed-db` to add the sample storefront data
 - Check MongoDB connection
 - Verify API route `/api/admin/products` works
 

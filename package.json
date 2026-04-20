@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed-db": "ts-node -P tsconfig.json scripts/seed-products.ts",
+    "seed-db": "ts-node -P tsconfig.json scripts/seed-storefront.ts",
+    "seed-products": "ts-node -P tsconfig.json scripts/seed-products.ts",
     "seed-admin": "ts-node -P tsconfig.json scripts/seed-admin.ts",
     "seed-currency": "ts-node -P tsconfig.json scripts/seed-currency-rates.ts",
     "update-prices": "ts-node -P tsconfig.json scripts/update-product-prices.ts"

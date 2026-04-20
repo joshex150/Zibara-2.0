@@ -1,3 +1,6 @@
+'use client';
+
+import { useState } from 'react';
 import ZibaraPlaceholder from './ZibaraPlaceholder';
 
 type Tone = 'espresso' | 'crimson' | 'olive' | 'deep';
@@ -28,7 +31,9 @@ export default function ProductImage({
   variant = 'default',
   className = '',
 }: ProductImageProps) {
+  const [isBroken, setIsBroken] = useState(false);
   const isStub =
+    isBroken ||
     !src ||
     src.trim() === '' ||
     src.includes('placehold.co') ||
@@ -46,5 +51,14 @@ export default function ProductImage({
     );
   }
 
-  return <img src={src} alt={name} className={className} />;
+  return (
+    <img
+      src={src}
+      alt={name}
+      loading="lazy"
+      decoding="async"
+      onError={() => setIsBroken(true)}
+      className={`${className} object-cover object-center`}
+    />
+  );
 }

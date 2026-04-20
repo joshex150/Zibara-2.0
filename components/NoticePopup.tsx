@@ -82,7 +82,6 @@ export default function NoticePopup() {
 
   useEffect(() => {
     if (!popup || !popup.enabled) {
-      setIsVisible(false);
       return;
     }
 
@@ -103,7 +102,11 @@ export default function NoticePopup() {
 
       return () => clearTimeout(timer);
     } else {
-      setIsVisible(false);
+      const frame = window.requestAnimationFrame(() => {
+        setIsVisible(false);
+      });
+
+      return () => window.cancelAnimationFrame(frame);
     }
   }, [popup]);
 

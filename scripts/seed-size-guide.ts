@@ -89,7 +89,7 @@ const defaultSizeGuide = {
   ],
   sizeTips: [
     'If you are between sizes, we recommend sizing up for a more comfortable fit.',
-    'Our crochet pieces have slight natural stretch and will mold to your body over time.',
+    'Structured ZIBARASTUDIO pieces are cut to hold shape, so take measurements before ordering.',
     'Handmade items may have slight variations of 1-2 cm from the listed measurements.',
     'For questions about sizing, please contact us before ordering.',
   ],

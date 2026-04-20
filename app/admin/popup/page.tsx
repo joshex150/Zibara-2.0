@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Eye, EyeOff, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import BrandLoader from '@/components/BrandLoader';
 
 interface PopupData {
   enabled: boolean;
@@ -34,7 +35,7 @@ const availablePages = [
 ];
 
 export default function AdminPopupPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -43,7 +44,7 @@ export default function AdminPopupPage() {
   const [data, setData] = useState<PopupData>({
     enabled: false,
     title: 'SPECIAL ANNOUNCEMENT',
-    message: 'Welcome to Crochellaa.ng!',
+    message: 'Welcome to ZIBARASTUDIO.',
     showButton: true,
     buttonText: 'Shop Now',
     buttonLink: '/shop',
@@ -107,7 +108,7 @@ export default function AdminPopupPage() {
       } else {
         toast.error('Failed to save: ' + result.error);
       }
-    } catch (error) {
+    } catch {
       toast.error('Error saving popup settings');
     } finally {
       setSaving(false);
@@ -115,17 +116,7 @@ export default function AdminPopupPage() {
   };
 
   if (status === 'loading' || loading) {
-    return (
-      <div className="fixed inset-0 bg-[#EBB0C9] flex items-center justify-center z-50">
-        <div className="animate-pulse">
-          <img 
-            src="/logo.jpeg" 
-            alt="Crochellaa.ng" 
-            className="w-32 h-32 md:w-48 md:h-48 object-contain"
-          />
-        </div>
-      </div>
-    );
+    return <BrandLoader label="Popup" sublabel="ZIBARASTUDIO" tone="crimson" />;
   }
 
   if (status === 'unauthenticated') {
@@ -133,22 +124,22 @@ export default function AdminPopupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] scroll-mt-32">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream scroll-mt-32">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0 mb-6 md:mb-8">
           <div className="flex items-center gap-3 md:gap-4">
             <Link 
               href="/admin"
-              className="p-2 bg-[#f5d5e5] rounded-lg hover:bg-[#d896b5]/50 transition-colors flex-shrink-0"
+              className="p-2 bg-zibara-deep rounded-lg hover:bg-zibara-crimson/30 transition-colors flex-shrink-0 border border-zibara-cream/10"
             >
-              <ArrowLeft size={20} className="text-[#8b2b4d]" />
+              <ArrowLeft size={20} className="text-zibara-cream" />
             </Link>
             <div>
-              <h1 className="text-xl md:text-2xl font-bold text-[#8b2b4d] uppercase tracking-wider">
+              <h1 className="text-xl md:text-2xl font-light uppercase tracking-[0.25em]" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
                 Popup Notice
               </h1>
-              <p className="text-xs md:text-sm text-[#8b2b4d]/70">
+              <p className="text-xs md:text-sm text-zibara-cream/55 font-mono uppercase tracking-[0.25em]">
                 Manage site-wide popup announcement
               </p>
             </div>
@@ -156,7 +147,7 @@ export default function AdminPopupPage() {
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <button
               onClick={() => setShowPreview(!showPreview)}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-[#f5d5e5] text-[#8b2b4d] rounded-lg hover:bg-[#d896b5]/50 transition-colors text-sm font-medium"
+              className="flex items-center justify-center gap-2 px-4 py-2 bg-zibara-deep text-zibara-cream rounded-lg hover:bg-zibara-crimson/30 transition-colors text-sm font-medium border border-zibara-cream/10"
             >
               {showPreview ? <EyeOff size={18} /> : <Eye size={18} />}
               Preview
@@ -164,7 +155,7 @@ export default function AdminPopupPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="flex items-center justify-center gap-2 px-4 md:px-6 py-2 bg-[#8b2b4d] text-white rounded-lg hover:bg-[#6d1f3a] transition-colors disabled:opacity-50 text-sm font-medium"
+              className="flex items-center justify-center gap-2 px-4 md:px-6 py-2 bg-zibara-crimson text-zibara-cream rounded-lg hover:bg-zibara-blood transition-colors disabled:opacity-50 text-sm font-medium"
             >
               <Save size={18} />
               {saving ? 'Saving...' : 'Save Changes'}
@@ -176,11 +167,11 @@ export default function AdminPopupPage() {
           {/* Settings Form */}
           <div className="space-y-6">
             {/* Enable/Disable Toggle */}
-            <div className="bg-[#f5d5e5] rounded-lg p-6">
+            <div className="bg-zibara-deep rounded-lg p-6 border border-zibara-cream/10">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="font-semibold text-[#8b2b4d]">Popup Status</h3>
-                  <p className="text-sm text-gray-600 mt-1">
+                  <h3 className="font-semibold text-zibara-cream">Popup Status</h3>
+                  <p className="text-sm text-zibara-cream/55 mt-1">
                     {data.enabled ? 'Popup is currently visible to visitors' : 'Popup is hidden from visitors'}
                   </p>
                 </div>
@@ -200,42 +191,42 @@ export default function AdminPopupPage() {
             </div>
 
             {/* Content */}
-            <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
-              <h3 className="font-semibold text-[#8b2b4d] uppercase tracking-wider text-sm">
+            <div className="bg-zibara-deep rounded-lg p-6 space-y-4 border border-zibara-cream/10">
+              <h3 className="font-semibold text-zibara-cream uppercase tracking-wider text-sm">
                 Content
               </h3>
               
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-700 mb-2">
+                <label className="block text-xs uppercase tracking-wider font-semibold text-zibara-cream/55 mb-2">
                   Title
                 </label>
                 <input
                   type="text"
                   value={data.title}
                   onChange={(e) => setData({ ...data, title: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] bg-white text-sm"
+                  className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream"
                   placeholder="Enter popup title"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold text-gray-700 mb-2">
+                <label className="block text-xs uppercase tracking-wider font-semibold text-zibara-cream/55 mb-2">
                   Message
                 </label>
                 <textarea
                   value={data.message}
                   onChange={(e) => setData({ ...data, message: e.target.value })}
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] bg-white text-sm resize-none"
+                  className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream resize-none"
                   placeholder="Enter popup message (use line breaks for multiple paragraphs)"
                 />
               </div>
             </div>
 
             {/* Button Settings */}
-            <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
+            <div className="bg-zibara-deep rounded-lg p-6 space-y-4 border border-zibara-cream/10">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold text-[#8b2b4d] uppercase tracking-wider text-sm">
+                <h3 className="font-semibold text-zibara-cream uppercase tracking-wider text-sm">
                   Button
                 </h3>
                 <button
@@ -255,25 +246,25 @@ export default function AdminPopupPage() {
               {data.showButton && (
                 <div className="space-y-4 pt-2">
                   <div>
-                    <label className="block text-xs uppercase tracking-wider font-semibold text-gray-700 mb-2">
+                    <label className="block text-xs uppercase tracking-wider font-semibold text-zibara-cream/55 mb-2">
                       Button Text
                     </label>
                     <input
                       type="text"
                       value={data.buttonText}
                       onChange={(e) => setData({ ...data, buttonText: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] bg-white text-sm"
+                      className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream"
                       placeholder="e.g., Shop Now"
                     />
                   </div>
                   <div>
-                    <label className="block text-xs uppercase tracking-wider font-semibold text-gray-700 mb-2">
+                    <label className="block text-xs uppercase tracking-wider font-semibold text-zibara-cream/55 mb-2">
                       Button Link
                     </label>
                     <select
                       value={availablePages.some(p => p.value === data.buttonLink) ? data.buttonLink : 'custom'}
                       onChange={(e) => handleLinkChange(e.target.value)}
-                      className="w-full px-4 py-3 rounded-lg border border-[#8b2b4d]/20 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-[#f5d5e5] text-[#8b2b4d] text-sm"
+                      className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 focus:border-transparent bg-zibara-black/40 text-zibara-cream text-sm"
                     >
                       {availablePages.map(page => (
                         <option key={page.value} value={page.value}>
@@ -290,7 +281,7 @@ export default function AdminPopupPage() {
                           setCustomLink(e.target.value);
                           setData({ ...data, buttonLink: e.target.value });
                         }}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] bg-white text-sm mt-2"
+                        className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream mt-2"
                         placeholder="https://example.com or /custom-path"
                       />
                     )}
@@ -300,15 +291,15 @@ export default function AdminPopupPage() {
             </div>
 
             {/* Display Settings */}
-            <div className="bg-[#f5d5e5] rounded-lg p-6">
-              <h3 className="font-semibold text-[#8b2b4d] uppercase tracking-wider text-sm mb-4">
+            <div className="bg-zibara-deep rounded-lg p-6 border border-zibara-cream/10">
+              <h3 className="font-semibold text-zibara-cream uppercase tracking-wider text-sm mb-4">
                 Display Settings
               </h3>
               
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-medium text-gray-800">Show Only Once</p>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="font-medium text-zibara-cream">Show Only Once</p>
+                  <p className="text-xs text-zibara-cream/55 mt-1">
                     {data.showOnce 
                       ? 'Visitors see the popup only once (remembered forever)' 
                       : 'Visitors see the popup once per browser session'}
@@ -335,35 +326,35 @@ export default function AdminPopupPage() {
             <>
               {/* Mobile: Full screen overlay */}
               <div className="lg:hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                <div className="bg-gray-800 rounded-lg p-4 w-full max-w-md">
+                <div className="bg-zibara-black rounded-lg p-4 w-full max-w-md border border-zibara-cream/10">
                   <div className="flex items-center justify-between mb-3">
-                    <p className="text-xs text-gray-400 uppercase tracking-wider">
+                    <p className="text-xs text-zibara-cream/45 uppercase tracking-wider">
                       Preview
                     </p>
                     <button
                       onClick={() => setShowPreview(false)}
-                      className="text-gray-400 hover:text-white transition-colors"
+                      className="text-zibara-cream/45 hover:text-zibara-cream transition-colors"
                     >
                       <X size={20} />
                     </button>
                   </div>
-                  <div className="bg-gray-900/50 rounded-lg p-6 flex items-center justify-center min-h-[300px]">
+                  <div className="bg-zibara-deep rounded-lg p-6 flex items-center justify-center min-h-[300px]">
                     <div 
-                      className="relative bg-white rounded-lg p-6 w-full"
+                      className="relative rounded-lg p-6 w-full bg-zibara-deep text-zibara-cream"
                       style={{
-                        border: '3px dashed #8b2b4d',
-                        boxShadow: '0 0 0 6px #EBB0C9',
+                        border: '1px solid rgba(239,239,201,0.14)',
+                        boxShadow: '0 0 0 1px rgba(201,169,110,0.12), 0 25px 50px -12px rgba(0, 0, 0, 0.45)',
                       }}
                     >
                       <div className="text-center pt-2">
-                        <h2 className="text-lg font-bold text-[#8b2b4d] uppercase tracking-wider mb-3">
+                        <h2 className="text-lg font-light uppercase tracking-[0.28em] mb-3" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
                           {data.title || 'Title'}
                         </h2>
-                        <p className="text-sm text-gray-700 leading-relaxed mb-4 whitespace-pre-line">
+                        <p className="text-sm text-zibara-cream/72 leading-relaxed mb-4 whitespace-pre-line font-mono">
                           {data.message || 'Your message here...'}
                         </p>
                         {data.showButton && data.buttonText && (
-                          <span className="inline-block px-6 py-2 bg-[#d896b5] text-white text-sm uppercase tracking-wider font-semibold rounded-lg">
+                          <span className="inline-block px-6 py-2 bg-zibara-crimson text-zibara-cream text-sm uppercase tracking-[0.28em] font-mono rounded-lg">
                             {data.buttonText}
                           </span>
                         )}
@@ -375,27 +366,27 @@ export default function AdminPopupPage() {
 
               {/* Desktop: Side panel */}
               <div className="hidden lg:block lg:sticky lg:top-8">
-                <div className="bg-gray-800 rounded-lg p-4">
-                  <p className="text-xs text-gray-400 uppercase tracking-wider mb-3 text-center">
+                <div className="bg-zibara-black rounded-lg p-4 border border-zibara-cream/10">
+                  <p className="text-xs text-zibara-cream/45 uppercase tracking-wider mb-3 text-center">
                     Preview
                   </p>
-                  <div className="bg-gray-900/50 rounded-lg p-6 flex items-center justify-center min-h-[400px]">
+                  <div className="bg-zibara-deep rounded-lg p-6 flex items-center justify-center min-h-[400px]">
                     <div 
-                      className="relative bg-white rounded-lg p-6 max-w-sm w-full"
+                      className="relative rounded-lg p-6 max-w-sm w-full bg-zibara-deep text-zibara-cream"
                       style={{
-                        border: '3px dashed #8b2b4d',
-                        boxShadow: '0 0 0 6px #EBB0C9',
+                        border: '1px solid rgba(239,239,201,0.14)',
+                        boxShadow: '0 0 0 1px rgba(201,169,110,0.12), 0 25px 50px -12px rgba(0, 0, 0, 0.45)',
                       }}
                     >
                       <div className="text-center pt-2">
-                        <h2 className="text-lg font-bold text-[#8b2b4d] uppercase tracking-wider mb-3">
+                        <h2 className="text-lg font-light uppercase tracking-[0.28em] mb-3" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
                           {data.title || 'Title'}
                         </h2>
-                        <p className="text-sm text-gray-700 leading-relaxed mb-4 whitespace-pre-line">
+                        <p className="text-sm text-zibara-cream/72 leading-relaxed mb-4 whitespace-pre-line font-mono">
                           {data.message || 'Your message here...'}
                         </p>
                         {data.showButton && data.buttonText && (
-                          <span className="inline-block px-6 py-2 bg-[#d896b5] text-white text-sm uppercase tracking-wider font-semibold rounded-lg">
+                          <span className="inline-block px-6 py-2 bg-zibara-crimson text-zibara-cream text-sm uppercase tracking-[0.28em] font-mono rounded-lg">
                             {data.buttonText}
                           </span>
                         )}

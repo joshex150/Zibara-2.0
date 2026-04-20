@@ -2,29 +2,29 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Shop',
-  description: 'Browse our collection of handmade crochet fashion. Sustainable, soft, and lovingly crafted pieces.',
+  description: 'Browse ZIBARASTUDIO pieces designed for galas, private dinners, and nights that matter.',
   keywords: [
-    'crochet shop',
-    'handmade fashion',
-    'sustainable fashion',
-    'artisan clothing',
-    'Crochellaa',
-    'crochet clothing',
+    'Afro-futurist fashion shop',
+    'luxury womenswear',
+    'Lagos fashion',
+    'occasionwear',
+    'ZIBARASTUDIO',
+    'editorial fashion',
   ],
   openGraph: {
     type: 'website',
-    url: 'https://crochellaa.ng/shop',
+    url: 'https://zibarastudio.com/shop',
     title: 'Shop',
-    description: 'Browse our collection of handmade crochet fashion',
-    siteName: 'Crochellaa.ng',
+    description: 'Browse ZIBARASTUDIO pieces designed for nights that matter.',
+    siteName: 'ZIBARASTUDIO',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Shop',
-    description: 'Browse our collection of handmade crochet fashion',
+    description: 'Browse ZIBARASTUDIO pieces designed for nights that matter.',
   },
   alternates: {
-    canonical: 'https://crochellaa.ng/shop',
+    canonical: 'https://zibarastudio.com/shop',
   },
 };
 

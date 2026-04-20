@@ -16,10 +16,10 @@ if (fs.existsSync(envPath)) {
 
 const PopupSchema = new mongoose.Schema({
   enabled: { type: Boolean, default: false },
-  title: { type: String, default: 'SPECIAL ANNOUNCEMENT' },
-  message: { type: String, default: 'Welcome to Crochellaa.ng!' },
+  title: { type: String, default: 'PRIVATE ACCESS' },
+  message: { type: String, default: 'Welcome to ZIBARASTUDIO.' },
   showButton: { type: Boolean, default: true },
-  buttonText: { type: String, default: 'Shop Now' },
+  buttonText: { type: String, default: 'Enter Store' },
   buttonLink: { type: String, default: '/shop' },
   showOnce: { type: Boolean, default: true },
   updatedAt: { type: Date, default: Date.now },
@@ -52,15 +52,15 @@ async function seedPopup() {
       await Popup.deleteMany({});
     }
 
-    console.log('Creating popup with shipping rates info...');
+    console.log('Creating branded popup...');
     
     const popupData = {
-      enabled: true,
-      title: 'SHIPPING RATES UPDATE',
-      message: 'Domestic Shipping: $10 (3-5 business days)\n\nInternational Shipping: $60 (3-5 business days)\n\nFree shipping on orders over $500!\n\nNote: International orders may incur customs fees. Crochellaa.ng is not responsible for collecting or paying these fees.',
+      enabled: false,
+      title: 'PRIVATE ACCESS',
+      message: 'Welcome to ZIBARASTUDIO.\n\nFor nights that matter.\n\nUse this space for salon drops, atelier appointments, or event-specific notices.',
       showButton: true,
-      buttonText: 'View Shipping Policy',
-      buttonLink: '/shipping',
+      buttonText: 'Explore the Collection',
+      buttonLink: '/shop',
       showOnce: true,
     };
 

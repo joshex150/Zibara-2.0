@@ -2,8 +2,8 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  // Only redirect in production (crochellaa.ng domain)
-  if (request.nextUrl.hostname !== 'crochellaa.ng') {
+  // Only redirect on the production ZIBARASTUDIO domains
+  if (!['zibarastudio.com', 'www.zibarastudio.com'].includes(request.nextUrl.hostname)) {
     return NextResponse.next();
   }
 

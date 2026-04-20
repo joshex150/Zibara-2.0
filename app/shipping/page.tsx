@@ -36,7 +36,7 @@ export default function ShippingPage() {
             </p>
             <p className="mt-4 italic opacity-80">
               International orders (particularly to the US) may incur customs fees and import duties. 
-              Crochellaa.ng is not responsible for collecting, processing, or paying these fees — 
+              ZIBARASTUDIO is not responsible for collecting, processing, or paying these fees — 
               responsibility lies solely with the customer.
             </p>
           </div>
@@ -75,7 +75,7 @@ export default function ShippingPage() {
             </p>
             <p>
               If you don't receive tracking information within 4 business days of placing your order, 
-              please contact us at <a href="mailto:crochellaang@gmail.com" className="underline hover:opacity-70">crochellaang@gmail.com</a>
+              please contact us at <a href="mailto:studio@zibarastudio.com" className="underline hover:opacity-70">studio@zibarastudio.com</a>
             </p>
           </div>
 
@@ -101,7 +101,7 @@ export default function ShippingPage() {
             </h2>
             <p className="mb-4">
               If your package is lost or arrives damaged, please contact us immediately at{' '}
-              <a href="mailto:crochellaang@gmail.com" className="underline hover:opacity-70">crochellaang@gmail.com</a>{' '}
+              <a href="mailto:studio@zibarastudio.com" className="underline hover:opacity-70">studio@zibarastudio.com</a>{' '}
               with photos of the damage (if applicable) and your order number.
             </p>
             <p>

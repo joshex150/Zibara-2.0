@@ -2,28 +2,28 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Custom Order',
-  description: 'Request a custom handmade crochet piece. Work with our artisans to create a unique, personalized garment just for you.',
+  description: 'Request a bespoke ZIBARASTUDIO piece tailored to your event, silhouette, and measurements.',
   keywords: [
-    'custom crochet',
-    'bespoke crochet',
-    'handmade custom order',
-    'personalized crochet',
+    'bespoke fashion',
+    'custom order',
+    'made-to-measure fashion',
+    'private order',
     'custom fashion',
   ],
   openGraph: {
     type: 'website',
-    url: 'https://crochellaa.ng/custom-order',
+    url: 'https://zibarastudio.com/custom-order',
     title: 'Custom Order',
-    description: 'Request a custom handmade crochet piece. Work with our artisans to create a unique, personalized garment.',
-    siteName: 'Crochellaa.ng',
+    description: 'Request a bespoke ZIBARASTUDIO piece tailored to your event, silhouette, and measurements.',
+    siteName: 'ZIBARASTUDIO',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Custom Order',
-    description: 'Request a custom handmade crochet piece. Work with our artisans to create a unique, personalized garment.',
+    description: 'Request a bespoke ZIBARASTUDIO piece tailored to your event, silhouette, and measurements.',
   },
   alternates: {
-    canonical: 'https://crochellaa.ng/custom-order',
+    canonical: 'https://zibarastudio.com/custom-order',
   },
 };
 

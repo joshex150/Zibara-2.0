@@ -72,7 +72,7 @@ Once you have disk space:
 ```typescript
 // components/Header.tsx
 const navigationLinks = [
-  { href: '/about', label: "about crochella" },
+  { href: '/about', label: 'about zibara' },
   { href: '/shop', label: 'shop' },
   { href: '/collection', label: 'categories' },  // Products by type
   { href: '/collections', label: 'collections' }, // Curated drops
@@ -102,12 +102,12 @@ Copy from `/app/collection/page.tsx` but:
 
 ```javascript
 {
-  name: "RTW Fall 2022",
-  slug: "rtw-fall-2022",
-  season: "Fall",
-  year: 2022,
-  description: "Warm tones and cozy textures for autumn",
-  writeUp: "As leaves turn golden and the air grows crisp, our Fall 2022 ready-to-wear collection celebrates the season's rich palette. Hand-crocheted pieces in burnt orange, deep burgundy, and forest green create a modern bohemian wardrobe perfect for layering...",
+  name: "Minutes Before Midnight",
+  slug: "minutes-before-midnight",
+  season: "Season III",
+  year: 2026,
+  description: "Ceremonial silhouettes for private dinners, gallery nights, and the hour just before arrival.",
+  writeUp: "Minutes Before Midnight is built for the exact moment composure becomes magnetic. The silhouettes are long, dark, and deliberate, carrying the calm severity of Afro-futurist eveningwear into a modern Lagos night.",
   coverImage: "https://...",
   productIds: ["id1", "id2", "id3"],
   featured: true,

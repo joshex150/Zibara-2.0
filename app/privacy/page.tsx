@@ -18,7 +18,7 @@ export default function PrivacyPage() {
           {/* INTRO */}
           <div className="bg-white/30 p-6 md:p-8 rounded-sm">
             <p>
-              At Crochellaa.ng, we respect your privacy and are committed to protecting your personal information. 
+              At ZIBARASTUDIO, we respect your privacy and are committed to protecting your personal information. 
               This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you 
               visit our website or make a purchase from us.
             </p>
@@ -132,7 +132,7 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-4">
               To exercise these rights, please contact us at{' '}
-              <a href="mailto:hello@crochellaa.ng" className="underline hover:opacity-70">hello@crochellaa.ng</a>
+              <a href="mailto:studio@zibarastudio.com" className="underline hover:opacity-70">studio@zibarastudio.com</a>
             </p>
           </div>
 
@@ -185,9 +185,9 @@ export default function PrivacyPage() {
               please contact us:
             </p>
             <div className="space-y-2">
-              <p><strong>Email:</strong> <a href="mailto:hello@crochellaa.ng" className="underline hover:opacity-70">hello@crochellaa.ng</a></p>
+              <p><strong>Email:</strong> <a href="mailto:studio@zibarastudio.com" className="underline hover:opacity-70">studio@zibarastudio.com</a></p>
               <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-              <p><strong>Website:</strong> www.crochellaa.com</p>
+              <p><strong>Website:</strong> www.zibarastudio.com</p>
             </div>
           </div>
 

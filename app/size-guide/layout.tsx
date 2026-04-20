@@ -2,28 +2,28 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Size Guide',
-  description: 'Find your perfect fit with our comprehensive size guide. Measurements and sizing information for all our handmade crochet pieces.',
+  description: 'Find your ZIBARASTUDIO fit with body measurements, garment sizing, and styling guidance.',
   keywords: [
-    'crochet size guide',
-    'handmade fashion sizing',
+    'size guide',
+    'fashion sizing',
     'size chart',
     'measurements',
     'fit guide',
   ],
   openGraph: {
     type: 'website',
-    url: 'https://crochellaa.ng/size-guide',
+    url: 'https://zibarastudio.com/size-guide',
     title: 'Size Guide',
-    description: 'Find your perfect fit with our comprehensive size guide',
-    siteName: 'Crochellaa.ng',
+    description: 'Find your ZIBARASTUDIO fit with body measurements and garment sizing.',
+    siteName: 'ZIBARASTUDIO',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Size Guide',
-    description: 'Find your perfect fit with our comprehensive size guide',
+    description: 'Find your ZIBARASTUDIO fit with body measurements and garment sizing.',
   },
   alternates: {
-    canonical: 'https://crochellaa.ng/size-guide',
+    canonical: 'https://zibarastudio.com/size-guide',
   },
 };
 

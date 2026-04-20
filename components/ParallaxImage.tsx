@@ -33,40 +33,66 @@ export default function ParallaxImage({
     const media = mediaRef.current;
     if (!wrap || !media) return;
 
-    gsap.set(media, { scale: 1.15, y: 0, opacity: 0, filter: 'blur(10px)' });
+    const glowLayers = media.querySelectorAll('.zibara-placeholder-glow, .zibara-placeholder-shimmer');
+    const ringLayers = media.querySelectorAll('.zibara-placeholder-ring-primary, .zibara-placeholder-ring-secondary');
+    const panel = media.querySelector('.zibara-placeholder-panel');
+    const baseScale = Math.min(1.1, 1.04 + Math.abs(speed) * 0.16);
+    const yPercent = Math.max(10, Math.round(Math.abs(speed) * 24));
 
-    const enter = gsap.to(media, {
-      opacity: 1,
-      filter: 'blur(0px)',
-      duration: 1.6,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: wrap,
-        start: 'top 95%',
-        once: true,
-      },
-    });
+    const ctx = gsap.context(() => {
+      gsap.set(media, { scale: baseScale, yPercent: -Math.round(yPercent * 0.32), opacity: 0, filter: 'blur(10px)' });
+      gsap.set(glowLayers, { yPercent: -8, scale: 1.08, transformOrigin: 'center center' });
+      gsap.set(ringLayers, { yPercent: 4, rotation: -2, transformOrigin: 'center center' });
+      gsap.set(panel, { yPercent: 3 });
 
-    const parallax = gsap.to(media, {
-      y: `${speed * 100}%`,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: wrap,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: 0.8,
-      },
-    });
+      gsap.to(media, {
+        opacity: 1,
+        filter: 'blur(0px)',
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: wrap,
+          start: 'top 92%',
+          once: true,
+        },
+      });
 
-    return () => {
-      enter.kill();
-      parallax.kill();
-    };
+      gsap.timeline({
+        scrollTrigger: {
+          trigger: wrap,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.7,
+        },
+      })
+        .to(media, {
+          yPercent,
+          ease: 'none',
+        }, 0)
+        .to(glowLayers, {
+          yPercent: -Math.round(yPercent * 0.55),
+          scale: 1.14,
+          ease: 'none',
+          stagger: 0.02,
+        }, 0)
+        .to(ringLayers, {
+          yPercent: Math.round(yPercent * 0.35),
+          rotation: 4,
+          ease: 'none',
+          stagger: 0.02,
+        }, 0)
+        .to(panel, {
+          yPercent: -Math.round(yPercent * 0.18),
+          ease: 'none',
+        }, 0);
+    }, wrap);
+
+    return () => ctx.revert();
   }, [speed]);
 
   return (
     <div ref={wrapRef} className={`overflow-hidden ${className}`}>
-      <div ref={mediaRef} className="w-full h-full will-change-transform">
+      <div ref={mediaRef} className="w-full h-full will-change-transform origin-center">
         <ZibaraPlaceholder
           label={alt}
           sublabel={sublabel}

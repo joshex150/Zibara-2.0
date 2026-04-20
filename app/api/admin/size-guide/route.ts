@@ -31,7 +31,7 @@ export async function GET() {
         ],
         sizeTips: [
           'If you are between sizes, we recommend sizing up for a more comfortable fit.',
-          'Our crochet pieces have slight natural stretch and will mold to your body over time.',
+          'Our pieces have a slight natural ease and will settle beautifully on the body over time.',
           'Handmade items may have slight variations of 1-2 cm from the listed measurements.',
           'For questions about sizing, please contact us before ordering.',
         ],

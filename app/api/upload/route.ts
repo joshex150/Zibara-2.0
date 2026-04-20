@@ -1,5 +1,6 @@
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary, type UploadApiErrorResponse, type UploadApiOptions, type UploadApiResponse } from 'cloudinary';
 import { NextRequest, NextResponse } from 'next/server';
+import { PassThrough } from 'stream';
 
 // Configure Cloudinary
 cloudinary.config({
@@ -47,23 +48,13 @@ export async function POST(req: NextRequest) {
       throw new Error('File is missing in the request');
     }
 
-    // Extract filename and file content type
-    const filenameMatch = filePart.match(/filename="?([^"\r\n]+)"?/);
-    const filename = filenameMatch ? filenameMatch[1] : '';
-    const fileContentTypeMatch = filePart.match(/Content-Type:\s*([^\r\n]+)/);
-    const fileContentType = fileContentTypeMatch ? fileContentTypeMatch[1].trim() : '';
-
     const fileContent = filePart.split('\r\n\r\n')[1].split('\r\n--')[0];
     const fileBuffer = Buffer.from(fileContent, 'binary');
 
-    // Detect file extension
-    const extension = filename.split('.').pop()?.toLowerCase() || '';
-    const isHEIC = extension === 'heic' || extension === 'heif' || fileContentType.includes('heic') || fileContentType.includes('heif');
-
     // Upload options - explicitly set resource_type to image
     // This is important for HEIC files which Cloudinary might misidentify as video
-    const uploadOptions: any = {
-      folder: 'crochellaa',
+    const uploadOptions: UploadApiOptions = {
+      folder: 'zibara',
       resource_type: 'image', // Explicitly set to image to prevent video detection
     };
 
@@ -71,12 +62,14 @@ export async function POST(req: NextRequest) {
     // No additional format parameter needed - Cloudinary handles HEIC natively
 
     // Upload to Cloudinary using upload_stream
-    const uploadResult = await new Promise((resolve, reject) => {
+    const uploadResult = await new Promise<UploadApiResponse>((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         uploadOptions,
-        (error, result) => {
+        (error: UploadApiErrorResponse | undefined, result: UploadApiResponse | undefined) => {
           if (error) {
             reject(new Error('Cloudinary upload failed: ' + error.message));
+          } else if (!result) {
+            reject(new Error('Cloudinary upload failed: missing response'));
           } else {
             resolve(result);
           }
@@ -84,20 +77,20 @@ export async function POST(req: NextRequest) {
       );
 
       // Write the buffer to the upload stream
-      const stream = require('stream');
-      const bufferStream = new stream.PassThrough();
+      const bufferStream = new PassThrough();
       bufferStream.end(fileBuffer);
       bufferStream.pipe(uploadStream);
     });
 
     return NextResponse.json(
-      { url: (uploadResult as any).secure_url },
+      { url: uploadResult.secure_url },
       { status: 200 }
     );
-  } catch (error: any) {
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Unknown error';
     console.error('Upload failed:', error);
     return NextResponse.json(
-      { error: 'Upload failed', details: error.message },
+      { error: 'Upload failed', details: message },
       { status: 500 }
     );
   }

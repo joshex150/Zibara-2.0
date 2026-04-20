@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 import { useCurrency } from '@/context/CurrencyContext';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import BrandLoader from '@/components/BrandLoader';
 
 interface OrderDetails {
   orderId?: string;
@@ -34,6 +35,17 @@ interface OrderDetails {
   total: number;
   paymentMethod: string;
 }
+
+type ApiOrderItem = {
+  productId?: { _id?: string };
+  id?: string;
+  name: string;
+  price: number;
+  size: string;
+  color?: string;
+  quantity: number;
+  image: string;
+};
 
 function OrderConfirmationContent() {
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
@@ -72,7 +84,7 @@ function OrderConfirmationContent() {
               orderId: payload.data._id,
               orderNumber: payload.data.orderNumber,
               customer: payload.data.customer,
-              items: payload.data.items.map((item: any) => ({
+              items: payload.data.items.map((item: ApiOrderItem) => ({
                 id: item.productId?._id || item.id || '',
                 name: item.name,
                 price: item.price,
@@ -201,7 +213,7 @@ function OrderConfirmationContent() {
         {/* WHAT'S NEXT */}
         <div className="bg-white/30 rounded-sm p-6 md:p-8 mb-8">
           <h2 className="text-lg font-bold uppercase tracking-[0.25em] mb-4">
-            WHAT'S NEXT?
+            WHAT&apos;S NEXT?
           </h2>
           <ul className="space-y-3 text-sm">
             <li className="flex gap-3">
@@ -211,7 +223,7 @@ function OrderConfirmationContent() {
               <div>
                 <p className="font-semibold">Order Confirmation Email</p>
                 <p className="opacity-70">
-                  We've sent a confirmation email to {orderDetails.customer.email}
+                  We&apos;ve sent a confirmation email to {orderDetails.customer.email}
                 </p>
               </div>
             </li>
@@ -222,7 +234,7 @@ function OrderConfirmationContent() {
               <div>
                 <p className="font-semibold">Production Begins</p>
                 <p className="opacity-70">
-                  Our artisan crocheters will start handcrafting your items within 24 hours
+                  Our studio team will begin preparing your pieces within 24 hours
                 </p>
               </div>
             </li>
@@ -233,7 +245,7 @@ function OrderConfirmationContent() {
               <div>
                 <p className="font-semibold">Shipping & Tracking</p>
                 <p className="opacity-70">
-                  You'll receive tracking information once your order ships (7-10 business days)
+                  You&apos;ll receive tracking information once your order ships (7-10 business days)
                 </p>
               </div>
             </li>
@@ -279,17 +291,7 @@ function OrderConfirmationContent() {
 }
 
 function LoadingFallback() {
-  return (
-    <div className="fixed inset-0 bg-[#EBB0C9] flex items-center justify-center z-50">
-      <div className="animate-pulse">
-        <img 
-          src="/logo.jpeg" 
-          alt="Crochellaa.ng" 
-          className="w-48 h-48 md:w-64 md:h-64 object-contain"
-        />
-      </div>
-    </div>
-  );
+  return <BrandLoader label="Order Confirmed" sublabel="ZIBARASTUDIO" tone="crimson" />;
 }
 
 export default function OrderConfirmationPage() {

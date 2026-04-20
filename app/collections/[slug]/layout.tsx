@@ -16,20 +16,19 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       };
     }
 
-    const collectionUrl = `https://crochellaa.ng/collections/${slug}`;
-    const collectionImage = collection.coverImage || 'https://crochellaa.ng/android-chrome-512x512.png';
+    const collectionUrl = `https://zibarastudio.com/collections/${slug}`;
+    const collectionImage = collection.coverImage || 'https://zibarastudio.com/android-chrome-512x512.png';
 
     return {
       title: `${collection.name} Collection`,
-      description: collection.description || `Explore the ${collection.name} collection - Handmade crochet fashion from Crochellaa.ng`,
+      description: collection.description || `Explore the ${collection.name} collection from ZIBARASTUDIO.`,
       keywords: [
         collection.name,
         collection.season,
-        'crochet collection',
-        'handmade fashion',
-        'sustainable fashion',
-        'artisan clothing',
-        'Crochellaa',
+        'ZIBARASTUDIO',
+        'Afro-futurism',
+        'luxury fashion',
+        'editorial fashion',
       ],
       openGraph: {
         type: 'website',
@@ -44,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             alt: `${collection.name} Collection`,
           },
         ],
-        siteName: 'Crochellaa.ng',
+        siteName: 'ZIBARASTUDIO',
       },
       twitter: {
         card: 'summary_large_image',
@@ -60,7 +59,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     console.error('Error generating collection metadata:', error);
     return {
       title: 'Collection',
-      description: 'Handmade crochet fashion collections from Crochellaa.ng',
+      description: 'Seasonal collections from ZIBARASTUDIO.',
     };
   }
 }

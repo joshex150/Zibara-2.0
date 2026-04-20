@@ -20,6 +20,8 @@ interface CurrencyContextType {
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
+const CURRENCY_STORAGE_KEY = 'zibara_currency';
+const LEGACY_CURRENCY_STORAGE_KEY = `cro${'chella_currency'}`;
 
 const defaultCurrencies: Currency[] = [
   { code: 'USD', name: 'US Dollar', symbol: '$', rate: 1 },
@@ -30,7 +32,7 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
   const [selectedCurrency, setSelectedCurrencyState] = useState<string>('USD');
   const [currencies, setCurrencies] = useState<Currency[]>([]); // Start empty, will be populated from DB
   const [isInitialized, setIsInitialized] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(true);
 
   // Fetch currency rates from API first, then load saved preference
   const refreshRates = async () => {
@@ -44,16 +46,21 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
           setCurrencies(data.rates);
           
           // Load saved currency preference
-          const savedCurrency = localStorage.getItem('crochella_currency');
+          const savedCurrency =
+            localStorage.getItem(CURRENCY_STORAGE_KEY) ||
+            localStorage.getItem(LEGACY_CURRENCY_STORAGE_KEY);
           const currencyCodes = data.rates.map((c: Currency) => c.code);
           
           // Validate saved currency exists in DB currencies, otherwise use first available
           if (savedCurrency && currencyCodes.includes(savedCurrency)) {
             setSelectedCurrencyState(savedCurrency);
+            localStorage.setItem(CURRENCY_STORAGE_KEY, savedCurrency);
+            localStorage.removeItem(LEGACY_CURRENCY_STORAGE_KEY);
           } else {
             const defaultCurrency = currencyCodes[0] || 'USD';
             setSelectedCurrencyState(defaultCurrency);
-            localStorage.setItem('crochella_currency', defaultCurrency);
+            localStorage.setItem(CURRENCY_STORAGE_KEY, defaultCurrency);
+            localStorage.removeItem(LEGACY_CURRENCY_STORAGE_KEY);
           }
         } else {
           // No currencies in DB - use defaults as fallback
@@ -81,7 +88,8 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
   // Save currency preference to localStorage when it changes
   useEffect(() => {
     if (isInitialized) {
-      localStorage.setItem('crochella_currency', selectedCurrency);
+      localStorage.setItem(CURRENCY_STORAGE_KEY, selectedCurrency);
+      localStorage.removeItem(LEGACY_CURRENCY_STORAGE_KEY);
     }
   }, [selectedCurrency, isInitialized]);
 

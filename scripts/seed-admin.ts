@@ -1,8 +1,28 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import * as fs from 'fs';
+import * as path from 'path';
 import * as readline from 'readline';
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/crochella';
+const envPaths = [
+  path.resolve(process.cwd(), '.env.local'),
+  path.resolve(process.cwd(), '.env'),
+];
+
+for (const envPath of envPaths) {
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, 'utf-8');
+    envContent.split('\n').forEach(line => {
+      const [key, ...valueParts] = line.split('=');
+      if (key && valueParts.length > 0) {
+        process.env[key.trim()] = valueParts.join('=').trim().replace(/^["']|["']$/g, '');
+      }
+    });
+    break;
+  }
+}
+
+const MONGODB_URI = process.env.MONGODB_URI;
 
 const AdminSchema = new mongoose.Schema({
   email: String,
@@ -31,6 +51,10 @@ async function getUserInput(prompt: string): Promise<string> {
 
 async function seedAdmin() {
   try {
+    if (!MONGODB_URI) {
+      throw new Error('MONGODB_URI not found in environment variables');
+    }
+
     console.log('Connecting to MongoDB...');
     await mongoose.connect(MONGODB_URI);
     console.log('Connected to MongoDB successfully!');

@@ -81,9 +81,9 @@ export default function CheckoutClient() {
       name: `${formData.firstName} ${formData.lastName}`,
     },
     customizations: {
-      title: 'Crochellaa.ng',
-      description: 'Handmade Crochet Fashion',
-      logo: 'https://crochellaa.ng/logo.png',
+      title: 'ZIBARASTUDIO',
+      description: 'Afro-futurist luxury fashion',
+      logo: 'https://zibarastudio.com/android-chrome-512x512.png',
     },
   };
 

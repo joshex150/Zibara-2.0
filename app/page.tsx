@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'next-view-transitions';
 import { useData } from '@/context/DataContext';
 import { useCurrency } from '@/context/CurrencyContext';
@@ -13,19 +13,12 @@ import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
 export default function Home() {
   const { products, productsLoading, siteContentLoading, categories, categoriesLoading } = useData();
   const { formatPrice } = useCurrency();
+  const [shouldShowPreloader, setShouldShowPreloader] = useState(true);
   const [preloaderDone, setPreloaderDone] = useState(false);
-  const [hasShownPreloader] = useState(() => {
-    if (typeof window === 'undefined') return false;
-    return sessionStorage.getItem('zibara_loaded') === '1';
-  });
-
-  useEffect(() => {
-    if (hasShownPreloader) setPreloaderDone(true);
-  }, [hasShownPreloader]);
 
   const handlePreloaderComplete = () => {
-    sessionStorage.setItem('zibara_loaded', '1');
     setPreloaderDone(true);
+    setShouldShowPreloader(false);
   };
 
   const isLoading = productsLoading || siteContentLoading || categoriesLoading;
@@ -44,13 +37,13 @@ export default function Home() {
 
   return (
     <>
-      {!hasShownPreloader && !preloaderDone && (
+      {shouldShowPreloader && !preloaderDone && (
         <Preloader onComplete={handlePreloaderComplete} />
       )}
 
       <div
         className="min-h-screen bg-zibara-black text-zibara-cream"
-        style={{ opacity: preloaderDone ? 1 : 0, transition: 'opacity 0.4s ease' }}
+        style={{ opacity: !shouldShowPreloader || preloaderDone ? 1 : 0, transition: 'opacity 0.4s ease' }}
       >
         {/* ── HERO ─────────────────────────────────────── */}
         <section className="relative w-full h-screen overflow-hidden">
@@ -65,17 +58,17 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-zibara-black/30 via-transparent to-zibara-black/80" />
 
           <div className="absolute bottom-12 left-6 md:left-12 max-w-xl">
-            <AnimatedHeading
-              tag="h1"
-              delay={preloaderDone ? 0.1 : 2.8}
-              className="font-display font-light text-zibara-cream text-[clamp(3rem,10vw,8rem)] leading-[0.9] tracking-tight uppercase"
-              style={{ fontFamily: 'var(--font-cormorant), serif' } as React.CSSProperties}
-            >
+              <AnimatedHeading
+                tag="h1"
+                delay={preloaderDone || !shouldShowPreloader ? 0.1 : 2.8}
+                className="font-display font-light text-zibara-cream text-[clamp(3rem,10vw,8rem)] leading-[0.9] tracking-tight uppercase"
+                style={{ fontFamily: 'var(--font-cormorant), serif' } as React.CSSProperties}
+              >
               For nights that matter.
             </AnimatedHeading>
 
             <AnimatedText
-              delay={preloaderDone ? 0.4 : 3.2}
+              delay={preloaderDone || !shouldShowPreloader ? 0.4 : 3.2}
               className="mt-6 text-[12px] tracking-[0.3em] font-mono text-zibara-cream/70 uppercase"
               onScroll={false}
             >
@@ -324,11 +317,6 @@ export default function Home() {
                 className="row-span-2 relative overflow-hidden group bg-zibara-espresso"
                 style={{ minHeight: '600px' }}
               >
-                <img
-                  src=""
-                  alt=""
-                  className="hidden"
-                />
                 <ZibaraPlaceholder
                   label={products[0].name}
                   sublabel={products[0].category || 'CURATED'}
@@ -350,11 +338,6 @@ export default function Home() {
                   href={`/product/${p._id}`}
                   className="relative overflow-hidden group bg-zibara-espresso aspect-[4/3]"
                 >
-                  <img
-                    src=""
-                    alt=""
-                    className="hidden"
-                  />
                   <ZibaraPlaceholder
                     label={p.name}
                     sublabel={p.category || 'CURATED'}

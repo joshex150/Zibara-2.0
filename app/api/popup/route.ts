@@ -7,7 +7,7 @@ export async function GET() {
   try {
     await connectDB();
     
-    let popup = await Popup.findOne();
+    const popup = await Popup.findOne();
     
     // Return default if none exists
     if (!popup) {
@@ -16,7 +16,7 @@ export async function GET() {
         popup: {
           enabled: false,
           title: 'SPECIAL ANNOUNCEMENT',
-          message: 'Welcome to Crochellaa.ng!',
+          message: 'Welcome to ZIBARASTUDIO.',
           showButton: true,
           buttonText: 'Shop Now',
           buttonLink: '/shop',

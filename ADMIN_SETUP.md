@@ -13,9 +13,9 @@
 
 ```env
 # MongoDB Connection
-MONGODB_URI=mongodb://localhost:27017/crochella
+MONGODB_URI=mongodb://localhost:27017/zibara
 # Or use MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/crochella?retryWrites=true&w=majority
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/zibara?retryWrites=true&w=majority
 
 # NextAuth Configuration (REQUIRED - DO NOT SKIP!)
 NEXTAUTH_URL=http://localhost:3000
@@ -49,7 +49,7 @@ If you see this error:
 Run the setup script to create your first admin user:
 
 ```bash
-npm run setup-admin
+npm run seed-admin
 ```
 
 This will prompt you to enter:
@@ -64,9 +64,9 @@ If you want to quickly test, you can manually create an admin user in MongoDB:
 ```javascript
 // In MongoDB shell or Compass
 db.admins.insertOne({
-  email: "admin@crochellaa.ng",
+  email: "admin@zibarastudio.com",
   password: "$2a$10$K8yJ3Z9X5k.qZ9X5k.qZ9euBZ9X5k.qZ9X5k.qZ9X5k.qZ9X5k.q", // password: admin123
-  name: "Admin User",
+  name: "ZIBARA Admin",
   role: "super_admin",
   isActive: true,
   createdAt: new Date()
@@ -75,9 +75,9 @@ db.admins.insertOne({
 
 **IMPORTANT**: Change this password immediately in production!
 
-## Seed Database with Sample Data
+## Seed Storefront Data
 
-To populate your database with sample products:
+To populate your database with sample products, collections, categories, site content, size guides, and popup defaults:
 
 ```bash
 npm run seed-db

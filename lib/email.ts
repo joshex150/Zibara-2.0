@@ -69,7 +69,7 @@ export const sendOrderReceipt = async (order: OrderReceipt) => {
     })
     .join('\n');
 
-  const subject = `Your Crochellaa.ng receipt - ${order.orderNumber}`;
+  const subject = `Your ZIBARASTUDIO receipt - ${order.orderNumber}`;
   const text = [
     `Hi ${order.customer.firstName},`,
     '',
@@ -83,7 +83,7 @@ export const sendOrderReceipt = async (order: OrderReceipt) => {
     '',
     'We will notify you when your order ships.',
     '',
-    'Crochellaa.ng',
+    'ZIBARASTUDIO',
   ].filter(Boolean).join('\n');
 
   const htmlItems = order.items
@@ -104,7 +104,7 @@ export const sendOrderReceipt = async (order: OrderReceipt) => {
     <p><strong>Total:</strong> ${formatCurrency(order.total)}</p>
     ${order.paymentMethod ? `<p><strong>Payment Method:</strong> ${order.paymentMethod}</p>` : ''}
     <p>We will notify you when your order ships.</p>
-    <p>Crochellaa.ng</p>
+    <p>ZIBARASTUDIO</p>
   `;
 
   await transporter.sendMail({

@@ -157,26 +157,35 @@
 }
 
 /* ── PAGE TRANSITIONS ─────────────────────────── */
+::view-transition-group(root) {
+  animation-duration: 0.55s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 ::view-transition-old(root) {
-  animation: zibara-out 0.8s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+  animation: zibara-out 0.38s cubic-bezier(0.55, 0, 0.28, 1) forwards;
 }
 ::view-transition-new(root) {
-  animation: zibara-in 0.8s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+  animation: zibara-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes zibara-out {
   to {
-    opacity: 0.3;
-    transform: scale(0.97);
+    opacity: 0;
+    transform: translateY(8px) scale(0.992);
   }
 }
 
 @keyframes zibara-in {
   from {
-    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
+    opacity: 0;
+    transform: translateY(14px) scale(1.008);
+    clip-path: inset(0 0 10% 0);
   }
   to {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    clip-path: inset(0 0 0 0);
   }
 }
 

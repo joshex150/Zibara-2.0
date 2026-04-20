@@ -21,7 +21,7 @@ export async function GET() {
       popup = await Popup.create({
         enabled: false,
         title: 'SPECIAL ANNOUNCEMENT',
-        message: 'Welcome to Crochellaa.ng!',
+        message: 'Welcome to ZIBARASTUDIO.',
         showButton: true,
         buttonText: 'Shop Now',
         buttonLink: '/shop',

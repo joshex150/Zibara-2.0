@@ -2,28 +2,28 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About Us',
-  description: 'Learn about Crochellaa.ng - Handmade crochet fashion brand. Our story, mission, and commitment to sustainable, artisanal fashion.',
+  description: 'Learn about ZIBARASTUDIO, an Afro-futurist luxury fashion house creating intentional silhouettes for nights that matter.',
   keywords: [
-    'about Crochellaa',
-    'handmade crochet',
-    'sustainable fashion',
-    'artisan clothing',
-    'crochet brand',
+    'about ZIBARASTUDIO',
+    'Afro-futurism',
+    'luxury fashion house',
+    'Lagos fashion',
+    'intentional design',
   ],
   openGraph: {
     type: 'website',
-    url: 'https://crochellaa.ng/about',
+    url: 'https://zibarastudio.com/about',
     title: 'About Us',
-    description: 'Learn about Crochellaa.ng - Handmade crochet fashion brand',
-    siteName: 'Crochellaa.ng',
+    description: 'Learn about ZIBARASTUDIO, an Afro-futurist luxury fashion house.',
+    siteName: 'ZIBARASTUDIO',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'About Us',
-    description: 'Learn about Crochellaa.ng - Handmade crochet fashion brand',
+    description: 'Learn about ZIBARASTUDIO, an Afro-futurist luxury fashion house.',
   },
   alternates: {
-    canonical: 'https://crochellaa.ng/about',
+    canonical: 'https://zibarastudio.com/about',
   },
 };
 

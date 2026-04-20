@@ -37,7 +37,13 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
-    if (pathname !== '/shop') setSearchOpen(false);
+    if (pathname === '/shop') return;
+
+    const frame = window.requestAnimationFrame(() => {
+      setSearchOpen(false);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [pathname]);
 
   useEffect(() => {
@@ -58,9 +64,9 @@ export default function Header() {
     gsap.set(links, { x: 40, opacity: 0 });
 
     const tl = gsap.timeline();
-    tl.to(overlay, { opacity: 1, duration: 0.4, ease: 'power2.out' })
-      .to(menu,    { x: '0%',   duration: 0.7, ease: 'power4.out' }, 0)
-      .to(links,   { x: 0, opacity: 1, stagger: 0.07, duration: 0.5, ease: 'power3.out' }, 0.25);
+    tl.to(overlay, { opacity: 1, duration: 0.28, ease: 'power2.out' })
+      .to(menu,    { x: '0%',   duration: 0.52, ease: 'power3.out' }, 0)
+      .to(links,   { x: 0, opacity: 1, stagger: 0.045, duration: 0.34, ease: 'power3.out' }, 0.16);
   };
 
   const closeMenu = () => {
@@ -70,35 +76,22 @@ export default function Header() {
     if (!menu || !overlay) return;
 
     gsap.timeline({ onComplete: () => setMenuOpen(false) })
-      .to(links,   { x: 20, opacity: 0, stagger: 0.03, duration: 0.3, ease: 'power2.in' })
-      .to(menu,    { x: '100%', duration: 0.5, ease: 'power4.in' }, 0.1)
-      .to(overlay, { opacity: 0, duration: 0.4, ease: 'power2.in', onComplete: () => { overlay.style.display = 'none'; } }, 0.1);
+      .to(links,   { x: 16, opacity: 0, stagger: 0.02, duration: 0.2, ease: 'power2.in' })
+      .to(menu,    { x: '100%', duration: 0.38, ease: 'power3.in' }, 0.06)
+      .to(overlay, { opacity: 0, duration: 0.28, ease: 'power2.in', onComplete: () => { overlay.style.display = 'none'; } }, 0.06);
   };
 
   return (
     <>
       {/* ── MAIN HEADER ──────────────────────────── */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? 'bg-zibara-black/95 backdrop-blur-sm' : 'bg-transparent'
+        className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-300 ${
+          scrolled
+            ? 'bg-zibara-black/95 backdrop-blur-sm border-b border-zibara-cream/10'
+            : 'bg-gradient-to-b from-zibara-black/85 via-zibara-black/45 to-transparent'
         }`}
       >
-        {/* Announcement bar */}
-        <div className="hidden md:block">
-          <div className="max-w-[1400px] mx-auto px-6 h-9 flex items-center justify-between">
-            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
-              Lagos · Abuja · London
-            </span>
-            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
-              You belong in rooms where taste is understood
-            </span>
-            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
-              New arrivals — Season III
-            </span>
-          </div>
-        </div>
-
-        <div className="max-w-[1400px] mx-auto px-6 md:px-8 flex items-center justify-between py-5">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-8 flex items-center justify-between py-4 md:py-5">
           {/* Wordmark */}
           <Link href="/" className="group">
             <span

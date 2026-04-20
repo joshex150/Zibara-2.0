@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Lock } from 'lucide-react';
+import BrandLoader from '@/components/BrandLoader';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -24,17 +25,7 @@ export default function AdminLoginPage() {
 
   // Show loading while checking session
   if (status === 'loading') {
-    return (
-      <div className="fixed inset-0 bg-[#EBB0C9] flex items-center justify-center z-50">
-        <div className="animate-pulse">
-          <img 
-            src="/logo.jpeg" 
-            alt="Crochellaa.ng" 
-            className="w-32 h-32 md:w-48 md:h-48 object-contain"
-          />
-        </div>
-      </div>
-    );
+    return <BrandLoader label="Admin" sublabel="ZIBARASTUDIO" tone="crimson" />;
   }
 
   // If authenticated, don't render login form (will redirect)
@@ -59,7 +50,7 @@ export default function AdminLoginPage() {
       } else {
         router.push('/admin');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
@@ -67,29 +58,31 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-[#f5d5e5] rounded-lg shadow-lg p-8">
+    <div className="min-h-screen bg-zibara-black flex items-center justify-center px-4 text-zibara-cream">
+      <div
+        className="max-w-md w-full rounded-lg p-8 border border-zibara-cream/10 bg-zibara-deep shadow-[0_30px_80px_-30px_rgba(0,0,0,0.7)]"
+      >
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#d896b5] rounded-full mb-4">
-            <Lock size={32} className="text-[#8b2b4d]" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-zibara-crimson/20 border border-zibara-gold/20 rounded-full mb-4">
+            <Lock size={32} className="text-zibara-cream" />
           </div>
-          <h1 className="text-2xl font-bold text-[#8b2b4d] uppercase tracking-wider">
+          <h1 className="text-2xl font-light uppercase tracking-[0.25em]" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
             Admin Login
           </h1>
-          <p className="text-sm text-gray-600 mt-2">
-            Crochellaa.ng Management Portal
+          <p className="text-sm text-zibara-cream/55 mt-2 font-mono uppercase tracking-[0.25em]">
+            ZIBARASTUDIO Management Portal
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm">
+          <div className="mb-4 p-3 bg-zibara-crimson/15 border border-zibara-crimson/35 text-zibara-cream rounded text-sm font-mono">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="email" className="block text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/55 mb-2">
               Email Address
             </label>
             <input
@@ -98,13 +91,13 @@ export default function AdminLoginPage() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent"
+              className="w-full px-4 py-3 border border-zibara-cream/15 rounded-lg bg-zibara-black/40 text-zibara-cream focus:outline-none focus:ring-2 focus:ring-zibara-gold/35 focus:border-transparent"
               placeholder="Email Address"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/55 mb-2">
               Password
             </label>
             <input
@@ -113,7 +106,7 @@ export default function AdminLoginPage() {
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent"
+              className="w-full px-4 py-3 border border-zibara-cream/15 rounded-lg bg-zibara-black/40 text-zibara-cream focus:outline-none focus:ring-2 focus:ring-zibara-gold/35 focus:border-transparent"
               placeholder="••••••••"
             />
           </div>
@@ -121,13 +114,13 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#8b2b4d] text-white py-3 rounded-lg font-semibold uppercase tracking-wider hover:bg-[#6d1f3a] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-zibara-crimson text-zibara-cream py-3 rounded-lg font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-gray-500">
+        <div className="mt-6 text-center text-xs text-zibara-cream/40 font-mono">
           This is a secure admin area. Unauthorized access is prohibited.
         </div>
       </div>

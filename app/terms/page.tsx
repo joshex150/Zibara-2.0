@@ -18,7 +18,7 @@ export default function TermsPage() {
           {/* INTRO */}
           <div className="bg-white/30 p-6 md:p-8 rounded-sm">
             <p>
-              Welcome to Crochellaa.ng. By accessing or using our website and services, you agree to be 
+              Welcome to ZIBARASTUDIO. By accessing or using our website and services, you agree to be 
               bound by these Terms of Service. Please read them carefully.
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function TermsPage() {
             </h2>
             <p className="mb-4">
               All content on this website, including text, images, logos, designs, and product descriptions, 
-              is the property of Crochellaa.ng or its content suppliers and is protected by
+              is the property of ZIBARASTUDIO or its content suppliers and is protected by
               international copyright laws.
             </p>
             <p>
@@ -145,7 +145,7 @@ export default function TermsPage() {
               LIMITATION OF LIABILITY
             </h2>
             <p className="mb-4">
-              To the maximum extent permitted by law, Crochellaa.ng shall not be liable for any indirect,
+              To the maximum extent permitted by law, ZIBARASTUDIO shall not be liable for any indirect,
               incidental, special, consequential, or punitive damages, including loss of profits, data, 
               or other intangible losses.
             </p>
@@ -161,7 +161,7 @@ export default function TermsPage() {
               INDEMNIFICATION
             </h2>
             <p>
-              You agree to indemnify and hold harmless Crochellaa.ng, its officers, directors, employees,
+              You agree to indemnify and hold harmless ZIBARASTUDIO, its officers, directors, employees,
               and agents from any claims, damages, losses, liabilities, and expenses (including legal fees) 
               arising from your use of our website or violation of these Terms of Service.
             </p>
@@ -213,7 +213,7 @@ export default function TermsPage() {
             </h2>
             <p>
               These Terms of Service, together with our Privacy Policy and any other legal notices published 
-              on this website, constitute the entire agreement between you and Crochellaa.ng regarding your 
+              on this website, constitute the entire agreement between you and ZIBARASTUDIO regarding your 
               use of the website.
             </p>
           </div>
@@ -227,9 +227,9 @@ export default function TermsPage() {
               If you have questions about these Terms of Service, please contact us:
             </p>
             <div className="space-y-2">
-              <p><strong>Email:</strong> <a href="mailto:hello@crochellaa.ng" className="underline hover:opacity-70">hello@crochellaa.ng</a></p>
+              <p><strong>Email:</strong> <a href="mailto:studio@zibarastudio.com" className="underline hover:opacity-70">studio@zibarastudio.com</a></p>
               <p><strong>Phone:</strong> +1 (555) 123-4567</p>
-              <p><strong>Website:</strong> www.crochellaa.com</p>
+              <p><strong>Website:</strong> www.zibarastudio.com</p>
             </div>
           </div>
 

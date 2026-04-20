@@ -2,27 +2,27 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Contact Us',
-  description: 'Get in touch with Crochellaa.ng. We\'d love to hear from you! Contact us for inquiries, custom orders, or any questions.',
+  description: 'Get in touch with ZIBARASTUDIO for private orders, fittings, press, and brand inquiries.',
   keywords: [
-    'contact Crochellaa',
-    'crochet inquiries',
+    'contact ZIBARASTUDIO',
+    'fashion inquiries',
     'custom orders',
-    'handmade fashion contact',
+    'luxury fashion contact',
   ],
   openGraph: {
     type: 'website',
-    url: 'https://crochellaa.ng/contact',
+    url: 'https://zibarastudio.com/contact',
     title: 'Contact Us',
-    description: 'Get in touch with Crochellaa.ng. We\'d love to hear from you!',
-    siteName: 'Crochellaa.ng',
+    description: 'Get in touch with ZIBARASTUDIO for private orders, fittings, press, and brand inquiries.',
+    siteName: 'ZIBARASTUDIO',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Contact Us',
-    description: 'Get in touch with Crochellaa.ng. We\'d love to hear from you!',
+    description: 'Get in touch with ZIBARASTUDIO for private orders, fittings, press, and brand inquiries.',
   },
   alternates: {
-    canonical: 'https://crochellaa.ng/contact',
+    canonical: 'https://zibarastudio.com/contact',
   },
 };
 

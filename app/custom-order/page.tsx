@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Send, CheckCircle, Plus, X, Upload } from 'lucide-react';
+import { ArrowLeft, Send, CheckCircle, Upload } from 'lucide-react';
 import { useData } from '@/context/DataContext';
 import ImageUploading from 'react-images-uploading';
 import toast from 'react-hot-toast';
@@ -74,8 +74,9 @@ export default function CustomOrderPage() {
       toast.success('Image uploaded successfully!');
       setReferenceImages(prev => [...prev, data.url]);
       return data;
-    } catch (error: any) {
-      console.error('Error uploading file:', error.message);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Unknown upload error';
+      console.error('Error uploading file:', message);
       toast.error('Failed to upload image');
       return null;
     } finally {
@@ -124,7 +125,7 @@ export default function CustomOrderPage() {
       } else {
         setError(data.error || 'Failed to submit. Please try again.');
       }
-    } catch (err) {
+    } catch {
       setError('Something went wrong. Please try again.');
     } finally {
       setSubmitting(false);
@@ -190,7 +191,7 @@ export default function CustomOrderPage() {
         {/* Intro */}
         <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6 mb-8">
           <p className="text-sm leading-relaxed">
-            {getContentValue('custom_order_intro_text', 'Ready to create something unique? Fill out the form below with as much detail as possible. Our artisan crocheters will review your request and contact you within 24-48 hours to discuss your vision, provide a quote, and timeline. A 50% deposit is required to begin work.')}
+            {getContentValue('custom_order_intro_text', 'Ready to create something unique? Fill out the form below with as much detail as possible. Our studio team will review your request and contact you within 24-48 hours to discuss your vision, provide a quote, and timeline. A 50% deposit is required to begin work.')}
           </p>
         </div>
 
@@ -325,7 +326,7 @@ export default function CustomOrderPage() {
               Reference Images (Optional)
             </h2>
             <p className="text-xs opacity-70 mb-4">
-              Upload images of styles, designs, or inspiration you'd like us to see
+              Upload images of styles, designs, or inspiration you&apos;d like us to see
             </p>
             
             <ImageUploading

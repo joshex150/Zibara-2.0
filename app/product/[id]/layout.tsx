@@ -16,14 +16,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       };
     }
 
-    const productUrl = `https://crochellaa.ng/product/${id}`;
+    const productUrl = `https://zibarastudio.com/product/${id}`;
     
     // Get the first product image and ensure it's an absolute URL
-    let productImage = product.images?.[0] || 'https://crochellaa.ng/android-chrome-512x512.png';
+    let productImage = product.images?.[0] || 'https://zibarastudio.com/android-chrome-512x512.png';
     
     // Ensure the image URL is absolute
     if (productImage && !productImage.startsWith('http://') && !productImage.startsWith('https://')) {
-      productImage = `https://crochellaa.ng${productImage.startsWith('/') ? '' : '/'}${productImage}`;
+      productImage = `https://zibarastudio.com${productImage.startsWith('/') ? '' : '/'}${productImage}`;
     }
     
     // If it's a Cloudinary URL, optimize it for Open Graph (1200x630 is the recommended size)
@@ -46,21 +46,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
     return {
       title: product.name,
-      description: product.description || `Shop ${product.name} - Handmade crochet fashion from Crochellaa.ng`,
+      description: product.description || `Shop ${product.name} from ZIBARASTUDIO. Afro-futurist luxury fashion for nights that matter.`,
       keywords: [
         product.name,
         product.category,
-        'crochet',
-        'handmade fashion',
-        'sustainable fashion',
-        'artisan clothing',
-        'Crochellaa',
+        'ZIBARASTUDIO',
+        'Afro-futurism',
+        'luxury fashion',
+        'Lagos fashion',
       ],
       openGraph: {
         type: 'website',
         url: productUrl,
         title: product.name,
-        description: product.description || `Shop ${product.name} - Handmade crochet fashion`,
+        description: product.description || `Shop ${product.name} from ZIBARASTUDIO.`,
         images: [
           {
             url: productImage,
@@ -69,12 +68,12 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
             alt: product.name,
           },
         ],
-        siteName: 'Crochellaa.ng',
+        siteName: 'ZIBARASTUDIO',
       },
       twitter: {
         card: 'summary_large_image',
         title: product.name,
-        description: product.description || `Shop ${product.name} - Handmade crochet fashion`,
+        description: product.description || `Shop ${product.name} from ZIBARASTUDIO.`,
         images: [productImage],
       },
       alternates: {
@@ -85,7 +84,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
     console.error('Error generating product metadata:', error);
     return {
       title: 'Product',
-      description: 'Handmade crochet fashion from Crochellaa.ng',
+      description: 'Afro-futurist luxury fashion from ZIBARASTUDIO.',
     };
   }
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { CustomEase } from 'gsap/CustomEase';
 
@@ -18,10 +18,11 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
   const counterRef = useRef<HTMLSpanElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
+  const hasCompletedRef = useRef(false);
 
   const wordmark = 'ZIBARASTUDIO';
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root    = rootRef.current;
     const bar     = barRef.current;
     const counter = counterRef.current;
@@ -29,18 +30,31 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     if (!root || !bar) return;
 
     const letters = lettersRef.current.filter(Boolean) as HTMLSpanElement[];
+    let exitTl: gsap.core.Timeline | null = null;
+    let isCancelled = false;
 
+    hasCompletedRef.current = false;
+
+    const complete = () => {
+      if (isCancelled || hasCompletedRef.current) return;
+      hasCompletedRef.current = true;
+      root.style.display = 'none';
+      onComplete?.();
+    };
+
+    root.style.display = 'flex';
+    root.style.opacity = '1';
     gsap.set(letters, { y: '115%', rotation: 0.001 });
     gsap.set(bar,     { scaleX: 0 });
     gsap.set(tagline, { opacity: 0, y: 8 });
+    gsap.set(counter, { opacity: 1 });
 
     const tl = gsap.timeline({
       onComplete: () => {
-        gsap.timeline({
-          onComplete: () => {
-            root.style.display = 'none';
-            onComplete?.();
-          },
+        if (isCancelled) return;
+
+        exitTl = gsap.timeline({
+          onComplete: complete,
         })
         .to(letters, {
           y: '-115%',
@@ -87,10 +101,15 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         textContent: (v: string) => `${Math.round(Number(v)).toString().padStart(3, '0')}`,
       },
     }, 0.2)
-    .to({}, { duration: 0.6 });
+    .to({}, { duration: 0.9 });
 
     return () => {
+      isCancelled = true;
       tl.kill();
+      exitTl?.kill();
+      gsap.killTweensOf([root, bar, tagline, counter, ...letters]);
+      root.style.removeProperty('display');
+      root.style.removeProperty('opacity');
     };
   }, [onComplete]);
 
@@ -144,6 +163,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
               fontWeight: 300,
               letterSpacing: '0.18em',
               color: '#EFEFC9',
+              transform: 'translateY(115%)',
               willChange: 'transform',
             }}
           >
@@ -160,6 +180,8 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           letterSpacing: '0.5em',
           color: 'rgba(239,239,201,0.55)',
           textTransform: 'uppercase',
+          opacity: 0,
+          transform: 'translateY(8px)',
           willChange: 'transform, opacity',
         }}
       >
@@ -176,6 +198,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
           width: '100%',
           background: 'rgba(239,239,201,0.55)',
           transformOrigin: 'left',
+          transform: 'scaleX(0)',
         }}
       />
     </div>

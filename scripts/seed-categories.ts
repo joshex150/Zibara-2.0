@@ -46,12 +46,12 @@ const Category = mongoose.models.Category || mongoose.model('Category', Category
 const Product = mongoose.models.Product || mongoose.model('Product', ProductSchema);
 
 const defaultCategories = [
-  { name: 'Tops', description: 'Handmade crochet tops and blouses' },
-  { name: 'Dresses', description: 'Elegant crochet dresses for every occasion' },
-  { name: 'Bottoms', description: 'Stylish crochet pants and skirts' },
-  { name: 'Sets', description: 'Matching crochet outfit sets' },
-  { name: 'Rompers', description: 'Cute and comfortable crochet rompers' },
-  { name: 'Accessories', description: 'Bags, hats, and more crochet accessories' },
+  { name: 'Dresses', description: 'Sculpted dresses built for ceremony, presence, and late rooms.' },
+  { name: 'Corsetry', description: 'Structured foundations, precise lines, and deliberate tension.' },
+  { name: 'Outerwear', description: 'Protective silhouettes designed to enter the room first.' },
+  { name: 'Tailoring', description: 'Architectural separates with a calm, exacting point of view.' },
+  { name: 'Evening', description: 'After-dark pieces for private dinners, galas, and nights that matter.' },
+  { name: 'Accessories', description: 'Finishing gestures in leather, metal, and shadowed tones.' },
 ];
 
 async function seedCategories() {

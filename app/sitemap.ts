@@ -5,7 +5,7 @@ import Collection from '@/models/Collection';
 import Category from '@/models/Category';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://crochellaa.ng';
+  const baseUrl = 'https://zibarastudio.com';
   
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [

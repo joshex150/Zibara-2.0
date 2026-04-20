@@ -1,62 +1,29 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import Link from 'next/link';
+import { Link } from 'next-view-transitions';
 import { Calendar, ArrowLeft } from 'lucide-react';
 import { useCurrency } from '@/context/CurrencyContext';
+import { useData, Product } from '@/context/DataContext';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
-
-interface Collection {
-  _id: string;
-  name: string;
-  slug: string;
-  season: string;
-  year: number;
-  description: string;
-  writeUp: string;
-  coverImage: string;
-  images: string[];
-  productIds: any[];
-}
+import BrandLoader from '@/components/BrandLoader';
 
 export default function CollectionDetailPage() {
   const params = useParams();
   const { formatPrice } = useCurrency();
-  const [collection, setCollection] = useState<Collection | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (params.slug) {
-      fetchCollection(params.slug as string);
-    }
-  }, [params.slug]);
-
-  const fetchCollection = async (slug: string) => {
-    try {
-      const res = await fetch(`/api/collections/${slug}`);
-      const data = await res.json();
-      
-      if (data.success && data.data) {
-        setCollection(data.data);
-      }
-    } catch (error) {
-      console.error('Error fetching collection:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { getCollection, collectionsLoading } = useData();
+  const slug = typeof params.slug === 'string'
+    ? params.slug
+    : Array.isArray(params.slug)
+      ? params.slug[0]
+      : '';
+  const collection = slug ? getCollection(slug) : undefined;
+  const collectionProducts = Array.isArray(collection?.productIds)
+    ? collection.productIds.filter((product): product is Product => typeof product === 'object' && product !== null && '_id' in product)
+    : [];
 
 
-  if (loading) {
-    return (
-      <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-        <div className="w-40 md:w-56 aspect-square animate-pulse">
-          <ZibaraPlaceholder label="Loading" sublabel="ZIBARASTUDIO" tone="deep" variant="compact" className="w-full h-full" />
-        </div>
-      </div>
-    );
-  }
+  if (collectionsLoading && !collection) return <BrandLoader label="Collection" sublabel="ZIBARASTUDIO" tone="deep" variant="compact" />;
 
   if (!collection) {
     return (
@@ -148,13 +115,13 @@ export default function CollectionDetailPage() {
           PIECES FROM THIS COLLECTION
         </h2>
 
-        {collection.productIds && collection.productIds.length > 0 ? (
+        {collectionProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {collection.productIds.map((product: any) => (
+            {collectionProducts.map((product) => (
               <Link
-                key={product._id || product.id}
-                href={`/product/${product._id || product.id}`}
-                className="group cursor-pointer"
+                key={product._id}
+                href={`/product/${product._id}`}
+                className="group cursor-pointer [view-transition-name:none]"
               >
                 <div className="relative aspect-[3/4] bg-zibara-espresso mb-4 overflow-hidden rounded-sm">
                   <ZibaraPlaceholder
@@ -206,7 +173,7 @@ export default function CollectionDetailPage() {
               name: collection.name,
               description: collection.description,
               image: collection.coverImage,
-              url: `https://crochellaa.ng/collections/${collection.slug}`,
+              url: `https://zibarastudio.com/collections/${collection.slug}`,
               mainEntity: {
                 '@type': 'ItemList',
                 name: collection.name,

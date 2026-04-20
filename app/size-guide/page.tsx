@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Ruler, Info } from 'lucide-react';
 import { useData } from '@/context/DataContext';
+import BrandLoader from '@/components/BrandLoader';
 
 export default function SizeGuidePage() {
   const router = useRouter();
@@ -55,13 +56,7 @@ export default function SizeGuidePage() {
   };
 
   if (sizeGuideLoading) {
-    return (
-      <div className="fixed inset-0 bg-[#EBB0C9] flex items-center justify-center z-50">
-        <div className="animate-pulse">
-          <img src="/logo.jpeg" alt="Loading" className="w-48 h-48 md:w-64 md:h-64 object-contain" />
-        </div>
-      </div>
-    );
+    return <BrandLoader label="Size Guide" sublabel="ZIBARASTUDIO" tone="olive" />;
   }
 
   const productMeasurements = sizeGuide?.productMeasurements || [];

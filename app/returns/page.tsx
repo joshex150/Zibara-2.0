@@ -14,7 +14,7 @@ export default function ReturnsPage() {
           {/* INTRO */}
           <div className="bg-white/30 p-6 md:p-8 rounded-sm text-center">
             <p className="text-base md:text-lg">
-              We want you to love your Crochellaa piece. If for any reason you're not completely satisfied, 
+              We want you to love your ZIBARASTUDIO piece. If for any reason you're not completely satisfied, 
               we're here to help.
             </p>
           </div>
@@ -64,7 +64,7 @@ export default function ReturnsPage() {
               <div>
                 <p className="font-bold mb-2">STEP 1: Contact Us</p>
                 <p>
-                  Email us at <a href="mailto:hello@crochellaa.ng" className="underline hover:opacity-70">hello@crochellaa.ng</a> with:
+                  Email us at <a href="mailto:studio@zibarastudio.com" className="underline hover:opacity-70">studio@zibarastudio.com</a> with:
                 </p>
                 <ul className="space-y-1 pl-5 mt-2">
                   <li>• Your order number</li>

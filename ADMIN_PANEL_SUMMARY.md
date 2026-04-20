@@ -2,7 +2,7 @@
 
 ## ✅ What's Been Created
 
-I've successfully created a complete admin panel for crochellaa.ng with MongoDB integration. Here's everything that's been implemented:
+I've successfully created a complete admin panel for ZIBARASTUDIO with MongoDB integration. Here's everything that's been implemented:
 
 ### 1. Database & Backend
 
@@ -101,10 +101,10 @@ I've successfully created a complete admin panel for crochellaa.ng with MongoDB 
 
 ### 3. Utility Scripts
 
-#### Database Seeding (`/scripts/seed-products.ts`)
-- Seeds database with sample products
-- Creates initial admin user
-- Interactive prompts for admin credentials
+#### Database Seeding (`/scripts/seed-storefront.ts`)
+- Seeds the storefront with sample products, collections, categories, site content, popup data, and size guides
+- Supports reseeding without leaving stale content behind
+- Keeps admin creation separate via `npm run seed-admin`
 - Handles existing data gracefully
 
 Run with:
@@ -163,9 +163,9 @@ docker run -d -p 27017:27017 --name mongodb mongo:latest
 Create `.env.local` in project root:
 
 ```env
-MONGODB_URI=mongodb://localhost:27017/crochella
+MONGODB_URI=mongodb://localhost:27017/zibara
 # OR for Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/crochella
+# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/zibara
 
 NEXTAUTH_URL=http://localhost:3000
 NEXTAUTH_SECRET=run_openssl_rand_-base64_32_to_generate
@@ -183,8 +183,8 @@ npm run seed-db
 This will:
 1. Connect to MongoDB
 2. Create sample products
-3. Prompt you to create admin user
-4. Set everything up
+3. Seed collections, site content, popup, and size guide
+4. Run `npm run seed-admin` to create your admin user
 
 ### Step 4: Start Development Server
 

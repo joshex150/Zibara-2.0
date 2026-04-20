@@ -68,8 +68,8 @@ function OrderTrackingContent() {
       }
 
       setOrder(payload.data);
-    } catch (err: any) {
-      setError(err.message || 'Unable to find order.');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Unable to find order.');
     } finally {
       setLoading(false);
     }
@@ -111,7 +111,7 @@ function OrderTrackingContent() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 className="w-full px-4 py-3 bg-white/70 border-2 border-[#8b2b4d]/20 rounded-sm focus:outline-none focus:border-[#8b2b4d]/60"
-                placeholder="you@crochellaa.ng"
+                placeholder="studio@zibarastudio.com"
                 required
               />
             </div>

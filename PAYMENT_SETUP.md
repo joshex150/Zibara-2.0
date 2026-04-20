@@ -2,7 +2,7 @@
 
 ## Overview
 
-crochellaa.ng supports two payment gateways for processing transactions:
+ZIBARASTUDIO supports two payment gateways for processing transactions:
 - **Flutterwave** - Supports card payments, bank transfers, and USSD
 - **Paystack** - Supports card payments and bank transfers
 
@@ -83,7 +83,7 @@ To receive payment confirmations:
 ## Customer Support
 
 For payment issues or questions:
-- Email: hello@crochellaa.ng
+- Email: studio@zibarastudio.com
 - Phone: +234 801 234 5678
 
 ## Resources
