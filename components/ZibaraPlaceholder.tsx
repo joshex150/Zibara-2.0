@@ -88,6 +88,9 @@ export default function ZibaraPlaceholder({
       style={
         {
           background: toneStyles.background,
+          backfaceVisibility: 'hidden',
+          contain: 'paint',
+          transform: 'translateZ(0)',
           '--placeholder-edge': toneStyles.edge,
         } as CSSProperties
       }

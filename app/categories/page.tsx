@@ -6,6 +6,7 @@ import { useData } from '@/context/DataContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import AnimatedHeading from '@/components/AnimatedHeading';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import BrandLoader from '@/components/BrandLoader';
 
 export default function CategoryPage() {
   const { products, productsLoading, categories, categoriesLoading } = useData();
@@ -19,13 +20,7 @@ export default function CategoryPage() {
     }))
     .filter(group => group.products.length > 0);
 
-  if (productsLoading || categoriesLoading) {
-    return (
-      <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-        <div className="w-px h-12 bg-zibara-cream/55 animate-pulse" />
-      </div>
-    );
-  }
+  if (productsLoading || categoriesLoading) return <BrandLoader label="Categories" sublabel="ZIBARASTUDIO" tone="olive" />;
 
   return (
     <div className="min-h-screen bg-zibara-black text-zibara-cream pt-24 md:pt-28">
@@ -69,7 +64,7 @@ export default function CategoryPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
               {catProducts.map((product, i) => (
-                <Link key={product._id} href={`/product/${product._id}`} className="group">
+                <Link key={product._id} href={`/product/${product._id}`} className="group [view-transition-name:none]">
                   <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-3">
                     <ZibaraPlaceholder
                       label={product.name}

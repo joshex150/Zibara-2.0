@@ -6,7 +6,7 @@ import { ArrowLeft, Send, CheckCircle, Upload } from 'lucide-react';
 import { useData } from '@/context/DataContext';
 import ImageUploading from 'react-images-uploading';
 import toast from 'react-hot-toast';
-import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import BrandLoader from '@/components/BrandLoader';
 
 const itemTypes = [
   'Top',
@@ -132,15 +132,7 @@ export default function CustomOrderPage() {
     }
   };
 
-  if (siteContentLoading) {
-    return (
-      <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-        <div className="w-40 md:w-56 aspect-square animate-pulse">
-          <ZibaraPlaceholder label="Loading" sublabel="CUSTOM ORDER" tone="deep" variant="compact" className="w-full h-full" />
-        </div>
-      </div>
-    );
-  }
+  if (siteContentLoading) return <BrandLoader label="Custom Order" sublabel="ZIBARASTUDIO" tone="deep" />;
 
   if (submitted) {
     return (

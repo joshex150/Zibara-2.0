@@ -7,6 +7,7 @@ import { useData } from '@/context/DataContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import AnimatedHeading from '@/components/AnimatedHeading';
 import ProductImage, { pickTone } from '@/components/ProductImage';
+import BrandLoader from '@/components/BrandLoader';
 
 function ShopContent() {
   const { products, productsLoading, categories } = useData();
@@ -29,16 +30,7 @@ function ShopContent() {
     return matchesQuery && matchesCategory;
   });
 
-  if (productsLoading) {
-    return (
-      <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-px h-12 bg-zibara-crimson animate-pulse" />
-          <span className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">Loading</span>
-        </div>
-      </div>
-    );
-  }
+  if (productsLoading) return <BrandLoader label="Collection" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
   return (
     <div className="min-h-screen bg-zibara-black text-zibara-cream pt-28 md:pt-32">
@@ -168,14 +160,7 @@ function ShopContent() {
 }
 
 function LoadingFallback() {
-  return (
-    <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-      <div className="flex flex-col items-center gap-4">
-        <div className="w-px h-12 bg-zibara-crimson animate-pulse" />
-        <span className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">Loading</span>
-      </div>
-    </div>
-  );
+  return <BrandLoader label="Collection" sublabel="ZIBARASTUDIO" tone="crimson" />;
 }
 
 export default function ShopPage() {

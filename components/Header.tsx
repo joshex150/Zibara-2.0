@@ -87,10 +87,24 @@ export default function Header() {
       <header
         className={`fixed top-0 left-0 right-0 z-50 transition-[background-color,backdrop-filter,border-color] duration-300 ${
           scrolled
-            ? 'bg-zibara-black/95 backdrop-blur-sm border-b border-zibara-cream/10'
+            ? 'bg-zibara-black/95 backdrop-blur-sm border-zibara-cream/10'
             : 'bg-gradient-to-b from-zibara-black/85 via-zibara-black/45 to-transparent'
         }`}
       >
+             {/* Announcement bar */}
+             <div className="hidden md:block">
+          <div className="max-w-[1400px] mx-auto px-6 h-9 flex items-center justify-between">
+            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
+              Lagos · Abuja · London
+            </span>
+            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
+              You belong in rooms where taste is understood
+            </span>
+            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
+              New arrivals — Season III
+            </span>
+          </div>
+        </div>
         <div className="max-w-[1400px] mx-auto px-6 md:px-8 flex items-center justify-between py-4 md:py-5">
           {/* Wordmark */}
           <Link href="/" className="group">

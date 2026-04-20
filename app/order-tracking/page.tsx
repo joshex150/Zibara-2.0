@@ -4,6 +4,7 @@ import React, { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import BrandLoader from '@/components/BrandLoader';
 
 type TrackedOrder = {
   orderNumber: string;
@@ -182,13 +183,7 @@ function OrderTrackingContent() {
 }
 
 function LoadingFallback() {
-  return (
-    <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-      <div className="w-40 md:w-56 aspect-square animate-pulse">
-        <ZibaraPlaceholder label="Loading" sublabel="ORDER TRACKING" tone="deep" variant="compact" className="w-full h-full" />
-      </div>
-    </div>
-  );
+  return <BrandLoader label="Order Tracking" sublabel="ZIBARASTUDIO" tone="deep" />;
 }
 
 export default function OrderTrackingPage() {

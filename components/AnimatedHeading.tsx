@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, CSSProperties } from 'react';
+import { useRef, useLayoutEffect, CSSProperties } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CustomEase } from 'gsap/CustomEase';
@@ -34,7 +34,7 @@ export default function AnimatedHeading({
 }: AnimatedHeadingProps) {
   const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 

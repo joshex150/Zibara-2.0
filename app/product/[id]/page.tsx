@@ -9,6 +9,7 @@ import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import AnimatedHeading from '@/components/AnimatedHeading';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import BrandLoader from '@/components/BrandLoader';
 import toast from 'react-hot-toast';
 
 export default function ProductDetailPage() {
@@ -54,13 +55,7 @@ export default function ProductDetailPage() {
     setTimeout(() => setAddedToCart(false), 3000);
   };
 
-  if (productsLoading) {
-    return (
-      <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-        <div className="w-px h-12 bg-zibara-cream/50 animate-pulse" />
-      </div>
-    );
-  }
+  if (productsLoading) return <BrandLoader label="Piece" sublabel="ZIBARASTUDIO" tone="deep" />;
 
   if (!product) {
     return (

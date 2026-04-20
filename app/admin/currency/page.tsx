@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Plus, Edit2, Trash2, Save, X, ArrowLeft } from 'lucide-react';
+import BrandLoader from '@/components/BrandLoader';
 import toast from 'react-hot-toast';
 
 interface CurrencyRate {
@@ -108,19 +109,7 @@ export default function CurrencyManagement() {
     setShowAddForm(false);
   };
 
-  if (status === 'loading' || loading) {
-    return (
-      <div className="fixed inset-0 bg-[#EBB0C9] flex items-center justify-center z-50">
-        <div className="animate-pulse">
-          <img 
-            src="/logo.jpeg" 
-            alt="Loading" 
-            className="w-32 h-32 md:w-48 md:h-48 object-contain"
-          />
-        </div>
-      </div>
-    );
-  }
+  if (status === 'loading' || loading) return <BrandLoader label="Currency" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
   if (!session) {
     return null;

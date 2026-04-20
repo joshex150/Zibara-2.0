@@ -6,17 +6,12 @@ import { Link } from 'next-view-transitions';
 import AnimatedHeading from '@/components/AnimatedHeading';
 import AnimatedText from '@/components/AnimatedText';
 import ParallaxImage from '@/components/ParallaxImage';
+import BrandLoader from '@/components/BrandLoader';
 
 export default function AboutPage() {
   const { getContentValue, siteContentLoading } = useData();
 
-  if (siteContentLoading) {
-    return (
-      <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-        <div className="w-px h-12 bg-zibara-cream/55 animate-pulse" />
-      </div>
-    );
-  }
+  if (siteContentLoading) return <BrandLoader label="About" sublabel="ZIBARASTUDIO" tone="deep" />;
 
   return (
     <div className="min-h-screen bg-zibara-black text-zibara-cream">

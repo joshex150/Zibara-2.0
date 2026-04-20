@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useData } from '@/context/DataContext';
 import AnimatedHeading from '@/components/AnimatedHeading';
 import AnimatedText from '@/components/AnimatedText';
+import BrandLoader from '@/components/BrandLoader';
 import toast from 'react-hot-toast';
 
 const toastStyle = {
@@ -56,13 +57,7 @@ export default function ContactPage() {
     }
   };
 
-  if (siteContentLoading) {
-    return (
-      <div className="fixed inset-0 bg-zibara-black flex items-center justify-center z-50">
-        <div className="w-px h-12 bg-zibara-cream/55 animate-pulse" />
-      </div>
-    );
-  }
+  if (siteContentLoading) return <BrandLoader label="Reach Out" sublabel="ZIBARASTUDIO" tone="deep" />;
 
   const faqs = [
     {

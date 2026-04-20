@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Save, Upload } from 'lucide-react';
+import BrandLoader from '@/components/BrandLoader';
 import toast from 'react-hot-toast';
 import ImageUploading from 'react-images-uploading';
 
@@ -105,19 +106,7 @@ export default function AdminSiteContentPage() {
     ? contents 
     : contents.filter(c => c.section === filter);
 
-  if (status === 'loading' || loading) {
-    return (
-      <div className="fixed inset-0 bg-[#EBB0C9] flex items-center justify-center z-50">
-        <div className="animate-pulse">
-          <img 
-            src="/logo.jpeg" 
-            alt="Loading" 
-            className="w-32 h-32 md:w-48 md:h-48 object-contain"
-          />
-        </div>
-      </div>
-    );
-  }
+  if (status === 'loading' || loading) return <BrandLoader label="Site Content" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
   if (!session) {
     return null;

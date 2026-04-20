@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, ElementType } from 'react';
+import { useRef, useLayoutEffect, ElementType } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
@@ -28,7 +28,7 @@ export default function AnimatedText({
 }: AnimatedTextProps) {
   const ref = useRef<HTMLElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
 

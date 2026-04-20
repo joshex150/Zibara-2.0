@@ -19,6 +19,7 @@ import {
   Megaphone,
   Coins
 } from 'lucide-react';
+import BrandLoader from '@/components/BrandLoader';
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
@@ -215,19 +216,7 @@ export default function AdminDashboard() {
     }
   }, [error, retryCount, loading, fetchStats, status]);
 
-  if (status === 'loading' || loading) {
-    return (
-      <div className="fixed inset-0 bg-[#EBB0C9] flex items-center justify-center z-50">
-        <div className="animate-pulse">
-          <img 
-            src="/logo.jpeg" 
-            alt="Loading" 
-            className="w-32 h-32 md:w-48 md:h-48 object-contain"
-          />
-        </div>
-      </div>
-    );
-  }
+  if (status === 'loading' || loading) return <BrandLoader label="Admin" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
   if (!session) {
     return null;
