@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { CustomEase } from 'gsap/CustomEase';
 
@@ -18,14 +18,15 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
   const counterRef = useRef<HTMLSpanElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
-  const hasStarted = useRef(false);
+  const onCompleteRef = useRef(onComplete);
 
   const wordmark = 'ZIBARASTUDIO';
 
-  useLayoutEffect(() => {
-    if (hasStarted.current) return;
-    hasStarted.current = true;
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
+  useLayoutEffect(() => {
     const root    = rootRef.current;
     const bar     = barRef.current;
     const counter = counterRef.current;
@@ -33,83 +34,95 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     if (!root || !bar) return;
 
     const letters = lettersRef.current.filter(Boolean) as HTMLSpanElement[];
-    let exitTl: gsap.core.Timeline | null = null;
 
-    const prevOverflow = document.documentElement.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
     document.documentElement.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
 
-    const complete = () => {
-      document.documentElement.style.overflow = prevOverflow;
-      root.style.display = 'none';
-      onComplete?.();
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      onCompleteRef.current?.();
     };
 
-    root.style.display = 'flex';
-    root.style.opacity = '1';
-    gsap.set(letters, { y: '115%', rotation: 0.001 });
-    gsap.set(bar,     { scaleX: 0 });
-    gsap.set(tagline, { opacity: 0, y: 8 });
-    gsap.set(counter, { opacity: 1 });
+    const ctx = gsap.context(() => {
+      gsap.set(letters, { y: '115%', rotation: 0.001 });
+      gsap.set(bar,     { scaleX: 0 });
+      gsap.set(tagline, { opacity: 0, y: 8 });
+      gsap.set(counter, { opacity: 1 });
 
-    const tl = gsap.timeline({
-      onComplete: () => {
-        exitTl = gsap.timeline({ onComplete: complete })
-          .to(letters, {
-            y: '-115%',
-            duration: 1.1,
-            ease: 'zibaraOut',
-            stagger: 0.04,
-          })
-          .to([tagline, counter], {
-            opacity: 0,
-            duration: 0.6,
-            ease: 'power2.out',
-          }, 0)
-          .to(root, {
-            opacity: 0,
-            duration: 0.9,
-            ease: 'power2.inOut',
-          }, 0.4);
-      },
-    });
+      const tl = gsap.timeline({
+        onComplete: () => {
+          gsap.timeline({ onComplete: finish })
+            .to(letters, {
+              y: '-115%',
+              duration: 1.1,
+              ease: 'zibaraOut',
+              stagger: 0.04,
+            })
+            .to([tagline, counter], {
+              opacity: 0,
+              duration: 0.6,
+              ease: 'power2.out',
+            }, 0)
+            .to(root, {
+              opacity: 0,
+              duration: 0.9,
+              ease: 'power2.inOut',
+            }, 0.4);
+        },
+      });
 
-    tl.to(bar, {
-      scaleX: 1,
-      duration: 3.8,
-      ease: 'power2.inOut',
-    })
-    .to(letters, {
-      y: '0%',
-      duration: 1.6,
-      ease: 'hop',
-      stagger: 0.085,
-    }, 0.4)
-    .to(tagline, {
-      opacity: 1,
-      y: 0,
-      duration: 1.0,
-      ease: 'power3.out',
-    }, 1.1)
-    .to(counter, {
-      textContent: '100',
-      duration: 3.6,
-      ease: 'power2.inOut',
-      snap: { textContent: 1 },
-      modifiers: {
-        textContent: (v: string) => `${Math.round(Number(v)).toString().padStart(3, '0')}`,
-      },
-    }, 0.2)
-    .to({}, { duration: 0.9 });
+      tl.to(bar, {
+        scaleX: 1,
+        duration: 3.8,
+        ease: 'power2.inOut',
+      })
+      .to(letters, {
+        y: '0%',
+        duration: 1.6,
+        ease: 'hop',
+        stagger: 0.085,
+      }, 0.4)
+      .to(tagline, {
+        opacity: 1,
+        y: 0,
+        duration: 1.0,
+        ease: 'power3.out',
+      }, 1.1)
+      .to(counter, {
+        textContent: '100',
+        duration: 3.6,
+        ease: 'power2.inOut',
+        snap: { textContent: 1 },
+        modifiers: {
+          textContent: (v: string) => `${Math.round(Number(v)).toString().padStart(3, '0')}`,
+        },
+      }, 0.2)
+      .to({}, { duration: 0.9 });
+    }, root);
+
+    const fallbackTimer = window.setTimeout(() => {
+      if (finished) return;
+
+      gsap.killTweensOf([letters, tagline, counter, bar, root]);
+      gsap.to(root, {
+        opacity: 0,
+        duration: 0.35,
+        ease: 'power2.out',
+        onComplete: finish,
+      });
+    }, 7000);
 
     return () => {
-      document.documentElement.style.overflow = prevOverflow;
-      tl.kill();
-      exitTl?.kill();
-      gsap.killTweensOf([root, bar, tagline, counter, ...letters]);
-      root.style.removeProperty('display');
-      root.style.removeProperty('opacity');
+      window.clearTimeout(fallbackTimer);
+      document.documentElement.style.overflow = prevHtmlOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      ctx.revert();
     };
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div

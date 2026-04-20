@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "next-view-transitions";
 import { useData } from "@/context/DataContext";
 import { useCurrency } from "@/context/CurrencyContext";
@@ -19,20 +19,10 @@ export default function Home() {
     categoriesLoading,
   } = useData();
   const { formatPrice } = useCurrency();
-  const [shouldShowPreloader, setShouldShowPreloader] = useState(true);
   const [preloaderDone, setPreloaderDone] = useState(false);
 
-  useEffect(() => {
-    if (sessionStorage.getItem("zibara_loaded") === "1") {
-      setShouldShowPreloader(false);
-      setPreloaderDone(true);
-    }
-  }, []);
-
   const handlePreloaderComplete = () => {
-    sessionStorage.setItem("zibara_loaded", "1");
     setPreloaderDone(true);
-    setShouldShowPreloader(false);
   };
 
   const isLoading = productsLoading || siteContentLoading || categoriesLoading;
@@ -53,14 +43,14 @@ export default function Home() {
 
   return (
     <>
-      {shouldShowPreloader && !preloaderDone && (
+      {!preloaderDone && (
         <Preloader onComplete={handlePreloaderComplete} />
       )}
 
       <div
         className="min-h-screen bg-zibara-black text-zibara-cream"
         style={{
-          opacity: !shouldShowPreloader || preloaderDone ? 1 : 0,
+          opacity: preloaderDone ? 1 : 0,
           transition: "opacity 0.4s ease",
         }}
       >
@@ -79,7 +69,7 @@ export default function Home() {
           <div className="absolute bottom-12 left-6 md:left-12 max-w-xl">
             <AnimatedHeading
               tag="h1"
-              delay={preloaderDone || !shouldShowPreloader ? 0.1 : 2.8}
+              delay={preloaderDone ? 0.1 : 2.8}
               className="font-display font-light text-zibara-cream text-[clamp(3rem,10vw,8rem)] leading-[0.9] tracking-tight uppercase"
               style={
                 {
@@ -91,7 +81,7 @@ export default function Home() {
             </AnimatedHeading>
 
             <AnimatedText
-              delay={preloaderDone || !shouldShowPreloader ? 0.4 : 3.2}
+              delay={preloaderDone ? 0.4 : 3.2}
               className="mt-6 text-[12px] tracking-[0.3em] font-mono text-zibara-cream/70 uppercase"
               onScroll={false}
             >
