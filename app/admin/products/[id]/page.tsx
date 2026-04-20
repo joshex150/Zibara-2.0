@@ -276,22 +276,22 @@ export default function AdminProductEditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] scroll-mt-32">
+    <div className="min-h-screen bg-zinc-900 scroll-mt-32">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <Link
               href="/admin/products"
-              className="p-2 bg-[#f5d5e5] rounded-lg hover:bg-[#d896b5]/30 transition-colors"
+              className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
             >
-              <ArrowLeft size={20} className="text-[#8b2b4d]" />
+              <ArrowLeft size={20} className="text-zibara-cream" />
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-[#8b2b4d] uppercase tracking-wider">
+              <h1 className="text-3xl font-bold text-zibara-cream uppercase tracking-wider">
                 {isNew ? 'Add Product' : 'Edit Product'}
               </h1>
-              <p className="text-gray-700 text-sm mt-1">
+              <p className="text-zinc-300 text-sm mt-1">
                 {isNew ? 'Create a new product' : 'Update product details'}
               </p>
             </div>
@@ -309,7 +309,7 @@ export default function AdminProductEditPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-red-950/50 border border-red-500/30 text-red-300 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}
@@ -317,45 +317,45 @@ export default function AdminProductEditPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Info */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-[#8b2b4d] mb-4">Basic Information</h2>
+          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
+            <h2 className="text-lg font-bold text-zibara-cream mb-4">Basic Information</h2>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-zinc-300 mb-2">
                 Product Name *
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                 placeholder="e.g., CROCHET LACE ROMPER"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">
                   Price ($) *
                 </label>
                 <input
                   type="number"
                   value={form.price}
                   onChange={(e) => setForm(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                   min="0"
                   step="0.01"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">
                   Category *
                 </label>
                 <select
                   value={form.category}
                   onChange={(e) => setForm(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border border-[#8b2b4d]/20 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-[#f5d5e5] text-[#8b2b4d]"
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-zinc-800 text-zibara-cream"
                   disabled={categoriesLoading}
                 >
                   <option value="">
@@ -374,35 +374,35 @@ export default function AdminProductEditPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-zinc-300 mb-2">
                 Description
               </label>
               <textarea
                 value={form.description}
                 onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                 rows={4}
                 placeholder="Describe your product..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-zinc-300 mb-2">
                 Material
               </label>
               <input
                 type="text"
                 value={form.material}
                 onChange={(e) => setForm(prev => ({ ...prev, material: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                 placeholder="e.g., 100% Premium Cotton Yarn"
               />
             </div>
           </div>
 
           {/* Images */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-[#8b2b4d]">Images</h2>
+          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
+            <h2 className="text-lg font-bold text-zibara-cream">Images</h2>
             
             <ImageUploading
               multiple
@@ -439,7 +439,7 @@ export default function AdminProductEditPage() {
                             <button
                               type="button"
                               onClick={() => onImageUpdate(index)}
-                              className="px-3 py-1 bg-white text-gray-700 rounded text-xs font-semibold hover:bg-gray-100"
+                              className="px-3 py-1 bg-white text-zinc-300 rounded text-xs font-semibold hover:bg-zinc-700"
                             >
                               Update
                             </button>
@@ -466,8 +466,8 @@ export default function AdminProductEditPage() {
                     disabled={uploading}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
                       isDragging
-                        ? 'bg-[#8b2b4d] text-white'
-                        : 'bg-white text-[#8b2b4d] border-2 border-[#8b2b4d] hover:bg-[#8b2b4d] hover:text-white'
+                        ? 'bg-zibara-crimson text-white'
+                        : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     <Upload size={18} />
@@ -479,8 +479,8 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Sizes */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6">
-            <h2 className="text-lg font-bold text-[#8b2b4d] mb-4">Available Sizes</h2>
+          <div className="bg-zinc-800 rounded-lg p-6">
+            <h2 className="text-lg font-bold text-zibara-cream mb-4">Available Sizes</h2>
             <div className="flex flex-wrap gap-2">
               {availableSizes.map(size => (
                 <button
@@ -489,8 +489,8 @@ export default function AdminProductEditPage() {
                   onClick={() => toggleSize(size)}
                   className={`px-6 py-3 rounded-full font-semibold transition-colors ${
                     form.sizes.includes(size)
-                      ? 'bg-[#8b2b4d] text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-100'
+                      ? 'bg-zibara-crimson text-white'
+                      : 'bg-white text-zinc-300 hover:bg-zinc-700'
                   }`}
                 >
                   {size}
@@ -500,13 +500,13 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Colors */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
+          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-[#8b2b4d]">Product Colors</h2>
+              <h2 className="text-lg font-bold text-zibara-cream">Product Colors</h2>
               <button
                 type="button"
                 onClick={addColorField}
-                className="flex items-center gap-1 text-sm text-[#8b2b4d] hover:underline"
+                className="flex items-center gap-1 text-sm text-zibara-cream hover:underline"
               >
                 <Plus size={16} />
                 Add Color
@@ -514,7 +514,7 @@ export default function AdminProductEditPage() {
             </div>
 
             {form.colors.length === 0 ? (
-              <p className="text-sm text-gray-600 italic">No colors added yet. Click "Add Color" to add one.</p>
+              <p className="text-sm text-zinc-400 italic">No colors added yet. Click "Add Color" to add one.</p>
             ) : (
               <div className="space-y-3">
                 {form.colors.map((color, index) => (
@@ -531,7 +531,7 @@ export default function AdminProductEditPage() {
                         type="text"
                         value={color.name}
                         onChange={(e) => updateColor(index, 'name', e.target.value)}
-                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                         placeholder="Color name (e.g., Berry Red)"
                       />
                     </div>
@@ -550,13 +550,13 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Care Instructions */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
+          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-[#8b2b4d]">Care Instructions</h2>
+              <h2 className="text-lg font-bold text-zibara-cream">Care Instructions</h2>
               <button
                 type="button"
                 onClick={addCareField}
-                className="flex items-center gap-1 text-sm text-[#8b2b4d] hover:underline"
+                className="flex items-center gap-1 text-sm text-zibara-cream hover:underline"
               >
                 <Plus size={16} />
                 Add Instruction
@@ -569,7 +569,7 @@ export default function AdminProductEditPage() {
                   type="text"
                   value={care}
                   onChange={(e) => updateCare(index, e.target.value)}
-                  className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                  className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                   placeholder="e.g., Hand wash cold"
                 />
                 {form.care.length > 1 && (
@@ -586,17 +586,17 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Status */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6">
-            <h2 className="text-lg font-bold text-[#8b2b4d] mb-4">Status</h2>
+          <div className="bg-zinc-800 rounded-lg p-6">
+            <h2 className="text-lg font-bold text-zibara-cream mb-4">Status</h2>
             <div className="flex flex-wrap gap-6">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.inStock}
                   onChange={(e) => setForm(prev => ({ ...prev, inStock: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-[#8b2b4d] focus:ring-[#8b2b4d]"
+                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
                 />
-                <span className="text-sm font-medium text-gray-700">In Stock</span>
+                <span className="text-sm font-medium text-zinc-300">In Stock</span>
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer">
@@ -604,9 +604,9 @@ export default function AdminProductEditPage() {
                   type="checkbox"
                   checked={form.featured}
                   onChange={(e) => setForm(prev => ({ ...prev, featured: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-[#8b2b4d] focus:ring-[#8b2b4d]"
+                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
                 />
-                <span className="text-sm font-medium text-gray-700">Featured Product</span>
+                <span className="text-sm font-medium text-zinc-300">Featured Product</span>
               </label>
             </div>
           </div>
@@ -615,14 +615,14 @@ export default function AdminProductEditPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href="/admin/products"
-              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              className="px-6 py-3 bg-gray-200 text-zinc-300 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 bg-[#8b2b4d] text-white rounded-lg font-semibold hover:bg-[#6d1f3a] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-3 bg-zibara-crimson text-white rounded-lg font-semibold hover:bg-zibara-blood transition-colors disabled:opacity-50"
             >
               <Save size={18} />
               {saving ? 'Saving...' : isNew ? 'Create Product' : 'Save Changes'}

@@ -335,15 +335,15 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] scroll-mt-32">
+    <div className="min-h-screen bg-zinc-900 scroll-mt-32">
       <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#8b2b4d] uppercase tracking-wider mb-1 md:mb-2">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zibara-cream uppercase tracking-wider mb-1 md:mb-2">
               Admin Dashboard
             </h1>
-            <p className="text-sm md:text-base text-gray-700">
+            <p className="text-sm md:text-base text-zinc-300">
               Welcome back, {session.user?.name}
             </p>
           </div>
@@ -354,13 +354,13 @@ export default function AdminDashboard() {
                 setError(null);
                 fetchStats();
               }}
-              className="flex items-center justify-center gap-2 bg-[#8b2b4d] text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-[#6d1f3a] transition-colors text-sm md:text-base"
+              className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-zibara-blood transition-colors text-sm md:text-base"
             >
               Refresh
             </button>
             <button
               onClick={() => signOut({ callbackUrl: '/admin/login' })}
-              className="flex items-center justify-center gap-2 bg-[#8b2b4d] text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-[#6d1f3a] transition-colors text-sm md:text-base"
+              className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-zibara-blood transition-colors text-sm md:text-base"
             >
               <LogOut size={18} className="md:w-5 md:h-5" />
               Logout
@@ -370,7 +370,7 @@ export default function AdminDashboard() {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg">
+          <div className="mb-6 p-4 bg-red-950/50 border border-red-500/30 text-red-300 rounded-lg">
             <p className="text-sm">{error}</p>
           </div>
         )}
@@ -378,13 +378,13 @@ export default function AdminDashboard() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
           {statCards.map((stat) => (
-            <div key={stat.title} className="bg-[#f5d5e5] rounded-lg shadow-md p-4 md:p-6">
+            <div key={stat.title} className="bg-zinc-800 rounded-lg shadow-md p-4 md:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs md:text-sm text-gray-600 mb-1">{stat.title}</p>
-                  <p className="text-lg md:text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-zinc-400 mb-1">{stat.title}</p>
+                  <p className="text-lg md:text-2xl font-bold text-zinc-100">{stat.value}</p>
                 </div>
-                <div className="bg-[#8b2b4d] p-2 md:p-3 rounded-full">
+                <div className="bg-zibara-crimson p-2 md:p-3 rounded-full">
                   <stat.icon className="w-4 h-4 md:w-6 md:h-6 text-white" />
                 </div>
               </div>
@@ -398,15 +398,15 @@ export default function AdminDashboard() {
             <Link
               key={item.title}
               href={item.href}
-              className="bg-[#f5d5e5] rounded-lg shadow-md p-4 md:p-6 hover:shadow-lg transition-shadow group"
+              className="bg-zinc-800 rounded-lg shadow-md p-4 md:p-6 hover:shadow-lg transition-shadow group"
             >
-              <div className="bg-[#8b2b4d] w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
+              <div className="bg-zibara-crimson w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
                 <item.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
               </div>
-              <h3 className="text-sm md:text-lg font-bold text-gray-900 mb-1 md:mb-2">
+              <h3 className="text-sm md:text-lg font-bold text-zinc-100 mb-1 md:mb-2">
                 {item.title}
               </h3>
-              <p className="text-xs md:text-sm text-gray-600">
+              <p className="text-xs md:text-sm text-zinc-400">
                 {item.description}
               </p>
             </Link>

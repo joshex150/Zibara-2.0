@@ -8,17 +8,17 @@ import ImageUploading from 'react-images-uploading';
 import toast from 'react-hot-toast';
 import BrandLoader from '@/components/BrandLoader';
 
+const toastStyle = {
+  background: '#0a0806',
+  color: '#EFEFC9',
+  border: '1px solid rgba(239,239,201,0.08)',
+  fontFamily: 'var(--font-space-mono), monospace',
+  fontSize: '11px',
+};
+
 const itemTypes = [
-  'Top',
-  'Dress',
-  'Skirt',
-  'Shorts',
-  'Romper',
-  'Set (Top + Bottom)',
-  'Cardigan',
-  'Swimwear',
-  'Accessories',
-  'Other',
+  'Top', 'Dress', 'Skirt', 'Shorts', 'Romper',
+  'Set (Top + Bottom)', 'Cardigan', 'Swimwear', 'Accessories', 'Other',
 ];
 
 const colorOptions = [
@@ -27,6 +27,11 @@ const colorOptions = [
   'Blue', 'Purple', 'Navy', 'Grey', 'Multicolor',
 ];
 
+const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors';
+const labelClass = 'block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2';
+const sectionClass = 'bg-zibara-deep/50 border border-zibara-cream/10 p-5 md:p-7';
+const sectionTitle = 'text-[9px] tracking-[0.45em] font-mono text-zibara-cream/45 uppercase mb-5';
+
 export default function CustomOrderPage() {
   const { getContentValue, siteContentLoading } = useData();
   const [submitting, setSubmitting] = useState(false);
@@ -34,7 +39,7 @@ export default function CustomOrderPage() {
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState(false);
   const [referenceImages, setReferenceImages] = useState<string[]>([]);
-  
+
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -43,13 +48,7 @@ export default function CustomOrderPage() {
     itemType: '',
     description: '',
     colors: [] as string[],
-    measurements: {
-      bust: '',
-      waist: '',
-      hip: '',
-      length: '',
-      other: '',
-    },
+    measurements: { bust: '', waist: '', hip: '', length: '', other: '' },
     budget: '',
     deadline: '',
     additionalNotes: '',
@@ -60,24 +59,16 @@ export default function CustomOrderPage() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload file');
-      }
-
+      const response = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!response.ok) throw new Error('Failed to upload file');
       const data = await response.json();
-      toast.success('Image uploaded successfully!');
+      toast.success('Image uploaded successfully!', { style: toastStyle });
       setReferenceImages(prev => [...prev, data.url]);
       return data;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown upload error';
       console.error('Error uploading file:', message);
-      toast.error('Failed to upload image');
+      toast.error('Failed to upload image', { style: toastStyle });
       return null;
     } finally {
       setUploading(false);
@@ -99,7 +90,6 @@ export default function CustomOrderPage() {
     setSubmitting(true);
 
     try {
-      // Convert measurement strings to numbers
       const measurements = {
         bust: form.measurements.bust ? parseFloat(form.measurements.bust) : undefined,
         waist: form.measurements.waist ? parseFloat(form.measurements.waist) : undefined,
@@ -114,7 +104,7 @@ export default function CustomOrderPage() {
         body: JSON.stringify({
           ...form,
           measurements: Object.values(measurements).some(v => v !== undefined) ? measurements : undefined,
-          referenceImages: referenceImages,
+          referenceImages,
         }),
       });
 
@@ -136,20 +126,21 @@ export default function CustomOrderPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-[#EBB0C9] flex items-center justify-center px-4 scroll-mt-32">
-        <div className="bg-[#f5d5e5] rounded-lg p-8 md:p-12 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+      <div className="min-h-screen bg-zibara-black text-zibara-cream flex items-center justify-center px-4">
+        <div className="bg-zibara-deep/60 border border-zibara-cream/10 p-8 md:p-12 max-w-md w-full text-center">
+          <div className="inline-flex items-center justify-center w-14 h-14 border border-zibara-cream/20 mb-6">
+            <CheckCircle className="w-6 h-6 text-zibara-cream/70" />
           </div>
-          <h1 className="text-xl md:text-2xl font-bold text-[#8b2b4d] mb-4">
-            {getContentValue('custom_order_success_title', 'Request Submitted!')}
+          <h1 className="text-2xl font-light text-zibara-cream uppercase tracking-[0.2em] mb-4"
+            style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+            {getContentValue('custom_order_success_title', 'Request Submitted')}
           </h1>
-          <p className="text-sm text-gray-700 mb-6">
-            {getContentValue('custom_order_success_text', "Thank you for your custom order request! We'll review your details and get back to you within 24-48 hours to discuss your vision and provide a quote.")}
+          <p className="text-[11px] font-mono text-zibara-cream/60 leading-loose mb-8">
+            {getContentValue('custom_order_success_text', "Thank you for your custom order request. We'll review your details and get back to you within 24–48 hours to discuss your vision and provide a quote.")}
           </p>
           <Link
             href="/"
-            className="inline-block px-8 py-3 bg-[#8b2b4d] text-white text-sm uppercase tracking-wider font-bold rounded-lg hover:bg-[#6d1f3a] transition-colors"
+            className="inline-block px-10 py-3 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"
           >
             Back to Home
           </Link>
@@ -159,149 +150,110 @@ export default function CustomOrderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] text-[#8b2b4d] scroll-mt-32">
-      <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
-        
+    <div className="min-h-screen bg-zibara-black text-zibara-cream pt-24 md:pt-28">
+      <div className="max-w-3xl mx-auto px-4 md:px-8 pb-16">
+
         {/* Header */}
-        <div className="flex items-center gap-4 mb-8">
-          <Link 
+        <div className="flex items-center gap-5 mb-10">
+          <Link
             href="/"
-            className="p-2 bg-[#f5d5e5] rounded-lg hover:bg-[#d896b5]/30 transition-colors"
+            className="flex-shrink-0 w-10 h-10 border border-zibara-cream/15 flex items-center justify-center hover:border-zibara-cream/40 transition-colors"
           >
-            <ArrowLeft size={20} />
+            <ArrowLeft size={16} className="text-zibara-cream/60" />
           </Link>
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold tracking-[0.15em] uppercase">
+            <h1 className="text-2xl md:text-3xl font-light uppercase tracking-[0.2em]"
+              style={{ fontFamily: 'var(--font-cormorant), serif' }}>
               {getContentValue('custom_order_title', 'Custom Order')}
             </h1>
-            <p className="text-xs md:text-sm opacity-70 mt-1">
+            <p className="text-[10px] font-mono text-zibara-cream/45 uppercase tracking-widest mt-1">
               {getContentValue('custom_order_subtitle', 'Tell us about your dream piece')}
             </p>
           </div>
         </div>
 
         {/* Intro */}
-        <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6 mb-8">
-          <p className="text-sm leading-relaxed">
-            {getContentValue('custom_order_intro_text', 'Ready to create something unique? Fill out the form below with as much detail as possible. Our studio team will review your request and contact you within 24-48 hours to discuss your vision, provide a quote, and timeline. A 50% deposit is required to begin work.')}
+        <div className={`${sectionClass} mb-8`}>
+          <p className="text-[11px] font-mono text-zibara-cream/65 leading-loose">
+            {getContentValue('custom_order_intro_text', 'Ready to create something unique? Fill out the form below with as much detail as possible. Our studio team will review your request and contact you within 24–48 hours to discuss your vision, provide a quote, and timeline. A 50% deposit is required to begin work.')}
           </p>
         </div>
 
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-6 text-sm">
-            {error}
+          <div className="bg-red-950/40 border border-red-500/25 p-4 mb-6">
+            <p className="text-[10px] font-mono text-red-400/80">{error}</p>
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
+
           {/* Contact Information */}
-          <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
-            <h2 className="text-sm md:text-base font-bold uppercase tracking-wider mb-4">
-              Contact Information
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  First Name *
-                </label>
-                <input
-                  type="text"
-                  value={form.firstName}
-                  onChange={(e) => setForm(prev => ({ ...prev, firstName: e.target.value }))}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  Last Name *
-                </label>
-                <input
-                  type="text"
-                  value={form.lastName}
-                  onChange={(e) => setForm(prev => ({ ...prev, lastName: e.target.value }))}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  value={form.email}
-                  onChange={(e) => setForm(prev => ({ ...prev, email: e.target.value }))}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  Phone *
-                </label>
-                <input
-                  type="tel"
-                  value={form.phone}
-                  onChange={(e) => setForm(prev => ({ ...prev, phone: e.target.value }))}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
+          <div className={sectionClass}>
+            <p className={sectionTitle}>Contact Information</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                { label: 'First Name *', key: 'firstName', type: 'text', required: true },
+                { label: 'Last Name *', key: 'lastName', type: 'text', required: true },
+                { label: 'Email *', key: 'email', type: 'email', required: true },
+                { label: 'Phone *', key: 'phone', type: 'tel', required: true },
+              ].map(({ label, key, type, required }) => (
+                <div key={key}>
+                  <label className={labelClass}>{label}</label>
+                  <input
+                    type={type}
+                    value={form[key as keyof typeof form] as string}
+                    onChange={(e) => setForm(prev => ({ ...prev, [key]: e.target.value }))}
+                    required={required}
+                    className={inputClass}
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Order Details */}
-          <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
-            <h2 className="text-sm md:text-base font-bold uppercase tracking-wider mb-4">
-              Order Details
-            </h2>
-            <div className="space-y-4">
+          <div className={sectionClass}>
+            <p className={sectionTitle}>Order Details</p>
+            <div className="space-y-6">
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  Item Type *
-                </label>
+                <label className={labelClass}>Item Type *</label>
                 <select
                   value={form.itemType}
                   onChange={(e) => setForm(prev => ({ ...prev, itemType: e.target.value }))}
                   required
-                  className="w-full px-4 py-3 rounded-lg border border-[#8b2b4d]/20 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-[#f5d5e5] text-[#8b2b4d] text-sm"
+                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono focus:outline-none focus:border-zibara-cream/60 transition-colors appearance-none cursor-pointer"
                 >
-                  <option value="">Select item type</option>
+                  <option value="" className="bg-zibara-deep">Select item type</option>
                   {itemTypes.map(type => (
-                    <option key={type} value={type}>{type}</option>
+                    <option key={type} value={type} className="bg-zibara-deep">{type}</option>
                   ))}
                 </select>
               </div>
-              
+
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  Describe Your Vision *
-                </label>
+                <label className={labelClass}>Describe Your Vision *</label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
                   required
                   rows={4}
                   placeholder="Describe the style, design, occasion, or any inspiration you have..."
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm resize-none"
+                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  Preferred Colors (select all that apply)
-                </label>
-                <div className="flex flex-wrap gap-2">
+                <label className={labelClass}>Preferred Colors</label>
+                <div className="flex flex-wrap gap-2 mt-1">
                   {colorOptions.map(color => (
                     <button
                       key={color}
                       type="button"
                       onClick={() => toggleColor(color)}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                      className={`px-3 py-1.5 text-[9px] uppercase tracking-wider font-mono transition-colors ${
                         form.colors.includes(color)
-                          ? 'bg-[#8b2b4d] text-white'
-                          : 'bg-white border border-gray-300 hover:border-[#8b2b4d]'
+                          ? 'bg-zibara-cream text-zibara-black'
+                          : 'border border-zibara-cream/20 text-zibara-cream/55 hover:border-zibara-cream/45 hover:text-zibara-cream/75'
                       }`}
                     >
                       {color}
@@ -313,14 +265,12 @@ export default function CustomOrderPage() {
           </div>
 
           {/* Reference Images */}
-          <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
-            <h2 className="text-sm md:text-base font-bold uppercase tracking-wider mb-4">
-              Reference Images (Optional)
-            </h2>
-            <p className="text-xs opacity-70 mb-4">
+          <div className={sectionClass}>
+            <p className={sectionTitle}>Reference Images (Optional)</p>
+            <p className="text-[10px] font-mono text-zibara-cream/40 mb-5">
               Upload images of styles, designs, or inspiration you&apos;d like us to see
             </p>
-            
+
             <ImageUploading
               multiple
               value={referenceImages.map(url => ({ data_url: url }))}
@@ -333,61 +283,43 @@ export default function CustomOrderPage() {
               maxNumber={10}
               dataURLKey="data_url"
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
+              {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                 <div className="space-y-4">
-                  <div className="flex flex-wrap gap-2">
-                    {imageList.map((image, index) => {
-                      const imageUrl = typeof image.data_url === 'string' ? image.data_url : '';
-                      return (
-                        <div key={index} className="relative w-24 h-24 rounded-lg overflow-hidden border-2 border-gray-300">
-                          <img
-                            src={imageUrl}
-                            alt={`Reference ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => onImageUpdate(index)}
-                              className="px-2 py-1 bg-white text-gray-700 rounded text-xs font-semibold hover:bg-gray-100"
-                            >
-                              Update
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => {
-                                onImageRemove(index);
-                                setReferenceImages(prev => prev.filter((_, i) => i !== index));
-                              }}
-                              className="px-2 py-1 bg-red-500 text-white rounded text-xs font-semibold hover:bg-red-600"
-                            >
-                              Remove
-                            </button>
+                  {imageList.length > 0 && (
+                    <div className="flex flex-wrap gap-3">
+                      {imageList.map((image, index) => {
+                        const imageUrl = typeof image.data_url === 'string' ? image.data_url : '';
+                        return (
+                          <div key={index} className="relative w-24 h-24 border border-zibara-cream/15 overflow-hidden">
+                            <img src={imageUrl} alt={`Reference ${index + 1}`} className="w-full h-full object-cover" />
+                            <div className="absolute inset-0 bg-zibara-black/60 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                              <button type="button" onClick={() => onImageUpdate(index)}
+                                className="px-2 py-1 text-[8px] uppercase tracking-wider font-mono border border-zibara-cream/40 text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black transition-colors">
+                                Edit
+                              </button>
+                              <button type="button" onClick={() => { onImageRemove(index); setReferenceImages(prev => prev.filter((_, i) => i !== index)); }}
+                                className="px-2 py-1 text-[8px] uppercase tracking-wider font-mono border border-red-500/40 text-red-400/80 hover:bg-red-500 hover:text-white transition-colors">
+                                Remove
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  
+                        );
+                      })}
+                    </div>
+                  )}
+
                   <button
                     type="button"
                     onClick={onImageUpload}
                     {...dragProps}
                     disabled={uploading}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors text-sm ${
+                    className={`flex items-center gap-3 px-5 py-3 text-[9px] uppercase tracking-wider font-mono border transition-colors disabled:opacity-40 disabled:cursor-not-allowed ${
                       isDragging
-                        ? 'bg-[#8b2b4d] text-white'
-                        : 'bg-white text-[#8b2b4d] border-2 border-[#8b2b4d] hover:bg-[#8b2b4d] hover:text-white'
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                        ? 'border-zibara-cream/60 bg-zibara-cream/10 text-zibara-cream'
+                        : 'border-zibara-cream/20 text-zibara-cream/60 hover:border-zibara-cream/45 hover:text-zibara-cream/80'
+                    }`}
                   >
-                    <Upload size={16} />
+                    <Upload size={14} />
                     {uploading ? 'Uploading...' : 'Upload Reference Images'}
                   </button>
                 </div>
@@ -395,131 +327,81 @@ export default function CustomOrderPage() {
             </ImageUploading>
           </div>
 
-          {/* Measurements (Optional) */}
-          <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm md:text-base font-bold uppercase tracking-wider">
-                Measurements (cm)
-              </h2>
-              <Link href="/size-guide" className="text-xs underline opacity-70 hover:opacity-100">
+          {/* Measurements */}
+          <div className={sectionClass}>
+            <div className="flex items-baseline justify-between mb-5">
+              <p className={sectionTitle} style={{ marginBottom: 0 }}>Measurements (cm)</p>
+              <Link href="/size-guide" className="text-[9px] font-mono text-zibara-cream/40 uppercase tracking-wider hover:text-zibara-cream/65 transition-colors underline">
                 Size Guide
               </Link>
             </div>
-            <p className="text-xs opacity-70 mb-4">
-              Optional - you can provide these later or we can guide you through measuring.
+            <p className="text-[10px] font-mono text-zibara-cream/40 mb-5">
+              Optional — you can provide these later or we can guide you through measuring.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Bust</label>
-                <input
-                  type="number"
-                  value={form.measurements.bust}
-                  onChange={(e) => setForm(prev => ({
-                    ...prev,
-                    measurements: { ...prev.measurements, bust: e.target.value }
-                  }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Waist</label>
-                <input
-                  type="number"
-                  value={form.measurements.waist}
-                  onChange={(e) => setForm(prev => ({
-                    ...prev,
-                    measurements: { ...prev.measurements, waist: e.target.value }
-                  }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Hip</label>
-                <input
-                  type="number"
-                  value={form.measurements.hip}
-                  onChange={(e) => setForm(prev => ({
-                    ...prev,
-                    measurements: { ...prev.measurements, hip: e.target.value }
-                  }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Length</label>
-                <input
-                  type="number"
-                  value={form.measurements.length}
-                  onChange={(e) => setForm(prev => ({
-                    ...prev,
-                    measurements: { ...prev.measurements, length: e.target.value }
-                  }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
-                />
-              </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {['bust', 'waist', 'hip', 'length'].map((field) => (
+                <div key={field}>
+                  <label className={labelClass}>{field.charAt(0).toUpperCase() + field.slice(1)}</label>
+                  <input
+                    type="number"
+                    value={form.measurements[field as keyof typeof form.measurements]}
+                    onChange={(e) => setForm(prev => ({ ...prev, measurements: { ...prev.measurements, [field]: e.target.value } }))}
+                    className={inputClass}
+                  />
+                </div>
+              ))}
             </div>
-            <div className="mt-4">
-              <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                Other Measurements
-              </label>
+            <div className="mt-6">
+              <label className={labelClass}>Other Measurements</label>
               <input
                 type="text"
                 value={form.measurements.other}
-                onChange={(e) => setForm(prev => ({
-                  ...prev,
-                  measurements: { ...prev.measurements, other: e.target.value }
-                }))}
+                onChange={(e) => setForm(prev => ({ ...prev, measurements: { ...prev.measurements, other: e.target.value } }))}
                 placeholder="e.g., arm length: 55cm, shoulder width: 40cm"
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
+                className={inputClass}
               />
             </div>
           </div>
 
           {/* Additional Info */}
-          <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
-            <h2 className="text-sm md:text-base font-bold uppercase tracking-wider mb-4">
-              Additional Information
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={sectionClass}>
+            <p className={sectionTitle}>Additional Information</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">Budget Range</label>
+                <label className={labelClass}>Budget Range</label>
                 <select
                   value={form.budget}
                   onChange={(e) => setForm(prev => ({ ...prev, budget: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border border-[#8b2b4d]/20 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-[#f5d5e5] text-[#8b2b4d] text-sm"
+                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono focus:outline-none focus:border-zibara-cream/60 transition-colors appearance-none cursor-pointer"
                 >
-                  <option value="">Select budget</option>
-                  <option value="Under $50">Under $50</option>
-                  <option value="$50 - $100">$50 - $100</option>
-                  <option value="$100 - $200">$100 - $200</option>
-                  <option value="$200 - $500">$200 - $500</option>
-                  <option value="Over $500">Over $500</option>
-                  <option value="Flexible">Flexible / Open to Suggestions</option>
+                  <option value="" className="bg-zibara-deep">Select budget</option>
+                  <option value="Under $50" className="bg-zibara-deep">Under $50</option>
+                  <option value="$50 - $100" className="bg-zibara-deep">$50 – $100</option>
+                  <option value="$100 - $200" className="bg-zibara-deep">$100 – $200</option>
+                  <option value="$200 - $500" className="bg-zibara-deep">$200 – $500</option>
+                  <option value="Over $500" className="bg-zibara-deep">Over $500</option>
+                  <option value="Flexible" className="bg-zibara-deep">Flexible / Open to Suggestions</option>
                 </select>
               </div>
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                  When do you need it?
-                </label>
+                <label className={labelClass}>When do you need it?</label>
                 <input
                   type="text"
                   value={form.deadline}
                   onChange={(e) => setForm(prev => ({ ...prev, deadline: e.target.value }))}
-                  placeholder="e.g., February wedding, No rush, etc."
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm"
+                  placeholder="e.g., February wedding, No rush"
+                  className={inputClass}
                 />
               </div>
             </div>
-            <div className="mt-4">
-              <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
-                Anything else we should know?
-              </label>
+            <div className="mt-6">
+              <label className={labelClass}>Anything else we should know?</label>
               <textarea
                 value={form.additionalNotes}
                 onChange={(e) => setForm(prev => ({ ...prev, additionalNotes: e.target.value }))}
                 rows={3}
                 placeholder="Any other details, questions, or special requests..."
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white text-sm resize-none"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
               />
             </div>
           </div>
@@ -528,20 +410,20 @@ export default function CustomOrderPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-4 bg-[#8b2b4d] text-white text-sm uppercase tracking-[0.2em] font-bold rounded-lg hover:bg-[#6d1f3a] transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+            className="w-full py-4 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black hover:border-zibara-cream transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-3"
           >
             {submitting ? (
               'Submitting...'
             ) : (
               <>
-                <Send size={18} />
+                <Send size={14} />
                 Submit Request
               </>
             )}
           </button>
 
-          <p className="text-xs text-center opacity-70">
-            {getContentValue('custom_order_footer_text', 'By submitting this form, you agree to our terms and understand that a 50% deposit is required before production begins.')}
+          <p className="text-[9px] text-center font-mono text-zibara-cream/35 uppercase tracking-wider">
+            {getContentValue('custom_order_footer_text', 'By submitting, you agree to our terms. A 50% deposit is required before production begins.')}
           </p>
         </form>
       </div>

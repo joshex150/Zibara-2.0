@@ -199,25 +199,25 @@ export default function AdminSizeGuidePage() {
   if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] scroll-mt-32">
+    <div className="min-h-screen bg-zinc-900 scroll-mt-32">
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8">
           <div className="flex items-center gap-3 md:gap-4">
-            <Link href="/admin" className="p-2 bg-[#f5d5e5] rounded-lg hover:bg-[#d896b5]/30 transition-colors">
-              <ArrowLeft size={18} className="md:w-5 md:h-5 text-[#8b2b4d]" />
+            <Link href="/admin" className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors">
+              <ArrowLeft size={18} className="md:w-5 md:h-5 text-zibara-cream" />
             </Link>
             <div>
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#8b2b4d] uppercase tracking-wider">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zibara-cream uppercase tracking-wider">
                 Size Guide
               </h1>
-              <p className="text-gray-700 text-xs md:text-sm mt-1">Manage size chart and measurements</p>
+              <p className="text-zinc-300 text-xs md:text-sm mt-1">Manage size chart and measurements</p>
             </div>
           </div>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="flex items-center justify-center gap-2 bg-[#8b2b4d] text-white px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-[#6d1f3a] transition-colors disabled:opacity-50"
+            className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-zibara-blood transition-colors disabled:opacity-50"
           >
             <Save className="w-4 h-4 md:w-5 md:h-5" />
             {saving ? 'Saving...' : 'Save Changes'}
@@ -232,8 +232,8 @@ export default function AdminSizeGuidePage() {
               onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-lg text-xs md:text-sm font-semibold uppercase tracking-wider whitespace-nowrap transition-colors ${
                 activeTab === tab
-                  ? 'bg-[#8b2b4d] text-white'
-                  : 'bg-[#f5d5e5] hover:bg-[#d896b5]/30'
+                  ? 'bg-zibara-crimson text-white'
+                  : 'bg-zinc-800 hover:bg-zinc-700'
               }`}
             >
               {tab === 'product' ? 'Product Measurements' : tab === 'body' ? 'Body Measurements' : 'Settings & Tips'}
@@ -243,19 +243,19 @@ export default function AdminSizeGuidePage() {
 
         {/* Product Measurements Tab */}
         {activeTab === 'product' && (
-          <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
+          <div className="bg-zinc-800 rounded-lg p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm md:text-base font-bold text-[#8b2b4d]">Product Measurements (cm)</h2>
+              <h2 className="text-sm md:text-base font-bold text-zibara-cream">Product Measurements (cm)</h2>
               <button
                 onClick={addProductMeasurement}
-                className="flex items-center gap-1 text-xs md:text-sm text-[#8b2b4d] hover:underline"
+                className="flex items-center gap-1 text-xs md:text-sm text-zibara-cream hover:underline"
               >
                 <Plus size={16} /> Add Size
               </button>
             </div>
 
             {data.productMeasurements.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-zinc-500">
                 <Ruler className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p>No product measurements yet. Click "Add Size" to start.</p>
               </div>
@@ -263,7 +263,7 @@ export default function AdminSizeGuidePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs md:text-sm">
                   <thead>
-                    <tr className="border-b border-[#8b2b4d]/20">
+                    <tr className="border-b border-zinc-700">
                       <th className="py-2 px-2 text-left">Size</th>
                       <th className="py-2 px-2 text-center">Bust</th>
                       <th className="py-2 px-2 text-center">Waist</th>
@@ -276,13 +276,13 @@ export default function AdminSizeGuidePage() {
                   </thead>
                   <tbody>
                     {data.productMeasurements.map((m, idx) => (
-                      <tr key={idx} className="border-b border-[#8b2b4d]/10">
+                      <tr key={idx} className="border-b border-zinc-700/50">
                         <td className="py-2 px-1">
                           <input
                             type="text"
                             value={m.size}
                             onChange={(e) => updateProductMeasurement(idx, 'size', e.target.value)}
-                            className="w-16 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#8b2b4d]"
+                            className="w-16 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-zinc-400"
                             placeholder="XS"
                           />
                         </td>
@@ -292,7 +292,7 @@ export default function AdminSizeGuidePage() {
                               type="number"
                               value={m[field] || ''}
                               onChange={(e) => updateProductMeasurement(idx, field, parseFloat(e.target.value) || 0)}
-                              className="w-16 px-2 py-1 border border-gray-300 rounded text-xs text-center focus:outline-none focus:ring-1 focus:ring-[#8b2b4d]"
+                              className="w-16 px-2 py-1 border border-gray-300 rounded text-xs text-center focus:outline-none focus:ring-1 focus:ring-zinc-400"
                             />
                           </td>
                         ))}
@@ -315,19 +315,19 @@ export default function AdminSizeGuidePage() {
 
         {/* Body Measurements Tab */}
         {activeTab === 'body' && (
-          <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
+          <div className="bg-zinc-800 rounded-lg p-4 md:p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm md:text-base font-bold text-[#8b2b4d]">Body Measurements (cm)</h2>
+              <h2 className="text-sm md:text-base font-bold text-zibara-cream">Body Measurements (cm)</h2>
               <button
                 onClick={addBodyMeasurement}
-                className="flex items-center gap-1 text-xs md:text-sm text-[#8b2b4d] hover:underline"
+                className="flex items-center gap-1 text-xs md:text-sm text-zibara-cream hover:underline"
               >
                 <Plus size={16} /> Add Size
               </button>
             </div>
 
             {data.bodyMeasurements.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-zinc-500">
                 <Ruler className="w-12 h-12 mx-auto mb-2 opacity-50" />
                 <p>No body measurements yet. Click "Add Size" to start.</p>
               </div>
@@ -335,7 +335,7 @@ export default function AdminSizeGuidePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-xs md:text-sm">
                   <thead>
-                    <tr className="border-b border-[#8b2b4d]/20">
+                    <tr className="border-b border-zinc-700">
                       <th className="py-2 px-2 text-left">Size</th>
                       <th className="py-2 px-2 text-center">Height</th>
                       <th className="py-2 px-2 text-center">Bust</th>
@@ -346,13 +346,13 @@ export default function AdminSizeGuidePage() {
                   </thead>
                   <tbody>
                     {data.bodyMeasurements.map((m, idx) => (
-                      <tr key={idx} className="border-b border-[#8b2b4d]/10">
+                      <tr key={idx} className="border-b border-zinc-700/50">
                         <td className="py-2 px-1">
                           <input
                             type="text"
                             value={m.size}
                             onChange={(e) => updateBodyMeasurement(idx, 'size', e.target.value)}
-                            className="w-16 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-[#8b2b4d]"
+                            className="w-16 px-2 py-1 border border-gray-300 rounded text-xs focus:outline-none focus:ring-1 focus:ring-zinc-400"
                             placeholder="XS"
                           />
                         </td>
@@ -362,7 +362,7 @@ export default function AdminSizeGuidePage() {
                               type="text"
                               value={m[field]}
                               onChange={(e) => updateBodyMeasurement(idx, field, e.target.value)}
-                              className="w-20 px-2 py-1 border border-gray-300 rounded text-xs text-center focus:outline-none focus:ring-1 focus:ring-[#8b2b4d]"
+                              className="w-20 px-2 py-1 border border-gray-300 rounded text-xs text-center focus:outline-none focus:ring-1 focus:ring-zinc-400"
                               placeholder={field === 'height' ? '160-165' : '82-86'}
                             />
                           </td>
@@ -388,8 +388,8 @@ export default function AdminSizeGuidePage() {
         {activeTab === 'settings' && (
           <div className="space-y-6">
             {/* Fit & Stretch */}
-            <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
-              <h2 className="text-sm md:text-base font-bold text-[#8b2b4d] mb-4">Fit Information</h2>
+            <div className="bg-zinc-800 rounded-lg p-4 md:p-6">
+              <h2 className="text-sm md:text-base font-bold text-zibara-cream mb-4">Fit Information</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -397,7 +397,7 @@ export default function AdminSizeGuidePage() {
                   <select
                     value={data.fitType}
                     onChange={(e) => setData(prev => ({ ...prev, fitType: e.target.value as any }))}
-                    className="w-full px-3 py-2 border border-[#8b2b4d]/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-[#f5d5e5] text-[#8b2b4d]"
+                    className="w-full px-3 py-2 border border-zinc-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-zinc-800 text-zibara-cream"
                   >
                     <option value="skinny">Skinny</option>
                     <option value="regular">Regular</option>
@@ -409,7 +409,7 @@ export default function AdminSizeGuidePage() {
                   <select
                     value={data.stretch}
                     onChange={(e) => setData(prev => ({ ...prev, stretch: e.target.value as any }))}
-                    className="w-full px-3 py-2 border border-[#8b2b4d]/20 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-[#f5d5e5] text-[#8b2b4d]"
+                    className="w-full px-3 py-2 border border-zinc-700 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-zinc-800 text-zibara-cream"
                   >
                     <option value="none">None</option>
                     <option value="slight">Slight</option>
@@ -421,12 +421,12 @@ export default function AdminSizeGuidePage() {
             </div>
 
             {/* Measurement Tips */}
-            <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
+            <div className="bg-zinc-800 rounded-lg p-4 md:p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm md:text-base font-bold text-[#8b2b4d]">How to Measure Tips</h2>
+                <h2 className="text-sm md:text-base font-bold text-zibara-cream">How to Measure Tips</h2>
                 <button
                   onClick={() => addTip('measurementTips')}
-                  className="flex items-center gap-1 text-xs md:text-sm text-[#8b2b4d] hover:underline"
+                  className="flex items-center gap-1 text-xs md:text-sm text-zibara-cream hover:underline"
                 >
                   <Plus size={16} /> Add Tip
                 </button>
@@ -434,14 +434,14 @@ export default function AdminSizeGuidePage() {
               <div className="space-y-2">
                 {data.measurementTips.map((tip, idx) => (
                   <div key={idx} className="flex gap-2">
-                    <span className="w-6 h-8 flex items-center justify-center bg-[#8b2b4d] text-white text-xs rounded shrink-0">
+                    <span className="w-6 h-8 flex items-center justify-center bg-zibara-crimson text-white text-xs rounded shrink-0">
                       {idx + 1}
                     </span>
                     <input
                       type="text"
                       value={tip}
                       onChange={(e) => updateTip('measurementTips', idx, e.target.value)}
-                      className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#8b2b4d]"
+                      className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-zinc-400"
                       placeholder="Enter measurement tip..."
                     />
                     <button
@@ -456,12 +456,12 @@ export default function AdminSizeGuidePage() {
             </div>
 
             {/* Size Tips */}
-            <div className="bg-[#f5d5e5] rounded-lg p-4 md:p-6">
+            <div className="bg-zinc-800 rounded-lg p-4 md:p-6">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-sm md:text-base font-bold text-[#8b2b4d]">Size Tips</h2>
+                <h2 className="text-sm md:text-base font-bold text-zibara-cream">Size Tips</h2>
                 <button
                   onClick={() => addTip('sizeTips')}
-                  className="flex items-center gap-1 text-xs md:text-sm text-[#8b2b4d] hover:underline"
+                  className="flex items-center gap-1 text-xs md:text-sm text-zibara-cream hover:underline"
                 >
                   <Plus size={16} /> Add Tip
                 </button>
@@ -469,14 +469,14 @@ export default function AdminSizeGuidePage() {
               <div className="space-y-2">
                 {data.sizeTips.map((tip, idx) => (
                   <div key={idx} className="flex gap-2">
-                    <span className="w-6 h-8 flex items-center justify-center bg-[#8b2b4d] text-white text-xs rounded shrink-0">
+                    <span className="w-6 h-8 flex items-center justify-center bg-zibara-crimson text-white text-xs rounded shrink-0">
                       •
                     </span>
                     <input
                       type="text"
                       value={tip}
                       onChange={(e) => updateTip('sizeTips', idx, e.target.value)}
-                      className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-[#8b2b4d]"
+                      className="flex-1 px-3 py-1.5 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-zinc-400"
                       placeholder="Enter size tip..."
                     />
                     <button

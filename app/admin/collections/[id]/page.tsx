@@ -283,22 +283,22 @@ export default function AdminCollectionEditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] scroll-mt-32">
+    <div className="min-h-screen bg-zinc-900 scroll-mt-32">
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <Link
               href="/admin/collections"
-              className="p-2 bg-[#f5d5e5] rounded-lg hover:bg-[#d896b5]/30 transition-colors"
+              className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
             >
-              <ArrowLeft size={20} className="text-[#8b2b4d]" />
+              <ArrowLeft size={20} className="text-zibara-cream" />
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-[#8b2b4d] uppercase tracking-wider">
+              <h1 className="text-3xl font-bold text-zibara-cream uppercase tracking-wider">
                 {isNew ? 'New Collection' : 'Edit Collection'}
               </h1>
-              <p className="text-gray-700 text-sm mt-1">
+              <p className="text-zinc-300 text-sm mt-1">
                 {isNew ? 'Create a new curated collection' : 'Update collection details'}
               </p>
             </div>
@@ -316,7 +316,7 @@ export default function AdminCollectionEditPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+          <div className="bg-red-950/50 border border-red-500/30 text-red-300 px-4 py-3 rounded mb-6">
             {error}
           </div>
         )}
@@ -324,47 +324,47 @@ export default function AdminCollectionEditPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Info */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-[#8b2b4d] mb-4">Basic Information</h2>
+          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
+            <h2 className="text-lg font-bold text-zibara-cream mb-4">Basic Information</h2>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-zinc-300 mb-2">
                 Collection Name *
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => handleNameChange(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                 placeholder="e.g., Summer Paradise 2026"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-zinc-300 mb-2">
                 URL Slug *
               </label>
               <input
                 type="text"
                 value={form.slug}
                 onChange={(e) => setForm(prev => ({ ...prev, slug: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                 placeholder="summer-paradise-2026"
               />
-              <p className="text-xs text-gray-500 mt-1">
+              <p className="text-xs text-zinc-500 mt-1">
                 Used in URL: /collections/{form.slug || 'your-slug'}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">
                   Season *
                 </label>
                 <select
                   value={form.season}
                   onChange={(e) => setForm(prev => ({ ...prev, season: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border border-[#8b2b4d]/20 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-[#f5d5e5] text-[#8b2b4d]"
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-zinc-800 text-zibara-cream"
                 >
                   <option value="">Select a season</option>
                   {seasons.map(season => (
@@ -374,14 +374,14 @@ export default function AdminCollectionEditPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-zinc-300 mb-2">
                   Year *
                 </label>
                 <input
                   type="number"
                   value={form.year}
                   onChange={(e) => setForm(prev => ({ ...prev, year: parseInt(e.target.value) || new Date().getFullYear() }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                   min="2020"
                   max="2030"
                 />
@@ -389,26 +389,26 @@ export default function AdminCollectionEditPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-zinc-300 mb-2">
                 Short Description *
               </label>
               <textarea
                 value={form.description}
                 onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                 rows={2}
                 placeholder="A brief description for previews..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-zinc-300 mb-2">
                 Full Write-up *
               </label>
               <textarea
                 value={form.writeUp}
                 onChange={(e) => setForm(prev => ({ ...prev, writeUp: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#8b2b4d] focus:border-transparent bg-white"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
                 rows={6}
                 placeholder="Tell the story of this collection..."
               />
@@ -416,8 +416,8 @@ export default function AdminCollectionEditPage() {
           </div>
 
           {/* Cover Image */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-[#8b2b4d] mb-4">Cover Image *</h2>
+          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
+            <h2 className="text-lg font-bold text-zibara-cream mb-4">Cover Image *</h2>
             
             <ImageUploading
               multiple={false}
@@ -452,8 +452,8 @@ export default function AdminCollectionEditPage() {
                     disabled={uploading}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
                       isDragging
-                        ? 'bg-[#8b2b4d] text-white'
-                        : 'bg-white text-[#8b2b4d] border-2 border-[#8b2b4d] hover:bg-[#8b2b4d] hover:text-white'
+                        ? 'bg-zibara-crimson text-white'
+                        : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     <Upload size={18} />
@@ -478,8 +478,8 @@ export default function AdminCollectionEditPage() {
           </div>
 
           {/* Gallery Images */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-[#8b2b4d]">Gallery Images</h2>
+          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
+            <h2 className="text-lg font-bold text-zibara-cream">Gallery Images</h2>
             
             <ImageUploading
               multiple
@@ -516,7 +516,7 @@ export default function AdminCollectionEditPage() {
                             <button
                               type="button"
                               onClick={() => onImageUpdate(index)}
-                              className="px-3 py-1 bg-white text-gray-700 rounded text-xs font-semibold hover:bg-gray-100"
+                              className="px-3 py-1 bg-white text-zinc-300 rounded text-xs font-semibold hover:bg-zinc-700"
                             >
                               Update
                             </button>
@@ -543,8 +543,8 @@ export default function AdminCollectionEditPage() {
                     disabled={uploading}
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
                       isDragging
-                        ? 'bg-[#8b2b4d] text-white'
-                        : 'bg-white text-[#8b2b4d] border-2 border-[#8b2b4d] hover:bg-[#8b2b4d] hover:text-white'
+                        ? 'bg-zibara-crimson text-white'
+                        : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                   >
                     <Upload size={18} />
@@ -556,13 +556,13 @@ export default function AdminCollectionEditPage() {
           </div>
 
           {/* Products */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6">
-            <h2 className="text-lg font-bold text-[#8b2b4d] mb-4">
+          <div className="bg-zinc-800 rounded-lg p-6">
+            <h2 className="text-lg font-bold text-zibara-cream mb-4">
               Products in Collection ({form.productIds.length} selected)
             </h2>
 
             {products.length === 0 ? (
-              <p className="text-gray-600 text-sm">No products available. Create products first.</p>
+              <p className="text-zinc-400 text-sm">No products available. Create products first.</p>
             ) : (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
                 {products.map(product => {
@@ -574,24 +574,24 @@ export default function AdminCollectionEditPage() {
                       onClick={() => toggleProduct(product._id)}
                       className={`relative p-2 rounded-lg border-2 transition-colors text-left ${
                         isSelected
-                          ? 'border-[#8b2b4d] bg-[#8b2b4d]/10'
+                          ? 'border-zinc-600 bg-zinc-700/40'
                           : 'border-transparent bg-white hover:border-gray-300'
                       }`}
                     >
                       {isSelected && (
-                        <div className="absolute top-2 right-2 w-6 h-6 bg-[#8b2b4d] rounded-full flex items-center justify-center">
+                        <div className="absolute top-2 right-2 w-6 h-6 bg-zibara-crimson rounded-full flex items-center justify-center">
                           <Check size={14} className="text-white" />
                         </div>
                       )}
-                      <div className="aspect-square bg-gray-100 rounded overflow-hidden mb-2">
+                      <div className="aspect-square bg-zinc-700 rounded overflow-hidden mb-2">
                         <img
                           src={product.images[0] || '/placeholder.png'}
                           alt={product.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <p className="text-xs font-medium text-gray-900 truncate">{product.name}</p>
-                      <p className="text-xs text-gray-500">${product.price}</p>
+                      <p className="text-xs font-medium text-zinc-100 truncate">{product.name}</p>
+                      <p className="text-xs text-zinc-500">${product.price}</p>
                     </button>
                   );
                 })}
@@ -600,17 +600,17 @@ export default function AdminCollectionEditPage() {
           </div>
 
           {/* Status */}
-          <div className="bg-[#f5d5e5] rounded-lg p-6">
-            <h2 className="text-lg font-bold text-[#8b2b4d] mb-4">Status</h2>
+          <div className="bg-zinc-800 rounded-lg p-6">
+            <h2 className="text-lg font-bold text-zibara-cream mb-4">Status</h2>
             <div className="flex flex-wrap gap-6">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.published}
                   onChange={(e) => setForm(prev => ({ ...prev, published: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-[#8b2b4d] focus:ring-[#8b2b4d]"
+                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
                 />
-                <span className="text-sm font-medium text-gray-700">Published (visible to customers)</span>
+                <span className="text-sm font-medium text-zinc-300">Published (visible to customers)</span>
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer">
@@ -618,9 +618,9 @@ export default function AdminCollectionEditPage() {
                   type="checkbox"
                   checked={form.featured}
                   onChange={(e) => setForm(prev => ({ ...prev, featured: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-[#8b2b4d] focus:ring-[#8b2b4d]"
+                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
                 />
-                <span className="text-sm font-medium text-gray-700">Featured Collection</span>
+                <span className="text-sm font-medium text-zinc-300">Featured Collection</span>
               </label>
             </div>
           </div>
@@ -629,14 +629,14 @@ export default function AdminCollectionEditPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href="/admin/collections"
-              className="px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              className="px-6 py-3 bg-gray-200 text-zinc-300 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 bg-[#8b2b4d] text-white rounded-lg font-semibold hover:bg-[#6d1f3a] transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-6 py-3 bg-zibara-crimson text-white rounded-lg font-semibold hover:bg-zibara-blood transition-colors disabled:opacity-50"
             >
               <Save size={18} />
               {saving ? 'Saving...' : isNew ? 'Create Collection' : 'Save Changes'}

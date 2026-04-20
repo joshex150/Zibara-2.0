@@ -53,7 +53,6 @@ function OrderConfirmationContent() {
 
   useEffect(() => {
     const fetchOrder = async () => {
-      // First try to get from localStorage
       const savedOrder = localStorage.getItem('lastOrder');
       if (savedOrder) {
         try {
@@ -64,7 +63,6 @@ function OrderConfirmationContent() {
         }
       }
 
-      // Then try to fetch from API using query params
       const orderNumber = searchParams.get('orderNumber');
       const email = searchParams.get('email');
 
@@ -78,7 +76,6 @@ function OrderConfirmationContent() {
           const payload = await response.json();
 
           if (response.ok && payload?.success) {
-            // Use API data if available, it's more up-to-date
             setOrderDetails({
               _id: payload.data._id,
               orderId: payload.data._id,
@@ -110,12 +107,12 @@ function OrderConfirmationContent() {
 
   if (!orderDetails) {
     return (
-      <div className="min-h-screen bg-[#EBB0C9] text-[#8b2b4d] flex items-center justify-center scroll-mt-32">
+      <div className="min-h-screen bg-zibara-black text-zibara-cream flex items-center justify-center">
         <div className="text-center">
-          <p className="text-lg mb-4">No order found</p>
+          <p className="text-[11px] font-mono text-zibara-cream/60 uppercase tracking-widest mb-6">No order found</p>
           <Link
             href="/shop"
-            className="inline-block px-8 py-3 bg-[#8b2b4d] text-white text-xs uppercase tracking-[0.3em] font-bold hover:bg-[#6d1f3a] transition-colors rounded-sm"
+            className="inline-block px-10 py-3 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"
           >
             Start Shopping
           </Link>
@@ -125,38 +122,34 @@ function OrderConfirmationContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] text-[#8b2b4d] scroll-mt-32">
-      <div className="max-w-[900px] mx-auto px-4 py-12 md:py-16">
-        
-        {/* SUCCESS MESSAGE */}
+    <div className="min-h-screen bg-zibara-black text-zibara-cream pt-24 md:pt-28">
+      <div className="max-w-[900px] mx-auto px-4 md:px-8 pb-16">
+
+        {/* SUCCESS */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-green-500 rounded-full mb-6">
-            <CheckCircle size={32} className="text-white" />
+          <div className="inline-flex items-center justify-center w-14 h-14 border border-zibara-cream/20 mb-6">
+            <CheckCircle size={28} className="text-zibara-cream/70" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-[0.3em] mb-4">
-            ORDER CONFIRMED!
+          <h1 className="text-3xl md:text-4xl font-light uppercase tracking-[0.3em] mb-4"
+            style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+            Order Confirmed
           </h1>
-          <p className="text-base md:text-lg opacity-90 mb-2">
-            Thank you for your order, {orderDetails.customer.firstName}!
+          <p className="text-[11px] font-mono text-zibara-cream/65 mb-1">
+            Thank you, {orderDetails.customer.firstName}.
           </p>
-          <p className="text-sm opacity-70">
-            Order ID:{' '}
-            <span className="font-semibold">
-              {orderDetails.orderNumber || orderDetails.orderId || orderDetails._id}
-            </span>
+          <p className="text-[10px] font-mono text-zibara-cream/40 uppercase tracking-widest">
+            Order: {orderDetails.orderNumber || orderDetails.orderId || orderDetails._id}
           </p>
         </div>
 
         {/* ORDER DETAILS */}
-        <div className="bg-white/30 rounded-sm p-6 md:p-8 mb-8">
-          <h2 className="text-lg font-bold uppercase tracking-[0.25em] mb-6 pb-3 border-b border-[#8b2b4d]/20">
-            ORDER DETAILS
-          </h2>
+        <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8 mb-6">
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-6">Order Details</p>
 
-          <div className="space-y-4 mb-6">
+          <div className="space-y-5 mb-6">
             {orderDetails.items.map((item) => (
               <div key={`${item.id}-${item.size}-${item.color ?? 'default'}`} className="flex gap-4">
-                <div className="w-20 aspect-[3/4] bg-zibara-espresso rounded-sm overflow-hidden flex-shrink-0">
+                <div className="w-20 aspect-[3/4] bg-zibara-espresso overflow-hidden flex-shrink-0">
                   <ZibaraPlaceholder
                     label={item.name}
                     sublabel={item.color || item.size || 'ORDER ITEM'}
@@ -165,122 +158,87 @@ function OrderConfirmationContent() {
                     className="w-full h-full"
                   />
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold uppercase tracking-wider">{item.name}</p>
-                  <p className="text-xs opacity-70 mt-1">
-                    Size: {item.size}
-                    {item.color ? ` • Color: ${item.color}` : ''} × {item.quantity}
+                <div className="flex-1 pt-1">
+                  <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/85">{item.name}</p>
+                  <p className="text-[9px] font-mono text-zibara-cream/45 mt-1">
+                    Size: {item.size}{item.color ? ` · ${item.color}` : ''} × {item.quantity}
                   </p>
-                  <p className="text-base font-bold mt-2">{formatPrice(item.price * item.quantity, 'USD')}</p>
+                  <p className="text-[11px] font-mono text-zibara-cream mt-2">{formatPrice(item.price * item.quantity, 'USD')}</p>
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="pt-4 border-t border-[#8b2b4d]/20">
-            <div className="flex justify-between text-lg font-bold">
-              <span>Total Paid</span>
-              <span>{formatPrice(orderDetails.total, 'USD')}</span>
+          <div className="pt-5 border-t border-zibara-cream/10">
+            <div className="flex justify-between">
+              <span className="text-[10px] font-mono text-zibara-cream/55 uppercase tracking-wider">Total Paid</span>
+              <span className="text-base font-mono text-zibara-cream">{formatPrice(orderDetails.total, 'USD')}</span>
             </div>
-            <p className="text-xs opacity-70 mt-2">
-              Payment Method: {orderDetails.paymentMethod}
+            <p className="text-[9px] font-mono text-zibara-cream/40 uppercase tracking-wider mt-2">
+              Via {orderDetails.paymentMethod}
             </p>
           </div>
         </div>
 
-        {/* SHIPPING INFORMATION */}
-        <div className="bg-white/30 rounded-sm p-6 md:p-8 mb-8">
-          <h2 className="text-lg font-bold uppercase tracking-[0.25em] mb-4">
-            SHIPPING TO
-          </h2>
-          <div className="text-sm space-y-1">
-            <p className="font-semibold">
-              {orderDetails.customer.firstName} {orderDetails.customer.lastName}
-            </p>
+        {/* SHIPPING */}
+        <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8 mb-6">
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-5">Shipping To</p>
+          <div className="text-[11px] font-mono text-zibara-cream/70 space-y-1">
+            <p className="text-zibara-cream/90">{orderDetails.customer.firstName} {orderDetails.customer.lastName}</p>
             <p>{orderDetails.customer.address}</p>
-            <p>
-              {orderDetails.customer.city}, {orderDetails.customer.state}
-              {orderDetails.customer.zipCode && ` ${orderDetails.customer.zipCode}`}
-            </p>
-            {orderDetails.customer.country && (
-              <p>{orderDetails.customer.country}</p>
-            )}
-            <p className="pt-2">{orderDetails.customer.phone}</p>
-            <p>{orderDetails.customer.email}</p>
+            <p>{orderDetails.customer.city}, {orderDetails.customer.state}{orderDetails.customer.zipCode && ` ${orderDetails.customer.zipCode}`}</p>
+            {orderDetails.customer.country && <p>{orderDetails.customer.country}</p>}
+            <p className="pt-2 text-zibara-cream/50">{orderDetails.customer.phone}</p>
+            <p className="text-zibara-cream/50">{orderDetails.customer.email}</p>
           </div>
         </div>
 
         {/* WHAT'S NEXT */}
-        <div className="bg-white/30 rounded-sm p-6 md:p-8 mb-8">
-          <h2 className="text-lg font-bold uppercase tracking-[0.25em] mb-4">
-            WHAT&apos;S NEXT?
-          </h2>
-          <ul className="space-y-3 text-sm">
-            <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 bg-[#8b2b4d] text-white rounded-full flex items-center justify-center text-xs font-bold">
-                1
-              </span>
-              <div>
-                <p className="font-semibold">Order Confirmation Email</p>
-                <p className="opacity-70">
-                  We&apos;ve sent a confirmation email to {orderDetails.customer.email}
-                </p>
-              </div>
-            </li>
-            <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 bg-[#8b2b4d] text-white rounded-full flex items-center justify-center text-xs font-bold">
-                2
-              </span>
-              <div>
-                <p className="font-semibold">Production Begins</p>
-                <p className="opacity-70">
-                  Our studio team will begin preparing your pieces within 24 hours
-                </p>
-              </div>
-            </li>
-            <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 bg-[#8b2b4d] text-white rounded-full flex items-center justify-center text-xs font-bold">
-                3
-              </span>
-              <div>
-                <p className="font-semibold">Shipping & Tracking</p>
-                <p className="opacity-70">
-                  You&apos;ll receive tracking information once your order ships (7-10 business days)
-                </p>
-              </div>
-            </li>
+        <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8 mb-10">
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-6">What&apos;s Next</p>
+          <ul className="space-y-5">
+            {[
+              { n: '01', title: 'Order Confirmation Email', body: `We've sent a confirmation to ${orderDetails.customer.email}` },
+              { n: '02', title: 'Production Begins', body: 'Our studio team will begin preparing your pieces within 24 hours' },
+              { n: '03', title: 'Shipping & Tracking', body: "You'll receive tracking information once your order ships (7–10 business days)" },
+            ].map(({ n, title, body }) => (
+              <li key={n} className="flex gap-4">
+                <span className="text-[8px] tracking-widest font-mono text-zibara-cream/35 pt-0.5 flex-shrink-0">{n}</span>
+                <div>
+                  <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/80 mb-0.5">{title}</p>
+                  <p className="text-[10px] font-mono text-zibara-cream/50">{body}</p>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
 
         {/* ACTIONS */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/shop"
-            className="px-10 py-3 bg-[#8b2b4d] text-white text-xs uppercase tracking-[0.3em] font-bold hover:bg-[#6d1f3a] transition-colors rounded-sm text-center"
+            className="px-10 py-3 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300 text-center"
           >
-            CONTINUE SHOPPING
+            Continue Shopping
           </Link>
           <Link
-            href={`/order-tracking?orderNumber=${encodeURIComponent(
-              orderDetails.orderNumber || orderDetails.orderId || orderDetails._id || ''
-            )}&email=${encodeURIComponent(orderDetails.customer.email)}`}
-            className="px-10 py-3 bg-white/70 text-[#8b2b4d] text-xs uppercase tracking-[0.3em] font-bold hover:bg-white transition-colors rounded-sm text-center"
+            href={`/order-tracking?orderNumber=${encodeURIComponent(orderDetails.orderNumber || orderDetails.orderId || orderDetails._id || '')}&email=${encodeURIComponent(orderDetails.customer.email)}`}
+            className="px-10 py-3 border border-zibara-cream/15 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/55 hover:border-zibara-cream/35 hover:text-zibara-cream/80 transition-all duration-300 text-center"
           >
-            TRACK ORDER
+            Track Order
           </Link>
           <Link
             href="/contact"
-            className="px-10 py-3 bg-white/50 text-[#8b2b4d] text-xs uppercase tracking-[0.3em] font-bold hover:bg-white/70 transition-colors rounded-sm text-center"
+            className="px-10 py-3 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/45 hover:text-zibara-cream/65 transition-colors text-center"
           >
-            CONTACT US
+            Contact Us
           </Link>
         </div>
 
-        {/* SUPPORT MESSAGE */}
-        <div className="text-center mt-12 pt-8 border-t border-[#8b2b4d]/20">
-          <p className="text-sm opacity-70">
-            Need help with your order?{' '}
-            <Link href="/contact" className="underline hover:opacity-100">
+        <div className="text-center mt-10 pt-8 border-t border-zibara-cream/5">
+          <p className="text-[10px] font-mono text-zibara-cream/40">
+            Need help?{' '}
+            <Link href="/contact" className="text-zibara-cream/60 underline hover:text-zibara-cream transition-colors">
               Contact our support team
             </Link>
           </p>

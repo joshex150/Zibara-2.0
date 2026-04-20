@@ -84,29 +84,29 @@ export default function AdminProductsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] scroll-mt-32 flex flex-col">
+    <div className="min-h-screen bg-zinc-900 scroll-mt-32 flex flex-col">
       <div className="max-w-7xl mx-auto px-4 py-8 w-full flex-1 flex flex-col">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8">
           <div className="flex items-center gap-3 md:gap-4">
             <Link 
               href="/admin"
-              className="p-2 bg-[#f5d5e5] rounded-lg hover:bg-[#d896b5]/30 transition-colors shrink-0"
+              className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors shrink-0"
             >
-              <ArrowLeft size={18} className="md:w-5 md:h-5 text-[#8b2b4d]" />
+              <ArrowLeft size={18} className="md:w-5 md:h-5 text-zibara-cream" />
             </Link>
             <div>
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-[#8b2b4d] uppercase tracking-wider">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zibara-cream uppercase tracking-wider">
                 Products
               </h1>
-              <p className="text-gray-700 text-xs md:text-sm mt-1">
+              <p className="text-zinc-300 text-xs md:text-sm mt-1">
                 Manage your product catalog
               </p>
             </div>
           </div>
           <button
             onClick={() => router.push('/admin/products/new')}
-            className="flex items-center justify-center gap-2 bg-[#8b2b4d] text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-[#6d1f3a] transition-colors text-sm md:text-base"
+            className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-zibara-blood transition-colors text-sm md:text-base"
           >
             <Plus size={18} className="md:w-5 md:h-5" />
             Add Product
@@ -119,8 +119,8 @@ export default function AdminProductsPage() {
             onClick={() => setFilter('all')}
             className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-medium text-xs md:text-sm ${
               filter === 'all'
-                ? 'bg-[#8b2b4d] text-white'
-                : 'bg-[#f5d5e5] text-gray-700 hover:bg-[#d896b5]/30'
+                ? 'bg-zibara-crimson text-white'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
             }`}
           >
             All ({products.length})
@@ -129,8 +129,8 @@ export default function AdminProductsPage() {
             onClick={() => setFilter('featured')}
             className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-medium text-xs md:text-sm ${
               filter === 'featured'
-                ? 'bg-[#8b2b4d] text-white'
-                : 'bg-[#f5d5e5] text-gray-700 hover:bg-[#d896b5]/30'
+                ? 'bg-zibara-crimson text-white'
+                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
             }`}
           >
             Featured
@@ -141,8 +141,8 @@ export default function AdminProductsPage() {
               onClick={() => setFilter(category)}
               className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-medium text-xs md:text-sm ${
                 filter === category
-                  ? 'bg-[#8b2b4d] text-white'
-                  : 'bg-[#f5d5e5] text-gray-700 hover:bg-[#d896b5]/30'
+                  ? 'bg-zibara-crimson text-white'
+                  : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
               }`}
             >
               {category}
@@ -152,12 +152,12 @@ export default function AdminProductsPage() {
 
         {/* Products Grid */}
         {filteredProducts.length === 0 ? (
-          <div className="bg-[#8b2b4d] rounded-lg p-8 md:p-12 text-center flex-1 flex flex-col items-center justify-center">
+          <div className="bg-zibara-crimson rounded-lg p-8 md:p-12 text-center flex-1 flex flex-col items-center justify-center">
             <p className="text-base md:text-lg text-white mb-3 md:mb-4">No products found</p>
             <p className="text-xs md:text-sm text-white/80 mb-4 md:mb-6">Start building your catalog by adding your first product</p>
             <button
               onClick={() => router.push('/admin/products/new')}
-              className="px-5 md:px-6 py-2 bg-white text-[#8b2b4d] rounded-full text-xs md:text-sm font-semibold hover:bg-white/90 transition-colors"
+              className="px-5 md:px-6 py-2 bg-white text-zibara-cream rounded-full text-xs md:text-sm font-semibold hover:bg-white/90 transition-colors"
             >
               Add Product
             </button>
@@ -165,8 +165,8 @@ export default function AdminProductsPage() {
         ) : (
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {filteredProducts.map((product) => (
-              <div key={product._id} className="bg-[#f5d5e5] rounded-lg shadow-md overflow-hidden flex flex-col">
-                <div className="relative aspect-[3/4] bg-[#f5d5e5]">
+              <div key={product._id} className="bg-zinc-800 rounded-lg shadow-md overflow-hidden flex flex-col">
+                <div className="relative aspect-[3/4] bg-zinc-800">
                   <img
                     src={product.images[0] || '/placeholder.png'}
                     alt={product.name}
@@ -184,22 +184,22 @@ export default function AdminProductsPage() {
                   )}
                 </div>
                 <div className="p-3 md:p-4 flex flex-col flex-1">
-                  <h3 className="font-bold text-gray-900 mb-1 text-xs md:text-base line-clamp-1">{product.name}</h3>
-                  <p className="text-[10px] md:text-sm text-gray-600 mb-1 md:mb-2">{product.category}</p>
-                  <p className="text-sm md:text-lg font-bold text-[#8b2b4d] mb-3 md:mb-4">
+                  <h3 className="font-bold text-zinc-100 mb-1 text-xs md:text-base line-clamp-1">{product.name}</h3>
+                  <p className="text-[10px] md:text-sm text-zinc-400 mb-1 md:mb-2">{product.category}</p>
+                  <p className="text-sm md:text-lg font-bold text-zibara-cream mb-3 md:mb-4">
                     ${product.price.toFixed(2)}
                   </p>
                   <div className="flex gap-1.5 md:gap-2 mt-auto">
                     <button
                       onClick={() => router.push(`/admin/products/${product._id}`)}
-                      className="flex-1 flex items-center justify-center gap-1 bg-[#8b2b4d] text-white px-2 md:px-3 py-1.5 md:py-2 rounded text-[10px] md:text-sm font-semibold hover:bg-[#6d1f3a] transition-colors"
+                      className="flex-1 flex items-center justify-center gap-1 bg-zibara-crimson text-white px-2 md:px-3 py-1.5 md:py-2 rounded text-[10px] md:text-sm font-semibold hover:bg-zibara-blood transition-colors"
                     >
                       <Edit2 className="w-3 h-3 md:w-3.5 md:h-3.5" />
                       <span className="hidden sm:inline">Edit</span>
                     </button>
                     <button
                       onClick={() => handleDelete(product._id)}
-                      className="flex items-center justify-center gap-1 bg-[#8b2b4d] text-white px-2 md:px-3 py-1.5 md:py-2 rounded text-[10px] md:text-sm font-semibold hover:bg-[#6d1f3a] transition-colors"
+                      className="flex items-center justify-center gap-1 bg-zibara-crimson text-white px-2 md:px-3 py-1.5 md:py-2 rounded text-[10px] md:text-sm font-semibold hover:bg-zibara-blood transition-colors"
                     >
                       <Trash2 className="w-3 h-3 md:w-3.5 md:h-3.5" />
                     </button>

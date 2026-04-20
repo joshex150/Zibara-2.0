@@ -38,6 +38,8 @@ export default function AnimatedHeading({
     const el = ref.current;
     if (!el) return;
 
+    el.style.opacity = '0';
+
     const split = new SplitType(el, { types: 'lines' });
     const lines = split.lines ?? [];
 
@@ -57,6 +59,8 @@ export default function AnimatedHeading({
         filter: 'blur(6px)',
       });
     });
+
+    el.style.opacity = '1';
 
     const innerSpans = lines.map((l) => l.querySelector('span')!).filter(Boolean);
 
@@ -85,6 +89,7 @@ export default function AnimatedHeading({
 
     return () => {
       trigger?.kill();
+      el.style.opacity = '0';
       split.revert();
     };
   }, [children, delay, duration, stagger, direction, onScroll]);

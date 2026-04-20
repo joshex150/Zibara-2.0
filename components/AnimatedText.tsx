@@ -32,6 +32,8 @@ export default function AnimatedText({
     const el = ref.current;
     if (!el) return;
 
+    el.style.opacity = '0';
+
     const split = new SplitType(el, { types: 'lines' });
     const lines = split.lines ?? [];
 
@@ -46,6 +48,8 @@ export default function AnimatedText({
       line.appendChild(inner);
       gsap.set(inner, { yPercent: 105, opacity: 0, filter: 'blur(4px)' });
     });
+
+    el.style.opacity = '1';
 
     const innerSpans = lines.map((l) => l.querySelector('span')!).filter(Boolean);
 
@@ -74,6 +78,7 @@ export default function AnimatedText({
 
     return () => {
       trigger?.kill();
+      el.style.opacity = '0';
       split.revert();
     };
   }, [children, delay, duration, stagger, onScroll]);

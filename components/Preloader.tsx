@@ -18,11 +18,14 @@ export default function Preloader({ onComplete }: PreloaderProps) {
   const lettersRef = useRef<(HTMLSpanElement | null)[]>([]);
   const counterRef = useRef<HTMLSpanElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
-  const hasCompletedRef = useRef(false);
+  const hasStarted = useRef(false);
 
   const wordmark = 'ZIBARASTUDIO';
 
   useLayoutEffect(() => {
+    if (hasStarted.current) return;
+    hasStarted.current = true;
+
     const root    = rootRef.current;
     const bar     = barRef.current;
     const counter = counterRef.current;
@@ -31,13 +34,12 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
     const letters = lettersRef.current.filter(Boolean) as HTMLSpanElement[];
     let exitTl: gsap.core.Timeline | null = null;
-    let isCancelled = false;
 
-    hasCompletedRef.current = false;
+    const prevOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = 'hidden';
 
     const complete = () => {
-      if (isCancelled || hasCompletedRef.current) return;
-      hasCompletedRef.current = true;
+      document.documentElement.style.overflow = prevOverflow;
       root.style.display = 'none';
       onComplete?.();
     };
@@ -51,27 +53,23 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
     const tl = gsap.timeline({
       onComplete: () => {
-        if (isCancelled) return;
-
-        exitTl = gsap.timeline({
-          onComplete: complete,
-        })
-        .to(letters, {
-          y: '-115%',
-          duration: 1.1,
-          ease: 'zibaraOut',
-          stagger: 0.04,
-        })
-        .to([tagline, counter], {
-          opacity: 0,
-          duration: 0.6,
-          ease: 'power2.out',
-        }, 0)
-        .to(root, {
-          opacity: 0,
-          duration: 0.9,
-          ease: 'power2.inOut',
-        }, 0.4);
+        exitTl = gsap.timeline({ onComplete: complete })
+          .to(letters, {
+            y: '-115%',
+            duration: 1.1,
+            ease: 'zibaraOut',
+            stagger: 0.04,
+          })
+          .to([tagline, counter], {
+            opacity: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+          }, 0)
+          .to(root, {
+            opacity: 0,
+            duration: 0.9,
+            ease: 'power2.inOut',
+          }, 0.4);
       },
     });
 
@@ -104,14 +102,14 @@ export default function Preloader({ onComplete }: PreloaderProps) {
     .to({}, { duration: 0.9 });
 
     return () => {
-      isCancelled = true;
+      document.documentElement.style.overflow = prevOverflow;
       tl.kill();
       exitTl?.kill();
       gsap.killTweensOf([root, bar, tagline, counter, ...letters]);
       root.style.removeProperty('display');
       root.style.removeProperty('opacity');
     };
-  }, [onComplete]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div

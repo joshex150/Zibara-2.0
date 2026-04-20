@@ -1,22 +1,36 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { Link } from 'next-view-transitions';
-import { useData } from '@/context/DataContext';
-import { useCurrency } from '@/context/CurrencyContext';
-import Preloader from '@/components/Preloader';
-import AnimatedHeading from '@/components/AnimatedHeading';
-import AnimatedText from '@/components/AnimatedText';
-import ParallaxImage from '@/components/ParallaxImage';
-import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import React, { useState, useEffect } from "react";
+import { Link } from "next-view-transitions";
+import { useData } from "@/context/DataContext";
+import { useCurrency } from "@/context/CurrencyContext";
+import Preloader from "@/components/Preloader";
+import AnimatedHeading from "@/components/AnimatedHeading";
+import AnimatedText from "@/components/AnimatedText";
+import ParallaxImage from "@/components/ParallaxImage";
+import ZibaraPlaceholder from "@/components/ZibaraPlaceholder";
 
 export default function Home() {
-  const { products, productsLoading, siteContentLoading, categories, categoriesLoading } = useData();
+  const {
+    products,
+    productsLoading,
+    siteContentLoading,
+    categories,
+    categoriesLoading,
+  } = useData();
   const { formatPrice } = useCurrency();
   const [shouldShowPreloader, setShouldShowPreloader] = useState(true);
   const [preloaderDone, setPreloaderDone] = useState(false);
 
+  useEffect(() => {
+    if (sessionStorage.getItem("zibara_loaded") === "1") {
+      setShouldShowPreloader(false);
+      setPreloaderDone(true);
+    }
+  }, []);
+
   const handlePreloaderComplete = () => {
+    sessionStorage.setItem("zibara_loaded", "1");
     setPreloaderDone(true);
     setShouldShowPreloader(false);
   };
@@ -26,14 +40,16 @@ export default function Home() {
   const editorialProducts = products.slice(4, 8);
 
   const categoryCards = categories
-    .filter(cat => cat.isActive)
-    .map(category => {
-      const count = products.filter(p => p.category === category.name).length;
-      const categoryProduct = products.find(p => p.category === category.name);
-      const image = category.image || categoryProduct?.images[0] || '';
+    .filter((cat) => cat.isActive)
+    .map((category) => {
+      const count = products.filter((p) => p.category === category.name).length;
+      const categoryProduct = products.find(
+        (p) => p.category === category.name,
+      );
+      const image = category.image || categoryProduct?.images[0] || "";
       return { name: category.name, slug: category.slug, image, count };
     })
-    .filter(c => c.count > 0);
+    .filter((c) => c.count > 0);
 
   return (
     <>
@@ -43,7 +59,10 @@ export default function Home() {
 
       <div
         className="min-h-screen bg-zibara-black text-zibara-cream"
-        style={{ opacity: !shouldShowPreloader || preloaderDone ? 1 : 0, transition: 'opacity 0.4s ease' }}
+        style={{
+          opacity: !shouldShowPreloader || preloaderDone ? 1 : 0,
+          transition: "opacity 0.4s ease",
+        }}
       >
         {/* ── HERO ─────────────────────────────────────── */}
         <section className="relative w-full h-screen overflow-hidden">
@@ -58,12 +77,16 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-b from-zibara-black/30 via-transparent to-zibara-black/80" />
 
           <div className="absolute bottom-12 left-6 md:left-12 max-w-xl">
-              <AnimatedHeading
-                tag="h1"
-                delay={preloaderDone || !shouldShowPreloader ? 0.1 : 2.8}
-                className="font-display font-light text-zibara-cream text-[clamp(3rem,10vw,8rem)] leading-[0.9] tracking-tight uppercase"
-                style={{ fontFamily: 'var(--font-cormorant), serif' } as React.CSSProperties}
-              >
+            <AnimatedHeading
+              tag="h1"
+              delay={preloaderDone || !shouldShowPreloader ? 0.1 : 2.8}
+              className="font-display font-light text-zibara-cream text-[clamp(3rem,10vw,8rem)] leading-[0.9] tracking-tight uppercase"
+              style={
+                {
+                  fontFamily: "var(--font-cormorant), serif",
+                } as React.CSSProperties
+              }
+            >
               For nights that matter.
             </AnimatedHeading>
 
@@ -86,12 +109,12 @@ export default function Home() {
           </div>
 
           {/* Scroll indicator */}
-          <div className="absolute bottom-12 right-6 md:right-12 flex flex-col items-center gap-2">
+          {/* <div className="absolute bottom-12 right-6 md:right-12 flex flex-col items-center gap-2">
             <div className="w-px h-12 bg-gradient-to-b from-transparent to-zibara-cream/50" />
             <span className="text-[9px] tracking-[0.3em] font-mono text-zibara-cream/50 uppercase rotate-90 origin-center mt-2">
               Scroll
             </span>
-          </div>
+          </div> */}
         </section>
 
         {/* ── BRAND STATEMENT ──────────────────────────── */}
@@ -100,7 +123,11 @@ export default function Home() {
             tag="h2"
             onScroll
             className="font-display font-light text-[clamp(1.8rem,4vw,3.5rem)] leading-tight text-zibara-cream text-center"
-            style={{ fontFamily: 'var(--font-cormorant), serif' } as React.CSSProperties}
+            style={
+              {
+                fontFamily: "var(--font-cormorant), serif",
+              } as React.CSSProperties
+            }
           >
             Afro-futurism built on the architecture of the African woman.
           </AnimatedHeading>
@@ -116,21 +143,30 @@ export default function Home() {
         {!isLoading && featuredProducts.length > 0 && (
           <section className="px-6 md:px-8 mb-24 max-w-[1400px] mx-auto">
             <div className="flex items-baseline justify-between mb-10">
-              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">New Season</span>
-              <Link href="/shop" className="text-[11px] tracking-[0.3em] font-mono text-zibara-cream/55 hover:text-zibara-cream transition-colors uppercase">
+              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">
+                New Season
+              </span>
+              <Link
+                href="/shop"
+                className="text-[11px] tracking-[0.3em] font-mono text-zibara-cream/55 hover:text-zibara-cream transition-colors uppercase"
+              >
                 View All →
               </Link>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {featuredProducts.map((product, i) => (
-                <Link key={product._id} href={`/product/${product._id}`} className="group">
+                <Link
+                  key={product._id}
+                  href={`/product/${product._id}`}
+                  className="group"
+                >
                   <div className="relative overflow-hidden aspect-[3/4] bg-zibara-espresso mb-3">
                     <ZibaraPlaceholder
                       label={product.name}
-                      sublabel={product.category || 'NEW SEASON'}
+                      sublabel={product.category || "NEW SEASON"}
                       variant="default"
-                      tone={i % 2 === 0 ? 'espresso' : 'crimson'}
+                      tone={i % 2 === 0 ? "espresso" : "crimson"}
                       className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-zibara-black/0 group-hover:bg-zibara-black/40 transition-all duration-500 flex items-end p-5">
@@ -171,12 +207,16 @@ export default function Home() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zibara-black/70 to-transparent" />
               <div className="absolute bottom-8 left-8">
-                <p className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/60 uppercase mb-2">Season III</p>
+                <p className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/60 uppercase mb-2">
+                  Season III
+                </p>
                 <p
                   className="text-3xl md:text-5xl font-light text-zibara-cream uppercase"
-                  style={{ fontFamily: 'var(--font-cormorant), serif' }}
+                  style={{ fontFamily: "var(--font-cormorant), serif" }}
                 >
-                  Minutes Before<br />Midnight
+                  Minutes Before
+                  <br />
+                  Midnight
                 </p>
               </div>
             </div>
@@ -188,7 +228,11 @@ export default function Home() {
                   tag="h2"
                   onScroll
                   className="font-display font-light text-[clamp(1.5rem,3vw,2.5rem)] leading-tight text-zibara-cream mb-6"
-                  style={{ fontFamily: 'var(--font-cormorant), serif' } as React.CSSProperties}
+                  style={
+                    {
+                      fontFamily: "var(--font-cormorant), serif",
+                    } as React.CSSProperties
+                  }
                 >
                   She looks in the mirror and evaluates.
                 </AnimatedHeading>
@@ -196,7 +240,9 @@ export default function Home() {
                   onScroll
                   className="text-[12px] font-mono text-zibara-cream/65 leading-loose tracking-wide"
                 >
-                  Is this the version of me I want the world to see tonight? That exact moment — composed, poised, certain — is where ZIBARASTUDIO lives.
+                  Is this the version of me I want the world to see tonight?
+                  That exact moment — composed, poised, certain — is where
+                  ZIBARASTUDIO lives.
                 </AnimatedText>
                 <Link
                   href="/collections"
@@ -209,11 +255,15 @@ export default function Home() {
               {editorialProducts.length > 0 && (
                 <div className="grid grid-cols-2 gap-3 mt-12">
                   {editorialProducts.slice(0, 2).map((product) => (
-                    <Link key={product._id} href={`/product/${product._id}`} className="group">
+                    <Link
+                      key={product._id}
+                      href={`/product/${product._id}`}
+                      className="group"
+                    >
                       <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-2">
                         <ZibaraPlaceholder
                           label={product.name}
-                          sublabel={product.category || 'EDITORIAL'}
+                          sublabel={product.category || "EDITORIAL"}
                           variant="compact"
                           tone="deep"
                           className="w-full h-full group-hover:scale-105 transition-transform duration-500"
@@ -234,12 +284,18 @@ export default function Home() {
         {!isLoading && categoryCards.length > 0 && (
           <section className="px-6 md:px-8 mb-24 max-w-[1400px] mx-auto">
             <div className="flex items-baseline justify-between mb-10">
-              <p className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">Shop by Category</p>
+              <p className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">
+                Shop by Category
+              </p>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
               {categoryCards.slice(0, 4).map((cat) => (
-                <Link key={cat.name} href={`/categories#${cat.slug}`} className="group">
+                <Link
+                  key={cat.name}
+                  href={`/categories#${cat.slug}`}
+                  className="group"
+                >
                   <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-3">
                     {cat.image ? (
                       <ZibaraPlaceholder
@@ -260,8 +316,12 @@ export default function Home() {
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-zibara-black/80 via-transparent to-transparent flex items-end p-4">
                       <div>
-                        <p className="text-[11px] uppercase tracking-wider font-mono text-zibara-cream mb-0.5">{cat.name}</p>
-                        <p className="text-[10px] font-mono text-zibara-cream/60">{cat.count} pieces</p>
+                        <p className="text-[11px] uppercase tracking-wider font-mono text-zibara-cream mb-0.5">
+                          {cat.name}
+                        </p>
+                        <p className="text-[10px] font-mono text-zibara-cream/60">
+                          {cat.count} pieces
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -273,7 +333,7 @@ export default function Home() {
 
         {/* ── CUSTOM ORDER BANNER ──────────────────────── */}
         <section className="relative w-full mb-24 overflow-hidden">
-          <div className="relative aspect-[16/7] md:aspect-[21/7] min-h-[300px]">
+          <div className="relative h-[420px] md:h-auto md:aspect-[21/7]">
             <ParallaxImage
               alt="Zibara Custom Order"
               sublabel="BESPOKE"
@@ -283,19 +343,25 @@ export default function Home() {
               speed={0.2}
             />
             <div className="absolute inset-0 bg-zibara-black/55" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
-              <p className="text-[11px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-4">Bespoke</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
+              <p className="text-[11px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-4">
+                Bespoke
+              </p>
               <AnimatedHeading
                 tag="h2"
                 onScroll
-                className="font-display font-light text-[clamp(2rem,5vw,4rem)] text-zibara-cream uppercase leading-tight mb-6"
-                style={{ fontFamily: 'var(--font-cormorant), serif' } as React.CSSProperties}
+                className="font-display font-light text-[clamp(2rem,5vw,4rem)] text-zibara-cream uppercase leading-tight mb-8 max-w-[20ch]"
+                style={
+                  {
+                    fontFamily: "var(--font-cormorant), serif",
+                  } as React.CSSProperties
+                }
               >
                 Made for your exact silhouette.
               </AnimatedHeading>
               <Link
                 href="/custom-order"
-                className="inline-flex items-center gap-3 text-[11px] tracking-[0.4em] uppercase font-mono border border-zibara-cream/50 text-zibara-cream/90 px-8 py-3 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"
+                className="inline-flex items-center gap-3 text-[10px] tracking-[0.35em] uppercase font-mono border border-zibara-cream/50 text-zibara-cream/90 px-6 md:px-8 py-3 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"
               >
                 Start your custom order
               </Link>
@@ -307,27 +373,36 @@ export default function Home() {
         {!isLoading && products.length >= 5 && (
           <section className="px-6 md:px-8 mb-24 max-w-[1400px] mx-auto">
             <div className="flex items-baseline justify-between mb-10">
-              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">Curated for you</span>
+              <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">
+                Curated for you
+              </span>
             </div>
 
             {/* Desktop asymmetric 3-col grid */}
-            <div className="hidden md:grid grid-cols-3 gap-4" style={{ gridTemplateRows: 'auto auto' }}>
+            <div
+              className="hidden md:grid grid-cols-3 gap-4"
+              style={{ gridTemplateRows: "auto auto" }}
+            >
               <Link
                 href={`/product/${products[0]._id}`}
                 className="row-span-2 relative overflow-hidden group bg-zibara-espresso"
-                style={{ minHeight: '600px' }}
+                style={{ minHeight: "600px" }}
               >
                 <ZibaraPlaceholder
                   label={products[0].name}
-                  sublabel={products[0].category || 'CURATED'}
+                  sublabel={products[0].category || "CURATED"}
                   variant="hero"
                   tone="crimson"
                   className="w-full h-full group-hover:scale-105 transition-transform duration-700 absolute inset-0"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zibara-black/85 via-zibara-black/10 to-transparent flex items-end p-6">
                   <div>
-                    <p className="text-xs uppercase tracking-wider font-mono text-zibara-cream mb-1">{products[0].name}</p>
-                    <p className="text-sm font-mono text-zibara-cream/70">{formatPrice(products[0].price)}</p>
+                    <p className="text-xs uppercase tracking-wider font-mono text-zibara-cream mb-1">
+                      {products[0].name}
+                    </p>
+                    <p className="text-sm font-mono text-zibara-cream/70">
+                      {formatPrice(products[0].price)}
+                    </p>
                   </div>
                 </div>
               </Link>
@@ -340,15 +415,19 @@ export default function Home() {
                 >
                   <ZibaraPlaceholder
                     label={p.name}
-                    sublabel={p.category || 'CURATED'}
+                    sublabel={p.category || "CURATED"}
                     variant="compact"
                     tone="espresso"
                     className="w-full h-full group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-zibara-black/0 group-hover:bg-zibara-black/50 transition-all duration-500 flex items-end p-4">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream">{p.name}</p>
-                      <p className="text-[11px] font-mono text-zibara-cream/70">{formatPrice(p.price)}</p>
+                      <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream">
+                        {p.name}
+                      </p>
+                      <p className="text-[11px] font-mono text-zibara-cream/70">
+                        {formatPrice(p.price)}
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -359,17 +438,21 @@ export default function Home() {
             <div className="md:hidden grid grid-cols-2 gap-3">
               {products.slice(0, 6).map((p) => (
                 <Link key={p._id} href={`/product/${p._id}`} className="group">
-                <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-2">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-2">
                     <ZibaraPlaceholder
                       label={p.name}
-                      sublabel={p.category || 'CURATED'}
+                      sublabel={p.category || "CURATED"}
                       variant="compact"
                       tone="deep"
                       className="w-full h-full group-hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/65">{p.name}</p>
-                  <p className="text-[11px] font-mono text-zibara-cream/90">{formatPrice(p.price)}</p>
+                  <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/65">
+                    {p.name}
+                  </p>
+                  <p className="text-[11px] font-mono text-zibara-cream/90">
+                    {formatPrice(p.price)}
+                  </p>
                 </Link>
               ))}
             </div>
@@ -379,11 +462,18 @@ export default function Home() {
         {/* ── MARQUEE ──────────────────────────────────── */}
         <section className="overflow-hidden border-y border-zibara-cream/10 py-5 mb-24">
           <div className="marquee-track">
-            {Array(8).fill('ZIBARASTUDIO · AFRO-FUTURISM · LAGOS · ABUJA · LONDON · FOR THE WOMAN WHO ARRIVES COMPOSED · ').map((t, i) => (
-              <span key={i} className="text-[11px] tracking-[0.5em] uppercase font-mono text-zibara-cream/72 mr-8 whitespace-nowrap">
-                {t}
-              </span>
-            ))}
+            {Array(8)
+              .fill(
+                "ZIBARASTUDIO · AFRO-FUTURISM · LAGOS · ABUJA · LONDON · FOR THE WOMAN WHO ARRIVES COMPOSED · ",
+              )
+              .map((t, i) => (
+                <span
+                  key={i}
+                  className="text-[11px] tracking-[0.5em] uppercase font-mono text-zibara-cream/72 mr-8 whitespace-nowrap"
+                >
+                  {t}
+                </span>
+              ))}
           </div>
         </section>
 
@@ -391,12 +481,13 @@ export default function Home() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'Store',
-              name: 'ZIBARASTUDIO',
-              description: 'Afro-futurist fashion for the woman who arrives composed.',
-              url: 'https://zibarastudio.com',
-              address: { '@type': 'PostalAddress', addressCountry: 'NG' },
+              "@context": "https://schema.org",
+              "@type": "Store",
+              name: "ZIBARASTUDIO",
+              description:
+                "Afro-futurist fashion for the woman who arrives composed.",
+              url: "https://zibarastudio.com",
+              address: { "@type": "PostalAddress", addressCountry: "NG" },
             }),
           }}
         />

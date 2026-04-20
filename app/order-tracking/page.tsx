@@ -42,12 +42,8 @@ function OrderTrackingContent() {
   useEffect(() => {
     const queryOrderNumber = searchParams.get('orderNumber');
     const queryEmail = searchParams.get('email');
-    if (queryOrderNumber) {
-      setOrderNumber(queryOrderNumber);
-    }
-    if (queryEmail) {
-      setEmail(queryEmail);
-    }
+    if (queryOrderNumber) setOrderNumber(queryOrderNumber);
+    if (queryEmail) setEmail(queryEmail);
   }, [searchParams]);
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -77,41 +73,43 @@ function OrderTrackingContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#EBB0C9] text-[#8b2b4d] scroll-mt-32">
-      <div className="max-w-[900px] mx-auto px-4 py-12 md:py-16">
-        <div className="mb-10 text-center">
-          <h1 className="text-2xl md:text-3xl font-bold uppercase tracking-[0.3em] mb-3">
-            ORDER TRACKING
+    <div className="min-h-screen bg-zibara-black text-zibara-cream pt-24 md:pt-28">
+      <div className="max-w-[900px] mx-auto px-4 md:px-8 pb-16">
+
+        <div className="mb-12 border-b border-zibara-cream/5 pb-8 text-center">
+          <h1 className="text-3xl md:text-4xl font-light uppercase tracking-[0.3em]"
+            style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+            Order Tracking
           </h1>
-          <p className="text-xs md:text-sm tracking-wider opacity-70">
-            Enter your order number and email to track status.
+          <p className="text-[10px] font-mono text-zibara-cream/45 uppercase tracking-widest mt-3">
+            Enter your order number and email to track status
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white/30 rounded-sm p-6 md:p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handleSubmit} className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
+              <label className="block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2">
                 Order Number
               </label>
               <input
                 type="text"
                 value={orderNumber}
                 onChange={(event) => setOrderNumber(event.target.value)}
-                className="w-full px-4 py-3 bg-white/70 border-2 border-[#8b2b4d]/20 rounded-sm focus:outline-none focus:border-[#8b2b4d]/60"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors"
                 placeholder="CRL-XXXX-XXX"
                 required
               />
             </div>
             <div>
-              <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
+              <label className="block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2">
                 Email
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="w-full px-4 py-3 bg-white/70 border-2 border-[#8b2b4d]/20 rounded-sm focus:outline-none focus:border-[#8b2b4d]/60"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/30 focus:outline-none focus:border-zibara-cream/60 transition-colors"
                 placeholder="studio@zibarastudio.com"
                 required
               />
@@ -119,7 +117,7 @@ function OrderTrackingContent() {
           </div>
 
           {error && (
-            <p className="text-xs uppercase tracking-wider text-red-700 mt-4">
+            <p className="text-[9px] uppercase tracking-wider font-mono text-red-400/80 mt-5">
               {error}
             </p>
           )}
@@ -127,26 +125,29 @@ function OrderTrackingContent() {
           <button
             type="submit"
             disabled={loading}
-            className="mt-6 w-full py-3 bg-[#8b2b4d] text-white text-xs uppercase tracking-[0.3em] font-bold hover:bg-[#6d1f3a] transition-colors rounded-sm disabled:opacity-60"
+            className="mt-8 w-full py-4 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black hover:border-zibara-cream transition-all duration-300 disabled:opacity-40"
           >
-            {loading ? 'CHECKING...' : 'TRACK ORDER'}
+            {loading ? 'Checking...' : 'Track Order'}
           </button>
         </form>
 
         {order && (
-          <div className="mt-8 bg-white/30 rounded-sm p-6 md:p-8">
-            <h2 className="text-lg font-bold uppercase tracking-[0.25em] mb-4">
-              ORDER {order.orderNumber}
-            </h2>
-            <p className="text-sm opacity-80 mb-4">
-              Status: <span className="font-semibold">{order.orderStatus}</span> · Payment:{' '}
-              <span className="font-semibold">{order.paymentStatus}</span>
+          <div className="mt-8 bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
+            <h2 className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-2">Order</h2>
+            <p className="text-xl font-light uppercase tracking-wider text-zibara-cream mb-1"
+              style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+              {order.orderNumber}
+            </p>
+            <p className="text-[10px] font-mono text-zibara-cream/55 mb-8">
+              Status: <span className="text-zibara-cream/80">{order.orderStatus}</span>
+              {' · '}
+              Payment: <span className="text-zibara-cream/80">{order.paymentStatus}</span>
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               {order.items.map((item) => (
                 <div key={`${item.id}-${item.size}-${item.color ?? 'default'}`} className="flex gap-4">
-                  <div className="w-16 aspect-[3/4] bg-zibara-espresso rounded-sm overflow-hidden flex-shrink-0">
+                  <div className="w-16 aspect-[3/4] bg-zibara-espresso overflow-hidden flex-shrink-0">
                     <ZibaraPlaceholder
                       label={item.name}
                       sublabel={item.color || item.size || 'TRACKED ITEM'}
@@ -155,11 +156,11 @@ function OrderTrackingContent() {
                       className="w-full h-full"
                     />
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold uppercase tracking-wider">{item.name}</p>
-                    <p className="text-xs opacity-70">
+                  <div className="pt-1">
+                    <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/85">{item.name}</p>
+                    <p className="text-[9px] font-mono text-zibara-cream/45 mt-1">
                       {item.size ? `Size: ${item.size}` : ''}
-                      {item.color ? ` • Color: ${item.color}` : ''}
+                      {item.color ? ` · Color: ${item.color}` : ''}
                       {item.quantity ? ` × ${item.quantity}` : ''}
                     </p>
                   </div>
@@ -167,10 +168,10 @@ function OrderTrackingContent() {
               ))}
             </div>
 
-            <div className="mt-6 text-sm">
-              <p className="font-semibold">
+            <div className="mt-8 pt-6 border-t border-zibara-cream/10">
+              <p className="text-[10px] font-mono text-zibara-cream/55">
                 Need help?{' '}
-                <Link href="/contact" className="underline hover:opacity-80">
+                <Link href="/contact" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">
                   Contact support
                 </Link>
               </p>
