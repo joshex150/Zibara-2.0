@@ -26,7 +26,7 @@ export default function CartPage() {
           >
             Your Bag
           </h1>
-          <p className="mt-3 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase">
+          <p className="mt-3 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase">
             {cart.length} {cart.length === 1 ? 'piece' : 'pieces'}
           </p>
         </div>
@@ -34,7 +34,7 @@ export default function CartPage() {
         {/* Empty state */}
         {cart.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-32 gap-6">
-            <p className="text-[11px] font-mono text-zibara-cream/65 tracking-widest uppercase">Your bag is empty</p>
+            <p className="text-[11px] font-mono text-zibara-cream/75 tracking-widest uppercase">Your bag is empty</p>
             <Link href="/shop" className="text-[10px] tracking-[0.35em] font-mono text-zibara-cream/65 hover:text-zibara-cream transition-colors uppercase border-b border-current pb-0.5">
               Explore the collection →
             </Link>
@@ -67,8 +67,8 @@ export default function CartPage() {
                         <div>
                           <p className="text-[11px] uppercase tracking-wider font-mono text-zibara-cream/80">{item.name}</p>
                           <div className="flex gap-3 mt-1">
-                            {item.size  && <p className="text-[9px] font-mono text-zibara-cream/60 uppercase">{item.size}</p>}
-                            {item.color && <p className="text-[9px] font-mono text-zibara-cream/60 uppercase">{item.color}</p>}
+                            {item.size  && <p className="text-[9px] font-mono text-zibara-cream/70 uppercase">{item.size}</p>}
+                            {item.color && <p className="text-[9px] font-mono text-zibara-cream/70 uppercase">{item.color}</p>}
                           </div>
                         </div>
                         <button
@@ -112,7 +112,7 @@ export default function CartPage() {
             {/* Order summary */}
             <div className="lg:col-span-1">
               <div className="space-y-4 pt-0">
-                <p className="text-[9px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase border-t border-zibara-cream/10 pt-6 pb-2">Order Summary</p>
+                <p className="text-[9px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase border-t border-zibara-cream/10 pt-6 pb-2">Order Summary</p>
 
                 <div className="flex justify-between text-[10px] font-mono text-zibara-cream/75">
                   <span>Subtotal</span>
@@ -125,7 +125,7 @@ export default function CartPage() {
                 </div>
 
                 {shippingUSD > 0 && (
-                  <p className="text-[9px] font-mono text-zibara-cream/55">
+                  <p className="text-[9px] font-mono text-zibara-cream/65">
                     Free shipping on orders over {formatPrice(500)}
                   </p>
                 )}
@@ -144,7 +144,7 @@ export default function CartPage() {
 
                 <Link
                   href="/shop"
-                  className="block w-full text-center py-2 text-[9px] tracking-widest font-mono text-zibara-cream/55 hover:text-zibara-cream transition-colors uppercase"
+                  className="block w-full text-center py-2 text-[9px] tracking-widest font-mono text-zibara-cream/65 hover:text-zibara-cream transition-colors uppercase"
                 >
                   Continue shopping
                 </Link>
@@ -157,7 +157,7 @@ export default function CartPage() {
                   'Free returns within 14 days',
                   'Crafted with intention',
                 ].map((line) => (
-                  <p key={line} className="text-[9px] font-mono text-zibara-cream/45 tracking-wider">— {line}</p>
+                  <p key={line} className="text-[9px] font-mono text-zibara-cream/60 tracking-wider">— {line}</p>
                 ))}
               </div>
             </div>

@@ -24,7 +24,7 @@ export default function ShippingPage() {
           <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
             <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.25em] text-zibara-cream mb-5">International Shipping</h2>
             <p className="mb-4">We ship internationally. Standard international shipping rate is <span className="text-zibara-cream">$60</span> with delivery in <span className="text-zibara-cream">3–5 business days</span>.</p>
-            <p className="text-zibara-cream/55 italic">International orders (particularly to the US) may incur customs fees and import duties. ZIBARASTUDIO is not responsible for collecting, processing, or paying these fees — responsibility lies solely with the customer.</p>
+            <p className="text-zibara-cream/70 italic">International orders (particularly to the US) may incur customs fees and import duties. ZIBARASTUDIO is not responsible for collecting, processing, or paying these fees — responsibility lies solely with the customer.</p>
           </div>
 
           <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
@@ -59,7 +59,7 @@ export default function ShippingPage() {
           </div>
 
           <div className="text-center pt-4">
-            <p className="mb-6 text-zibara-cream/60">Have questions about shipping? We&apos;re here to help.</p>
+            <p className="mb-6 text-zibara-cream/70">Have questions about shipping? We&apos;re here to help.</p>
             <a
               href="/contact"
               className="inline-block px-10 py-3 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"

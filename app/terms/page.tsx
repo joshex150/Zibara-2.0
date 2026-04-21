@@ -8,7 +8,7 @@ export default function TermsPage() {
             style={{ fontFamily: 'var(--font-cormorant), serif' }}>
             Terms of Service
           </h1>
-          <p className="text-center text-[10px] font-mono text-zibara-cream/45 uppercase tracking-widest mt-3">
+          <p className="text-center text-[10px] font-mono text-zibara-cream/60 uppercase tracking-widest mt-3">
             Last Updated: January 15, 2026
           </p>
         </div>

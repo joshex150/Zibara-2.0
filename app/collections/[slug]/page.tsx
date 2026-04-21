@@ -109,7 +109,7 @@ export default function CollectionDetailPage() {
 
       {/* Products from Collection */}
       <div className="max-w-[1400px] mx-auto px-4 md:px-16 pb-16 md:pb-24">
-        <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/50 uppercase mb-8 pb-6 border-b border-zibara-cream/10">Pieces from this collection</p>
+        <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/65 uppercase mb-8 pb-6 border-b border-zibara-cream/10">Pieces from this collection</p>
 
         {collectionProducts.length > 0 ? (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
@@ -141,7 +141,7 @@ export default function CollectionDetailPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-[10px] font-mono text-zibara-cream/50 tracking-widest uppercase">No products in this collection yet</p>
+            <p className="text-[10px] font-mono text-zibara-cream/65 tracking-widest uppercase">No products in this collection yet</p>
           </div>
         )}
       </div>

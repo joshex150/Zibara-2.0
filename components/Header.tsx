@@ -94,13 +94,13 @@ export default function Header() {
              {/* Announcement bar */}
              <div className="hidden md:block">
           <div className="max-w-[1400px] mx-auto px-6 h-9 flex items-center justify-between">
-            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
+            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/65 uppercase font-mono">
               Lagos · Abuja · London
             </span>
-            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
+            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/65 uppercase font-mono">
               You belong in rooms where taste is understood
             </span>
-            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/55 uppercase font-mono">
+            <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/65 uppercase font-mono">
               New arrivals — Season III
             </span>
           </div>
@@ -151,11 +151,11 @@ export default function Header() {
               )}
             </Link>
 
-            {/* Hamburger — always visible */}
+            {/* Hamburger — only visible when desktop nav is hidden */}
             <button
               onClick={openMenu}
               aria-label="Open menu"
-              className="flex flex-col gap-[5px] group"
+              className="md:hidden flex flex-col gap-[5px] group"
             >
               <span className="block w-5 h-px bg-zibara-cream/75 group-hover:bg-zibara-cream transition-colors duration-300" />
               <span className="block w-3 h-px bg-zibara-cream/75 group-hover:bg-zibara-cream transition-colors duration-300" />
@@ -216,7 +216,7 @@ export default function Header() {
         {/* Menu header */}
         <div className="flex items-center justify-between px-8 py-6">
           <span
-            className="text-[10px] tracking-[0.4em] uppercase font-mono text-zibara-cream/55"
+            className="text-[10px] tracking-[0.4em] uppercase font-mono text-zibara-cream/65"
           >
             Menu
           </span>
@@ -275,7 +275,7 @@ export default function Header() {
 
         {/* Menu footer */}
         <div className="px-8 py-6">
-          <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/45">
+          <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/60">
             © 2026 ZIBARASTUDIO
           </p>
         </div>

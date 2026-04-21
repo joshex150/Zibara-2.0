@@ -166,7 +166,7 @@ export default function ProductDetailPage() {
           <div className="md:sticky md:top-28 md:self-start space-y-8">
             {/* Category tag */}
             {product.category && (
-              <p className="text-[9px] tracking-[0.4em] font-mono text-zibara-cream/60 uppercase">
+              <p className="text-[9px] tracking-[0.4em] font-mono text-zibara-cream/70 uppercase">
                 {product.category}
               </p>
             )}
@@ -199,7 +199,7 @@ export default function ProductDetailPage() {
             {/* Color selector */}
             {productColors.length > 0 && (
               <div className="space-y-3">
-                <p className="text-[9px] tracking-[0.35em] font-mono text-zibara-cream/60 uppercase">
+                <p className="text-[9px] tracking-[0.35em] font-mono text-zibara-cream/70 uppercase">
                   Colour —{" "}
                   <span className="text-zibara-cream">{selectedColor}</span>
                 </p>
@@ -225,12 +225,12 @@ export default function ProductDetailPage() {
             {product.sizes?.length > 0 && (
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <p className="text-[9px] tracking-[0.35em] font-mono text-zibara-cream/60 uppercase">
+                  <p className="text-[9px] tracking-[0.35em] font-mono text-zibara-cream/70 uppercase">
                     Size
                   </p>
                   <Link
                     href="/size-guide"
-                    className="text-[9px] tracking-widest font-mono text-zibara-cream/55 hover:text-zibara-cream transition-colors uppercase border-b border-current pb-0"
+                    className="text-[9px] tracking-widest font-mono text-zibara-cream/65 hover:text-zibara-cream transition-colors uppercase border-b border-current pb-0"
                   >
                     Size guide
                   </Link>
@@ -243,7 +243,7 @@ export default function ProductDetailPage() {
                       className={`min-w-[44px] px-3 py-2 text-[10px] tracking-widest font-mono uppercase transition-all duration-200 ${
                         selectedSize === size
                           ? "text-zibara-cream border-b-2 border-zibara-cream border-t-0 border-l-0 border-r-0 pb-1.5"
-                          : "text-zibara-cream/55 border-b border-zibara-cream/20 border-t-0 border-l-0 border-r-0 hover:border-zibara-cream/55 hover:text-zibara-cream pb-2"
+                          : "text-zibara-cream/65 border-b border-zibara-cream/20 border-t-0 border-l-0 border-r-0 hover:border-zibara-cream/65 hover:text-zibara-cream pb-2"
                       }`}
                     >
                       {size}
@@ -255,7 +255,7 @@ export default function ProductDetailPage() {
 
             {/* Quantity */}
             <div className="space-y-3">
-              <p className="text-[9px] tracking-[0.35em] font-mono text-zibara-cream/60 uppercase">
+              <p className="text-[9px] tracking-[0.35em] font-mono text-zibara-cream/70 uppercase">
                 Quantity
               </p>
               <div className="inline-flex items-center border border-zibara-cream/25">
@@ -348,7 +348,7 @@ export default function ProductDetailPage() {
             )}
 
             <div className="border-t border-zibara-cream/10 pt-4">
-              <p className="text-[9px] font-mono text-zibara-cream/55 tracking-wider">
+              <p className="text-[9px] font-mono text-zibara-cream/65 tracking-wider">
                 Free returns within 14 days · Secure checkout
               </p>
             </div>
@@ -360,7 +360,7 @@ export default function ProductDetailPage() {
       {relatedProducts.length > 0 && (
         <section className="max-w-[1400px] mx-auto px-6 md:px-8 py-16 border-t border-zibara-cream/10">
           <div className="flex items-center justify-between mb-8">
-            <p className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/60 uppercase">
+            <p className="text-[10px] tracking-[0.4em] font-mono text-zibara-cream/70 uppercase">
               You may also consider
             </p>
             <Link

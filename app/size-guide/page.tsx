@@ -169,7 +169,7 @@ export default function SizeGuidePage() {
                   </tbody>
                 </table>
               ) : (
-                <div className="p-8 text-center text-zibara-cream/45">
+                <div className="p-8 text-center text-zibara-cream/60">
                   <Ruler className="w-12 h-12 mx-auto mb-2 opacity-50" />
                   <p>No product measurements available yet.</p>
                 </div>
@@ -202,16 +202,16 @@ export default function SizeGuidePage() {
                   </tbody>
                 </table>
               ) : (
-                <div className="p-8 text-center text-zibara-cream/45">
+                <div className="p-8 text-center text-zibara-cream/60">
                   <Ruler className="w-12 h-12 mx-auto mb-2 opacity-50" />
                   <p>No body measurements available yet.</p>
                 </div>
               )
             )}
           </div>
-          <div className="p-3 md:p-4 border-t border-zibara-cream/10 text-[10px] md:text-xs text-zibara-cream/55 font-mono">
+          <div className="p-3 md:p-4 border-t border-zibara-cream/10 text-[10px] md:text-xs text-zibara-cream/65 font-mono">
             <Info size={12} className="inline mr-1" />
-            {activeTab === 'product' 
+            {activeTab === 'product'
               ? 'Measurements are taken from the garment laid flat. Allow 1-2 cm variance due to manual measuring.'
               : 'These are recommended body measurements for each size. For a relaxed fit, size up.'}
           </div>
@@ -223,28 +223,28 @@ export default function SizeGuidePage() {
             <h2 className="text-sm md:text-base font-light uppercase tracking-[0.25em] mb-4 text-zibara-cream" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
               Fit Information
             </h2>
-            
+
             <div className="space-y-4">
               <div>
-                <p className="text-[10px] uppercase tracking-[0.3em] font-mono text-zibara-cream/60 mb-2">Fit Type</p>
+                <p className="text-[10px] uppercase tracking-[0.3em] font-mono text-zibara-cream/70 mb-2">Fit Type</p>
                 <div className="flex items-center gap-1">
-                  <span className="text-[10px] md:text-xs text-zibara-cream/55">Skinny</span>
+                  <span className="text-[10px] md:text-xs text-zibara-cream/65">Skinny</span>
                   <div className="flex-1 h-2 bg-zibara-black/45 rounded-full mx-2 relative">
                     <div className={`absolute ${getFitPosition()} top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-zibara-crimson rounded-full`}></div>
                   </div>
-                  <span className="text-[10px] md:text-xs text-zibara-cream/55">Oversized</span>
+                  <span className="text-[10px] md:text-xs text-zibara-cream/65">Oversized</span>
                 </div>
                 <p className="text-xs text-center mt-1 font-mono text-zibara-cream/72 capitalize">{sizeGuide.fitType} Fit</p>
               </div>
               
               <div>
-                <p className="text-[10px] uppercase tracking-[0.3em] font-mono text-zibara-cream/60 mb-2">Stretch</p>
+                <p className="text-[10px] uppercase tracking-[0.3em] font-mono text-zibara-cream/70 mb-2">Stretch</p>
                 <div className="flex items-center gap-1">
-                  <span className="text-[10px] md:text-xs text-zibara-cream/55">None</span>
+                  <span className="text-[10px] md:text-xs text-zibara-cream/65">None</span>
                   <div className="flex-1 h-2 bg-zibara-black/45 rounded-full mx-2 relative">
                     <div className={`absolute ${getStretchPosition()} top-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-zibara-crimson rounded-full`}></div>
                   </div>
-                  <span className="text-[10px] md:text-xs text-zibara-cream/55">High</span>
+                  <span className="text-[10px] md:text-xs text-zibara-cream/65">High</span>
                 </div>
                 <p className="text-xs text-center mt-1 font-mono text-zibara-cream/72 capitalize">{sizeGuide.stretch} Stretch</p>
               </div>

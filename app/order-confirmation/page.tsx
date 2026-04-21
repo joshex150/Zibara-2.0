@@ -128,7 +128,7 @@ function OrderConfirmationContent() {
         <div className="text-center mb-12">
           <div className="mb-8">
             <span
-              className="font-display font-light text-[4rem] text-zibara-cream/45 leading-none"
+              className="font-display font-light text-[4rem] text-zibara-cream/60 leading-none"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}
             >
               ✓
@@ -138,17 +138,17 @@ function OrderConfirmationContent() {
             style={{ fontFamily: 'var(--font-cormorant), serif' }}>
             Order Confirmed
           </h1>
-          <p className="text-[11px] font-mono text-zibara-cream/65 mb-1">
+          <p className="text-[11px] font-mono text-zibara-cream/75 mb-1">
             Thank you, {orderDetails.customer.firstName}.
           </p>
-          <p className="text-[10px] font-mono text-zibara-cream/50 uppercase tracking-widest">
+          <p className="text-[10px] font-mono text-zibara-cream/65 uppercase tracking-widest">
             Order: {orderDetails.orderNumber || orderDetails.orderId || orderDetails._id}
           </p>
         </div>
 
         {/* ORDER DETAILS */}
         <div className="border-t border-zibara-cream/8 pt-8 mb-14">
-          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-6">Order Details</p>
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-6">Order Details</p>
 
           <div className="space-y-5 mb-6">
             {orderDetails.items.map((item) => (
@@ -164,7 +164,7 @@ function OrderConfirmationContent() {
                 </div>
                 <div className="flex-1 pt-1">
                   <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/85">{item.name}</p>
-                  <p className="text-[9px] font-mono text-zibara-cream/45 mt-1">
+                  <p className="text-[9px] font-mono text-zibara-cream/60 mt-1">
                     Size: {item.size}{item.color ? ` · ${item.color}` : ''} × {item.quantity}
                   </p>
                   <p className="text-[11px] font-mono text-zibara-cream mt-2">{formatPrice(item.price * item.quantity, 'USD')}</p>
@@ -175,10 +175,10 @@ function OrderConfirmationContent() {
 
           <div className="pt-5 border-t border-zibara-cream/10">
             <div className="flex justify-between">
-              <span className="text-[10px] font-mono text-zibara-cream/55 uppercase tracking-wider">Total Paid</span>
+              <span className="text-[10px] font-mono text-zibara-cream/65 uppercase tracking-wider">Total Paid</span>
               <span className="text-base font-mono text-zibara-cream">{formatPrice(orderDetails.total, 'USD')}</span>
             </div>
-            <p className="text-[9px] font-mono text-zibara-cream/50 uppercase tracking-wider mt-2">
+            <p className="text-[9px] font-mono text-zibara-cream/65 uppercase tracking-wider mt-2">
               Via {orderDetails.paymentMethod}
             </p>
           </div>
@@ -186,20 +186,20 @@ function OrderConfirmationContent() {
 
         {/* SHIPPING */}
         <div className="border-t border-zibara-cream/8 pt-8 mb-14">
-          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-5">Shipping To</p>
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-5">Shipping To</p>
           <div className="text-[11px] font-mono text-zibara-cream/70 space-y-1">
             <p className="text-zibara-cream/90">{orderDetails.customer.firstName} {orderDetails.customer.lastName}</p>
             <p>{orderDetails.customer.address}</p>
             <p>{orderDetails.customer.city}, {orderDetails.customer.state}{orderDetails.customer.zipCode && ` ${orderDetails.customer.zipCode}`}</p>
             {orderDetails.customer.country && <p>{orderDetails.customer.country}</p>}
-            <p className="pt-2 text-zibara-cream/50">{orderDetails.customer.phone}</p>
-            <p className="text-zibara-cream/50">{orderDetails.customer.email}</p>
+            <p className="pt-2 text-zibara-cream/65">{orderDetails.customer.phone}</p>
+            <p className="text-zibara-cream/65">{orderDetails.customer.email}</p>
           </div>
         </div>
 
         {/* WHAT'S NEXT */}
         <div className="border-t border-zibara-cream/8 pt-8 mb-14">
-          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-6">What&apos;s Next</p>
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-6">What&apos;s Next</p>
           <ul className="space-y-5">
             {[
               { n: '01', title: 'Order Confirmation Email', body: `We've sent a confirmation to ${orderDetails.customer.email}` },
@@ -207,10 +207,10 @@ function OrderConfirmationContent() {
               { n: '03', title: 'Shipping & Tracking', body: "You'll receive tracking information once your order ships (7–10 business days)" },
             ].map(({ n, title, body }) => (
               <li key={n} className="flex gap-4">
-                <span className="text-[8px] tracking-widest font-mono text-zibara-cream/45 pt-0.5 flex-shrink-0">{n}</span>
+                <span className="text-[8px] tracking-widest font-mono text-zibara-cream/60 pt-0.5 flex-shrink-0">{n}</span>
                 <div>
                   <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/80 mb-0.5">{title}</p>
-                  <p className="text-[10px] font-mono text-zibara-cream/50">{body}</p>
+                  <p className="text-[10px] font-mono text-zibara-cream/65">{body}</p>
                 </div>
               </li>
             ))}
@@ -240,9 +240,9 @@ function OrderConfirmationContent() {
         </div>
 
         <div className="text-center mt-10 pt-8 border-t border-zibara-cream/5">
-          <p className="text-[10px] font-mono text-zibara-cream/50">
+          <p className="text-[10px] font-mono text-zibara-cream/65">
             Need help?{' '}
-            <Link href="/contact" className="text-zibara-cream/60 underline hover:text-zibara-cream transition-colors">
+            <Link href="/contact" className="text-zibara-cream/75 underline hover:text-zibara-cream transition-colors">
               Contact our support team
             </Link>
           </p>

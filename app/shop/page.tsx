@@ -46,7 +46,7 @@ function ShopContent() {
             >
               The Collection
             </AnimatedHeading>
-            <p className="text-[10px] tracking-[0.35em] font-mono text-zibara-cream/55 uppercase">
+            <p className="text-[10px] tracking-[0.35em] font-mono text-zibara-cream/65 uppercase">
               {query
                 ? `${filteredProducts.length} result${filteredProducts.length === 1 ? '' : 's'} for "${query}"`
                 : `${filteredProducts.length} piece${filteredProducts.length === 1 ? '' : 's'}`}
@@ -56,7 +56,7 @@ function ShopContent() {
 
         <div className="flex gap-12 items-start">
           <aside className="hidden lg:block w-36 flex-shrink-0 pt-1">
-            <p className="text-[8px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-5">Filter</p>
+            <p className="text-[8px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-5">Filter</p>
             <div className="space-y-1">
               {!query && categoryNames.length > 2 && categoryNames.map((cat) => (
                 <button
@@ -65,7 +65,7 @@ function ShopContent() {
                   className={`block w-full text-left text-[10px] tracking-[0.25em] font-mono uppercase py-1.5 transition-colors duration-200 ${
                     activeCategory === cat
                       ? 'text-zibara-cream'
-                      : 'text-zibara-cream/40 hover:text-zibara-cream/75'
+                      : 'text-zibara-cream/60 hover:text-zibara-cream/85'
                   }`}
                 >
                   {cat === 'all' ? 'All Pieces' : cat}
@@ -85,7 +85,7 @@ function ShopContent() {
                     className={`text-[10px] tracking-[0.35em] font-mono uppercase whitespace-nowrap transition-colors duration-300 pb-1 border-b ${
                       activeCategory === cat
                         ? 'text-zibara-cream border-zibara-cream/70'
-                        : 'text-zibara-cream/55 border-transparent hover:text-zibara-cream'
+                        : 'text-zibara-cream/65 border-transparent hover:text-zibara-cream'
                     }`}
                   >
                     {cat === 'all' ? 'All Pieces' : cat}
@@ -97,13 +97,13 @@ function ShopContent() {
             {/* Product grid */}
             {filteredProducts.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-32 gap-4">
-                <p className="font-display font-light italic text-[1.5rem] text-zibara-cream/25 mb-1" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
+                <p className="font-display font-light italic text-[1.5rem] text-zibara-cream/55 mb-1" style={{ fontFamily: 'var(--font-cormorant), serif' }}>
                   Nothing here tonight.
                 </p>
-                <p className="text-[10px] font-mono text-zibara-cream/45 tracking-widest uppercase">No pieces found</p>
+                <p className="text-[10px] font-mono text-zibara-cream/60 tracking-widest uppercase">No pieces found</p>
                 <button
                   onClick={() => setActiveCategory('all')}
-                  className="mt-2 text-[9px] tracking-widest font-mono text-zibara-cream/45 hover:text-zibara-cream transition-colors uppercase border-b border-current pb-0.5"
+                  className="mt-2 text-[9px] tracking-widest font-mono text-zibara-cream/60 hover:text-zibara-cream transition-colors uppercase border-b border-current pb-0.5"
                 >
                   Clear filter
                 </button>
@@ -147,7 +147,7 @@ function ShopContent() {
                         )}
 
                         {!product.inStock && (
-                          <span className="absolute top-3 right-3 text-[7px] tracking-[0.3em] font-mono bg-zibara-espresso/80 text-zibara-cream/60 px-1.5 py-0.5 uppercase">
+                          <span className="absolute top-3 right-3 text-[7px] tracking-[0.3em] font-mono bg-zibara-espresso/80 text-zibara-cream/70 px-1.5 py-0.5 uppercase">
                             Sold out
                           </span>
                         )}
@@ -166,7 +166,7 @@ function ShopContent() {
                           {product.name}
                         </p>
                         {product.category && (
-                          <p className="text-[9px] font-mono text-zibara-cream/50 uppercase tracking-wider">
+                          <p className="text-[9px] font-mono text-zibara-cream/65 uppercase tracking-wider">
                             {product.category}
                           </p>
                         )}
@@ -177,7 +177,7 @@ function ShopContent() {
                     </Link>
                     {(i + 1) % 6 === 0 && i < filteredProducts.length - 1 && (
                       <div className="col-span-2 md:col-span-3 lg:col-span-4 py-10 border-t border-b border-zibara-cream/5 my-2">
-                        <p className="text-center font-display font-light italic text-[clamp(1.1rem,2.2vw,1.8rem)] text-zibara-cream/30 tracking-wide"
+                        <p className="text-center font-display font-light italic text-[clamp(1.1rem,2.2vw,1.8rem)] text-zibara-cream/55 tracking-wide"
                           style={{ fontFamily: 'var(--font-cormorant), serif' }}>
                           Silhouette over decoration. Form over noise.
                         </p>

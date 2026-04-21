@@ -10,7 +10,7 @@ import toast from 'react-hot-toast';
 import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
 
 const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors';
-const labelClass = 'block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2';
+const labelClass = 'block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/60 mb-2';
 
 export default function CheckoutClient() {
   const router = useRouter();
@@ -206,7 +206,7 @@ export default function CheckoutClient() {
     return (
       <div className="min-h-screen bg-zibara-black text-zibara-cream flex items-center justify-center">
         <div className="text-center">
-          <p className="text-[11px] font-mono text-zibara-cream/60 uppercase tracking-widest mb-6">Your cart is empty</p>
+          <p className="text-[11px] font-mono text-zibara-cream/70 uppercase tracking-widest mb-6">Your cart is empty</p>
           <button
             onClick={() => router.push('/shop')}
             className="px-10 py-3 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"
@@ -225,7 +225,7 @@ export default function CheckoutClient() {
           <div className="bg-zibara-deep border border-zibara-cream/10 p-10 flex flex-col items-center gap-5">
             <div className="animate-spin w-10 h-10 border border-zibara-cream/20 border-t-zibara-cream rounded-full" />
             <p className="text-[10px] font-mono text-zibara-cream/70 uppercase tracking-widest">Processing payment</p>
-            <p className="text-[9px] font-mono text-zibara-cream/40 uppercase tracking-wider">Do not close this window</p>
+            <p className="text-[9px] font-mono text-zibara-cream/60 uppercase tracking-wider">Do not close this window</p>
           </div>
         </div>
       )}
@@ -243,7 +243,7 @@ export default function CheckoutClient() {
 
             {/* LEFT: SHIPPING */}
             <div>
-              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-8">Shipping Information</p>
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-8">Shipping Information</p>
 
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-6">
@@ -296,7 +296,7 @@ export default function CheckoutClient() {
 
                 {/* PAYMENT METHOD */}
                 <div className="pt-8 mt-4 border-t border-zibara-cream/5">
-                  <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-6">Payment Method</p>
+                  <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-6">Payment Method</p>
 
                   {!isFlutterwaveKeyValid && !isPaystackKeyValid && (
                     <div className="mb-5 p-4 bg-red-950/50 border border-red-500/30">
@@ -340,7 +340,7 @@ export default function CheckoutClient() {
             {/* RIGHT: ORDER SUMMARY */}
             <div>
               <div className="lg:sticky lg:top-32">
-                <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-8">Order Summary</p>
+                <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-8">Order Summary</p>
 
                 <div className="space-y-5 mb-8">
                   {cart.map((item) => (
@@ -356,7 +356,7 @@ export default function CheckoutClient() {
                       </div>
                       <div className="flex-1 pt-1">
                         <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/85">{item.name}</p>
-                        <p className="text-[9px] font-mono text-zibara-cream/45 mt-1">
+                        <p className="text-[9px] font-mono text-zibara-cream/60 mt-1">
                           Size: {item.size}{item.color ? ` · ${item.color}` : ''} × {item.quantity}
                         </p>
                         <p className="text-[11px] font-mono text-zibara-cream mt-2">{formatPrice(item.price * item.quantity, 'USD')}</p>
@@ -367,11 +367,11 @@ export default function CheckoutClient() {
 
                 <div className="space-y-3 py-6 border-y border-zibara-cream/10">
                   <div className="flex justify-between text-[11px] font-mono">
-                    <span className="text-zibara-cream/55">Subtotal</span>
+                    <span className="text-zibara-cream/65">Subtotal</span>
                     <span className="text-zibara-cream/80">{formatPrice(cartTotal, 'USD')}</span>
                   </div>
                   <div className="flex justify-between text-[11px] font-mono">
-                    <span className="text-zibara-cream/55">Shipping</span>
+                    <span className="text-zibara-cream/65">Shipping</span>
                     <span className="text-zibara-cream/80">{shippingInUSD === 0 ? 'FREE' : formatPrice(shippingInUSD, 'USD')}</span>
                   </div>
                 </div>

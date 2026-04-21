@@ -93,7 +93,7 @@ export default function ContactPage() {
           </AnimatedHeading>
           <AnimatedText
             delay={0.2}
-            className="mt-4 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase"
+            className="mt-4 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase"
             onScroll={false}
           >
             For the woman who knows what she wants.
@@ -105,7 +105,7 @@ export default function ContactPage() {
 
           {/* Form */}
           <div>
-            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-8">Send a message</p>
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/65 uppercase mb-8">Send a message</p>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {[
@@ -114,7 +114,7 @@ export default function ContactPage() {
                 { name: 'subject', label: 'Subject', type: 'text',  required: false, placeholder: 'What is this regarding?' },
               ].map((field) => (
                 <div key={field.name} className="border-b border-zibara-cream/15 pb-3">
-                  <label className="block text-[8px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase mb-2">
+                  <label className="block text-[8px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase mb-2">
                     {field.label}{field.required && ' *'}
                   </label>
                   <input
@@ -130,7 +130,7 @@ export default function ContactPage() {
               ))}
 
               <div className="border-b border-zibara-cream/15 pb-3">
-                <label className="block text-[8px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase mb-2">
+                <label className="block text-[8px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase mb-2">
                   Message *
                 </label>
                 <textarea
@@ -157,16 +157,16 @@ export default function ContactPage() {
           {/* Info */}
           <div className="space-y-12">
             <div>
-              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-6">Direct contact</p>
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/65 uppercase mb-6">Direct contact</p>
               <div className="space-y-4">
                 <div>
-                  <p className="text-[8px] tracking-widest font-mono text-zibara-cream/55 uppercase mb-1">Email</p>
+                  <p className="text-[8px] tracking-widest font-mono text-zibara-cream/65 uppercase mb-1">Email</p>
                   <a href={`mailto:${contactEmail}`} className="text-[11px] font-mono text-zibara-cream/80 hover:text-zibara-cream transition-colors">
                     {contactEmail}
                   </a>
                 </div>
                 <div>
-                  <p className="text-[8px] tracking-widest font-mono text-zibara-cream/55 uppercase mb-1">Social</p>
+                  <p className="text-[8px] tracking-widest font-mono text-zibara-cream/65 uppercase mb-1">Social</p>
                   <div className="flex gap-4">
                     <a href={instagramUrl} target="_blank" rel="noopener noreferrer"
                       className="text-[10px] tracking-widest font-mono text-zibara-cream/65 hover:text-zibara-cream transition-colors uppercase">
@@ -179,7 +179,7 @@ export default function ContactPage() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-[8px] tracking-widest font-mono text-zibara-cream/55 uppercase mb-1">Locations</p>
+                  <p className="text-[8px] tracking-widest font-mono text-zibara-cream/65 uppercase mb-1">Locations</p>
                   <p className="text-[11px] font-mono text-zibara-cream/70">Lagos · Abuja · London</p>
                 </div>
               </div>
@@ -190,7 +190,7 @@ export default function ContactPage() {
 
         {/* Full-width FAQ */}
         <div className="border-t border-zibara-cream/5 pt-16 pb-24">
-          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/50 uppercase mb-12">Frequently Asked</p>
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/65 uppercase mb-12">Frequently Asked</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-0">
             {faqs.map((faq, i) => (
               <div key={i} className="border-t border-zibara-cream/10 py-8">
@@ -200,7 +200,7 @@ export default function ContactPage() {
                 >
                   {faq.q}
                 </p>
-                <p className="text-[10px] font-mono text-zibara-cream/50 leading-loose">{faq.a}</p>
+                <p className="text-[10px] font-mono text-zibara-cream/65 leading-loose">{faq.a}</p>
               </div>
             ))}
           </div>

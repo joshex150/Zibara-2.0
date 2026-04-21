@@ -51,7 +51,7 @@ export default function ReturnsPage() {
                 { step: '04', title: 'Receive Your Refund', body: "Once we receive and inspect your return, we'll process your refund within 5–7 business days to your original payment method." },
               ].map(({ step, title, body }) => (
                 <div key={step} className="flex gap-4">
-                  <span className="text-[8px] tracking-widest font-mono text-zibara-cream/50 pt-0.5 flex-shrink-0">{step}</span>
+                  <span className="text-[8px] tracking-widest font-mono text-zibara-cream/60 pt-0.5 flex-shrink-0">{step}</span>
                   <div>
                     <p className="text-zibara-cream/90 mb-1">{title}</p>
                     <p>{body}</p>
@@ -65,7 +65,7 @@ export default function ReturnsPage() {
             <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.25em] text-zibara-cream mb-5">Exchanges</h2>
             <p className="mb-4">We&apos;re happy to exchange items for a different size or color (subject to availability).</p>
             <p className="mb-4">To request an exchange, follow the same process as returns and indicate in your email that you&apos;d like an exchange. We&apos;ll arrange for your new item to be shipped once we receive your return.</p>
-            <p className="text-zibara-cream/55 italic">If the new item is more expensive, you&apos;ll be charged the difference. If it&apos;s less expensive, we&apos;ll refund the difference.</p>
+            <p className="text-zibara-cream/70 italic">If the new item is more expensive, you&apos;ll be charged the difference. If it&apos;s less expensive, we&apos;ll refund the difference.</p>
           </div>
 
           <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
@@ -88,7 +88,7 @@ export default function ReturnsPage() {
           </div>
 
           <div className="text-center pt-4">
-            <p className="mb-6 text-zibara-cream/60">Have questions about returns or exchanges?</p>
+            <p className="mb-6 text-zibara-cream/70">Have questions about returns or exchanges?</p>
             <a
               href="/contact"
               className="inline-block px-10 py-3 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono text-zibara-cream/80 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"

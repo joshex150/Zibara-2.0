@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react';
 import { Link } from 'next-view-transitions';
+import { usePathname } from 'next/navigation';
 import { useData } from '@/context/DataContext';
 import { useCurrency, Currency } from '@/context/CurrencyContext';
 
 export default function Footer() {
+  const pathname = usePathname();
   const { getContentValue } = useData();
   const { selectedCurrency, setSelectedCurrency, currencies } = useCurrency();
 
@@ -52,16 +54,18 @@ export default function Footer() {
     <footer className="bg-zibara-deep border-t border-zibara-cream/5 pt-20 pb-8">
       <div className="max-w-[1400px] mx-auto px-6 md:px-8">
 
-        {/* Top: marquee tagline */}
-        <div className="overflow-hidden mb-16 border-y border-zibara-cream/5 py-5">
-          <div className="marquee-track">
-            {Array(8).fill('FOR NIGHTS THAT MATTER · FOR THE WOMAN WHO ARRIVES COMPOSED · ELEGANCE BEFORE THE WORLD SEES YOU · ').map((t, i) => (
-              <span key={i} className="text-[10px] tracking-[0.4em] uppercase font-mono text-zibara-cream/70 mr-8 whitespace-nowrap">
-                {t}
-              </span>
-            ))}
+        {/* Top: marquee tagline — hidden on home page (it has its own marquee) */}
+        {pathname !== '/' && (
+          <div className="overflow-hidden mb-16 border-y border-zibara-cream/5 py-5">
+            <div className="marquee-track">
+              {Array(8).fill('FOR NIGHTS THAT MATTER · FOR THE WOMAN WHO ARRIVES COMPOSED · ELEGANCE BEFORE THE WORLD SEES YOU · ').map((t, i) => (
+                <span key={i} className="text-[10px] tracking-[0.4em] uppercase font-mono text-zibara-cream/70 mr-8 whitespace-nowrap">
+                  {t}
+                </span>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Main grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
@@ -76,7 +80,7 @@ export default function Footer() {
                 ZIBARASTUDIO
               </span>
             </Link>
-            <p className="mt-4 text-[11px] font-mono text-zibara-cream/55 leading-relaxed max-w-[200px]">
+            <p className="mt-4 text-[11px] font-mono text-zibara-cream/65 leading-relaxed max-w-[200px]">
               (African Influence) + (Future Thinking) + (Intentional Design) − (Noise)
             </p>
             <div className="flex gap-5 mt-6">
@@ -93,7 +97,7 @@ export default function Footer() {
 
           {/* Shop */}
           <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/45 mb-5">Collection</p>
+            <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/60 mb-5">Collection</p>
             <ul className="space-y-3">
               {[
                 { href: '/shop',        label: 'All Pieces'     },
@@ -112,7 +116,7 @@ export default function Footer() {
 
           {/* Info */}
           <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/45 mb-5">Info</p>
+            <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/60 mb-5">Info</p>
             <ul className="space-y-3">
               {[
                 { href: '/about',          label: 'About Zibara'  },
@@ -132,15 +136,15 @@ export default function Footer() {
           </div>
 
           {/* Newsletter */}
-          <div>
-            <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/45 mb-5">Newsletter</p>
+          <div className="col-span-2 md:col-span-1">
+            <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/60 mb-5">Newsletter</p>
             {subscribed ? (
               <p className="text-[11px] font-mono text-zibara-cream/72 leading-relaxed">
                 You're in. Expect the unexpected.
               </p>
             ) : (
               <form onSubmit={handleSubscribe} className="space-y-3">
-                <p className="text-[11px] font-mono text-zibara-cream/55 leading-relaxed">
+                <p className="text-[11px] font-mono text-zibara-cream/65 leading-relaxed">
                   First access to new collections and private events.
                 </p>
                 <div className="flex border-b border-zibara-cream/20 pb-1">
@@ -164,7 +168,7 @@ export default function Footer() {
             {/* Currency selector */}
             {currencies && currencies.length > 0 && (
               <div className="mt-8">
-                <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/45 mb-3">Currency</p>
+                <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/60 mb-3">Currency</p>
                 <select
                   value={selectedCurrency}
                   onChange={(e) => setSelectedCurrency(e.target.value)}
@@ -183,7 +187,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pt-6 border-t border-zibara-cream/5">
-          <p className="text-[10px] tracking-widest font-mono text-zibara-cream/45 uppercase">
+          <p className="text-[10px] tracking-widest font-mono text-zibara-cream/60 uppercase">
             © 2026 ZIBARASTUDIO. All rights reserved.
           </p>
           <div className="flex gap-6">
@@ -193,7 +197,7 @@ export default function Footer() {
               { href: '/admin/login', label: 'Owner' },
             ].map((l) => (
               <Link key={l.href} href={l.href}
-                className="text-[10px] tracking-widest font-mono text-zibara-cream/45 hover:text-zibara-cream/65 transition-colors uppercase">
+                className="text-[10px] tracking-widest font-mono text-zibara-cream/60 hover:text-zibara-cream/80 transition-colors uppercase">
                 {l.label}
               </Link>
             ))}
@@ -206,16 +210,16 @@ export default function Footer() {
         <div className="fixed inset-0 z-50 bg-zibara-black/80 backdrop-blur-sm flex items-end md:items-center justify-center p-4 animate-fadeIn">
           <div className="bg-zibara-deep border border-zibara-cream/10 p-8 w-full max-w-md animate-scaleIn">
             <div className="flex justify-between items-center mb-6">
-              <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/40">Get in touch</p>
-              <button onClick={() => setContactOpen(false)} className="text-zibara-cream/40 hover:text-zibara-cream transition-colors">✕</button>
+              <p className="text-[10px] tracking-[0.3em] uppercase font-mono text-zibara-cream/60">Get in touch</p>
+              <button onClick={() => setContactOpen(false)} className="text-zibara-cream/60 hover:text-zibara-cream transition-colors">✕</button>
             </div>
             {sent ? (
-              <p className="text-[11px] font-mono text-zibara-cream/60">Message received. We'll be in touch.</p>
+              <p className="text-[11px] font-mono text-zibara-cream/70">Message received. We'll be in touch.</p>
             ) : (
               <form onSubmit={handleContactSubmit} className="space-y-4">
                 {(['name', 'email', 'message'] as const).map((field) => (
                   <div key={field} className="border-b border-zibara-cream/10 pb-2">
-                    <label className="block text-[9px] tracking-widest uppercase font-mono text-zibara-cream/30 mb-1">{field}</label>
+                    <label className="block text-[9px] tracking-widest uppercase font-mono text-zibara-cream/60 mb-1">{field}</label>
                     {field === 'message' ? (
                       <textarea
                         rows={3}

@@ -81,7 +81,7 @@ function OrderTrackingContent() {
             style={{ fontFamily: 'var(--font-cormorant), serif' }}>
             Order Tracking
           </h1>
-          <p className="text-[10px] font-mono text-zibara-cream/45 uppercase tracking-widest mt-3">
+          <p className="text-[10px] font-mono text-zibara-cream/60 uppercase tracking-widest mt-3">
             Enter your order number and email to track status
           </p>
         </div>
@@ -89,7 +89,7 @@ function OrderTrackingContent() {
         <form onSubmit={handleSubmit} className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2">
+              <label className="block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/60 mb-2">
                 Order Number
               </label>
               <input
@@ -102,7 +102,7 @@ function OrderTrackingContent() {
               />
             </div>
             <div>
-              <label className="block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/50 mb-2">
+              <label className="block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/60 mb-2">
                 Email
               </label>
               <input
@@ -133,12 +133,12 @@ function OrderTrackingContent() {
 
         {order && (
           <div className="mt-12 border-t border-zibara-cream/10 pt-8">
-            <h2 className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/45 uppercase mb-2">Order</h2>
+            <h2 className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/60 uppercase mb-2">Order</h2>
             <p className="text-xl font-light uppercase tracking-wider text-zibara-cream mb-1"
               style={{ fontFamily: 'var(--font-cormorant), serif' }}>
               {order.orderNumber}
             </p>
-            <p className="text-[10px] font-mono text-zibara-cream/55 mb-8">
+            <p className="text-[10px] font-mono text-zibara-cream/65 mb-8">
               Status: <span className="text-zibara-cream/80">{order.orderStatus}</span>
               {' · '}
               Payment: <span className="text-zibara-cream/80">{order.paymentStatus}</span>
@@ -158,7 +158,7 @@ function OrderTrackingContent() {
                   </div>
                   <div className="pt-1">
                     <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/85">{item.name}</p>
-                    <p className="text-[9px] font-mono text-zibara-cream/45 mt-1">
+                    <p className="text-[9px] font-mono text-zibara-cream/60 mt-1">
                       {item.size ? `Size: ${item.size}` : ''}
                       {item.color ? ` · Color: ${item.color}` : ''}
                       {item.quantity ? ` × ${item.quantity}` : ''}

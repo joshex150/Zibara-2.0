@@ -67,7 +67,7 @@ export default function AboutPage() {
           </div>
 
           <div className="space-y-8">
-            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Origin</p>
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/65 uppercase">Origin</p>
             <AnimatedHeading
               tag="h2"
               onScroll
@@ -123,7 +123,7 @@ export default function AboutPage() {
             },
           ].map((pillar) => (
             <div key={pillar.number} className="space-y-4">
-              <p className="text-[8px] tracking-[0.4em] font-mono text-zibara-cream/60 uppercase">{pillar.number}</p>
+              <p className="text-[8px] tracking-[0.4em] font-mono text-zibara-cream/70 uppercase">{pillar.number}</p>
               <AnimatedHeading
                 tag="h3"
                 onScroll
@@ -132,7 +132,7 @@ export default function AboutPage() {
               >
                 {pillar.title}
               </AnimatedHeading>
-              <p className="text-[11px] font-mono text-zibara-cream/65 leading-loose">{pillar.body}</p>
+              <p className="text-[11px] font-mono text-zibara-cream/75 leading-loose">{pillar.body}</p>
             </div>
           ))}
         </div>
@@ -160,7 +160,7 @@ export default function AboutPage() {
 
       {/* CTA */}
       <section className="flex flex-col items-center text-center pb-24 gap-6 px-6">
-        <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Explore</p>
+        <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/65 uppercase">Explore</p>
         <AnimatedHeading
           tag="h2"
           onScroll

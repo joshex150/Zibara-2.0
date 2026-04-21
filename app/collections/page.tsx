@@ -29,7 +29,7 @@ export default function CollectionsPage() {
           </AnimatedHeading>
           <AnimatedText
             delay={0.2}
-            className="mt-4 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/55 uppercase"
+            className="mt-4 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase"
             onScroll={false}
           >
             Seasonal drops for rooms where taste is understood.
@@ -52,7 +52,7 @@ export default function CollectionsPage() {
         {/* Empty state */}
         {!collectionsLoading && collections.length === 0 && (
           <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <p className="text-[11px] font-mono text-zibara-cream/65 tracking-widest uppercase">
+            <p className="text-[11px] font-mono text-zibara-cream/75 tracking-widest uppercase">
               Collections forthcoming
             </p>
             <Link href="/shop" className="text-[10px] font-mono text-zibara-cream/65 hover:text-zibara-cream transition-colors uppercase border-b border-current pb-0.5">
@@ -119,7 +119,7 @@ export default function CollectionsPage() {
                   <div className="absolute inset-0 bg-zibara-black/30 group-hover:bg-zibara-black/15 transition-all duration-400" />
                 </div>
                 <div className="pt-4 pb-2">
-                  <p className="text-[8px] tracking-[0.4em] font-mono text-zibara-cream/45 uppercase mb-1.5">
+                  <p className="text-[8px] tracking-[0.4em] font-mono text-zibara-cream/60 uppercase mb-1.5">
                     {col.season} {col.year}
                   </p>
                   <h2 className="font-display font-light text-xl text-zibara-cream uppercase leading-tight"
@@ -127,11 +127,11 @@ export default function CollectionsPage() {
                     {col.name}
                   </h2>
                   <div className="flex items-center gap-3 mt-2">
-                    <span className="text-[8px] tracking-widest font-mono text-zibara-cream/50 uppercase">
+                    <span className="text-[8px] tracking-widest font-mono text-zibara-cream/65 uppercase">
                       {col.productIds?.length ?? 0} pieces
                     </span>
-                    <span className="text-zibara-cream/20 text-[8px]">·</span>
-                    <span className="text-[8px] tracking-widest font-mono text-zibara-cream/50 uppercase group-hover:text-zibara-cream/75 transition-colors">
+                    <span className="text-zibara-cream/30 text-[8px]">·</span>
+                    <span className="text-[8px] tracking-widest font-mono text-zibara-cream/65 uppercase group-hover:text-zibara-cream/85 transition-colors">
                       Explore →
                     </span>
                   </div>

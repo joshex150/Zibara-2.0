@@ -35,7 +35,7 @@ export default function CategoryPage() {
           >
             Categories
           </AnimatedHeading>
-          <p className="mt-4 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/50 uppercase">
+          <p className="mt-4 text-[10px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase">
             Every silhouette, indexed.
           </p>
         </div>
@@ -43,7 +43,7 @@ export default function CategoryPage() {
         {/* Empty state */}
         {groupedProducts.length === 0 && (
           <div className="flex flex-col items-center justify-center py-32 gap-4">
-            <p className="text-[11px] font-mono text-zibara-cream/65 tracking-widest uppercase">No categories yet</p>
+            <p className="text-[11px] font-mono text-zibara-cream/75 tracking-widest uppercase">No categories yet</p>
             <Link href="/shop" className="text-[10px] font-mono text-zibara-cream/65 hover:text-zibara-cream transition-colors uppercase border-b border-current pb-0.5">
               Browse all pieces →
             </Link>
@@ -60,7 +60,7 @@ export default function CategoryPage() {
               >
                 {category.name}
               </h2>
-              <span className="text-[9px] tracking-widest font-mono text-zibara-cream/55 uppercase">
+              <span className="text-[9px] tracking-widest font-mono text-zibara-cream/65 uppercase">
                 {catProducts.length} piece{catProducts.length !== 1 ? 's' : ''}
               </span>
             </div>
