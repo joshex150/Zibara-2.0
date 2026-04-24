@@ -113,7 +113,7 @@ export default function ContactPage() {
                 { name: 'email',   label: 'Email',   type: 'email', required: true,  placeholder: 'your@email.com' },
                 { name: 'subject', label: 'Subject', type: 'text',  required: false, placeholder: 'What is this regarding?' },
               ].map((field) => (
-                <div key={field.name} className="border-b border-zibara-cream/15 pb-3">
+                <div key={field.name} className="border-b border-zibara-cream/40 pb-3">
                   <label className="block text-[8px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase mb-2">
                     {field.label}{field.required && ' *'}
                   </label>
@@ -129,7 +129,7 @@ export default function ContactPage() {
                 </div>
               ))}
 
-              <div className="border-b border-zibara-cream/15 pb-3">
+              <div className="border-b border-zibara-cream/40 pb-3">
                 <label className="block text-[8px] tracking-[0.4em] font-mono text-zibara-cream/65 uppercase mb-2">
                   Message *
                 </label>

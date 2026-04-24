@@ -27,7 +27,7 @@ const colorOptions = [
   'Blue', 'Purple', 'Navy', 'Grey', 'Multicolor',
 ];
 
-const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors';
+const inputClass = 'w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors';
 const labelClass = 'block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/60 mb-2';
 const sectionClass = 'bg-zibara-deep/50 border border-zibara-cream/10 p-5 md:p-7';
 const sectionTitle = 'text-[9px] tracking-[0.45em] font-mono text-zibara-cream/60 uppercase mb-5';
@@ -226,7 +226,7 @@ export default function CustomOrderPage() {
                   value={form.itemType}
                   onChange={(e) => setForm(prev => ({ ...prev, itemType: e.target.value }))}
                   required
-                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono focus:outline-none focus:border-zibara-cream/60 transition-colors appearance-none cursor-pointer"
+                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono focus:outline-none focus:border-zibara-cream/70 transition-colors appearance-none cursor-pointer"
                 >
                   <option value="" className="bg-zibara-deep">Select item type</option>
                   {itemTypes.map(type => (
@@ -243,7 +243,7 @@ export default function CustomOrderPage() {
                   required
                   rows={4}
                   placeholder="Describe the style, design, occasion, or any inspiration you have..."
-                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
+                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors resize-none"
                 />
               </div>
 
@@ -378,7 +378,7 @@ export default function CustomOrderPage() {
                 <select
                   value={form.budget}
                   onChange={(e) => setForm(prev => ({ ...prev, budget: e.target.value }))}
-                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono focus:outline-none focus:border-zibara-cream/60 transition-colors appearance-none cursor-pointer"
+                  className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono focus:outline-none focus:border-zibara-cream/70 transition-colors appearance-none cursor-pointer"
                 >
                   <option value="" className="bg-zibara-deep">Select budget</option>
                   <option value="Under $50" className="bg-zibara-deep">Under $50</option>
@@ -407,7 +407,7 @@ export default function CustomOrderPage() {
                 onChange={(e) => setForm(prev => ({ ...prev, additionalNotes: e.target.value }))}
                 rows={3}
                 placeholder="Any other details, questions, or special requests..."
-                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors resize-none"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors resize-none"
               />
             </div>
           </div>

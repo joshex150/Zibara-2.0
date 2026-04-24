@@ -91,7 +91,7 @@ export default function AdminLoginPage() {
               required
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-zibara-cream/15 rounded-lg bg-zibara-black/40 text-zibara-cream focus:outline-none focus:ring-2 focus:ring-zibara-gold/35 focus:border-transparent"
+              className="w-full px-4 py-3 border border-zibara-cream/35 rounded-lg bg-zibara-black/40 text-zibara-cream focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-zibara-gold/50"
               placeholder="Email Address"
             />
           </div>
@@ -106,7 +106,7 @@ export default function AdminLoginPage() {
               required
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              className="w-full px-4 py-3 border border-zibara-cream/15 rounded-lg bg-zibara-black/40 text-zibara-cream focus:outline-none focus:ring-2 focus:ring-zibara-gold/35 focus:border-transparent"
+              className="w-full px-4 py-3 border border-zibara-cream/35 rounded-lg bg-zibara-black/40 text-zibara-cream focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-zibara-gold/50"
               placeholder="••••••••"
             />
           </div>

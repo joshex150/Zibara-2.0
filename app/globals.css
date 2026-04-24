@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 :root {
-  --zibara-black:    #030303;
-  --zibara-deep:     #0a0806;
-  --zibara-crimson:  #4E0000;
-  --zibara-blood:    #640017;
-  --zibara-olive:    #5A5E27;
-  --zibara-espresso: #2F1B1A;
-  --zibara-cream:    #EFEFC9;
-  --zibara-white:    #F5F5F0;
-  --zibara-gold:     #C9A96E;
+  --zibara-black: #030303;
+  --zibara-deep: #0a0806;
+  --zibara-crimson: #4e0000;
+  --zibara-blood: #640017;
+  --zibara-olive: #5a5e27;
+  --zibara-espresso: #2f1b1a;
+  --zibara-cream: #efefc9;
+  --zibara-white: #f5f5f0;
+  --zibara-gold: #c9a96e;
 }
 
 @layer base {
@@ -56,8 +56,9 @@
     font-family: inherit;
   }
 
-  input, textarea, select {
-    border: none;
+  input,
+  textarea,
+  select {
     outline: none;
     background: transparent;
     color: inherit;
@@ -145,8 +146,12 @@
 
 /* ── HORIZONTAL MARQUEE ───────────────────────── */
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 .marquee-track {
@@ -199,12 +204,26 @@ select {
 
 /* ── POPUP ANIMATIONS ─────────────────────────── */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes scaleIn {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
-.animate-fadeIn  { animation: fadeIn  0.4s ease-out forwards; }
-.animate-scaleIn { animation: scaleIn 0.4s ease-out forwards; }
+.animate-fadeIn {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+.animate-scaleIn {
+  animation: scaleIn 0.4s ease-out forwards;
+}

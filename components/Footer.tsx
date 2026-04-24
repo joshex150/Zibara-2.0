@@ -147,7 +147,7 @@ export default function Footer() {
                 <p className="text-[11px] font-mono text-zibara-cream/65 leading-relaxed">
                   First access to new collections and private events.
                 </p>
-                <div className="flex border-b border-zibara-cream/20 pb-1">
+                <div className="flex border-b border-zibara-cream/40 pb-1">
                   <input
                     type="email"
                     value={email}
@@ -218,7 +218,7 @@ export default function Footer() {
             ) : (
               <form onSubmit={handleContactSubmit} className="space-y-4">
                 {(['name', 'email', 'message'] as const).map((field) => (
-                  <div key={field} className="border-b border-zibara-cream/10 pb-2">
+                  <div key={field} className="border-b border-zibara-cream/40 pb-2">
                     <label className="block text-[9px] tracking-widest uppercase font-mono text-zibara-cream/60 mb-1">{field}</label>
                     {field === 'message' ? (
                       <textarea

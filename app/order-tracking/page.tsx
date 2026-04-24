@@ -96,7 +96,7 @@ function OrderTrackingContent() {
                 type="text"
                 value={orderNumber}
                 onChange={(event) => setOrderNumber(event.target.value)}
-                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors"
                 placeholder="CRL-XXXX-XXX"
                 required
               />
@@ -109,7 +109,7 @@ function OrderTrackingContent() {
                 type="email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
-                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/20 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/60 transition-colors"
+                className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors"
                 placeholder="studio@zibarastudio.com"
                 required
               />

@@ -211,7 +211,7 @@ export default function AdminPopupPage() {
                   type="text"
                   value={data.title}
                   onChange={(e) => setData({ ...data, title: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream"
+                  className="w-full px-4 py-3 rounded-lg border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 bg-zibara-black/40 text-sm text-zibara-cream"
                   placeholder="Enter popup title"
                 />
               </div>
@@ -224,7 +224,7 @@ export default function AdminPopupPage() {
                   value={data.message}
                   onChange={(e) => setData({ ...data, message: e.target.value })}
                   rows={5}
-                  className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream resize-none"
+                  className="w-full px-4 py-3 rounded-lg border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 bg-zibara-black/40 text-sm text-zibara-cream resize-none"
                   placeholder="Enter popup message (use line breaks for multiple paragraphs)"
                 />
               </div>
@@ -260,7 +260,7 @@ export default function AdminPopupPage() {
                       type="text"
                       value={data.buttonText}
                       onChange={(e) => setData({ ...data, buttonText: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream"
+                      className="w-full px-4 py-3 rounded-lg border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 bg-zibara-black/40 text-sm text-zibara-cream"
                       placeholder="e.g., Shop Now"
                     />
                   </div>
@@ -288,7 +288,7 @@ export default function AdminPopupPage() {
                           setCustomLink(e.target.value);
                           setData({ ...data, buttonLink: e.target.value });
                         }}
-                        className="w-full px-4 py-3 rounded-lg border border-zibara-cream/15 focus:outline-none focus:ring-2 focus:ring-zibara-gold/30 bg-zibara-black/40 text-sm text-zibara-cream mt-2"
+                        className="w-full px-4 py-3 rounded-lg border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 bg-zibara-black/40 text-sm text-zibara-cream mt-2"
                         placeholder="https://example.com or /custom-path"
                       />
                     )}
