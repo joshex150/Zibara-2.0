@@ -2,7 +2,10 @@
   "name": "ZIBARASTUDIO",
   "short_name": "ZIBARA",
   "description": "Afro-futurist fashion for nights that matter.",
-  "icons": [],
+  "icons": [
+    { "src": "/apple-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ],
   "theme_color": "#030303",
   "background_color": "#030303",
   "display": "standalone",

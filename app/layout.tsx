@@ -50,17 +50,23 @@ export const metadata: Metadata = {
     'editorial fashion',
     'intentional design',
   ],
+  icons: {
+    icon: '/icon.svg',
+    apple: '/apple-icon.png',
+  },
   openGraph: {
     type: 'website',
     url: 'https://zibarastudio.com',
     siteName: 'ZIBARASTUDIO',
     title: 'ZIBARASTUDIO — For Nights That Matter',
     description: 'Afro-futurist fashion for the woman who arrives composed.',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'ZIBARASTUDIO — For Nights That Matter' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'ZIBARASTUDIO — For Nights That Matter',
     description: 'Afro-futurist fashion for the woman who arrives composed.',
+    images: ['/opengraph-image'],
   },
   manifest: '/site.webmanifest',
   alternates: { canonical: 'https://zibarastudio.com' },
