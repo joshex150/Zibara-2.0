@@ -44,16 +44,8 @@ export default function AdminCategoriesPage() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload file');
-      }
-
+      const response = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!response.ok) throw new Error('Failed to upload file');
       const data = await response.json();
       toast.success('Image uploaded successfully!');
       setForm(prev => ({ ...prev, image: data.url }));
@@ -80,10 +72,7 @@ export default function AdminCategoriesPage() {
     try {
       const res = await fetch('/api/admin/categories');
       const data = await res.json();
-      
-      if (data.success) {
-        setCategories(data.data);
-      }
+      if (data.success) setCategories(data.data);
     } catch (error) {
       console.error('Error fetching categories:', error);
     } finally {
@@ -95,7 +84,6 @@ export default function AdminCategoriesPage() {
     try {
       const res = await fetch('/api/products');
       const data = await res.json();
-      
       if (data.success) {
         const counts: Record<string, number> = {};
         data.data.forEach((product: { category: string }) => {
@@ -120,13 +108,7 @@ export default function AdminCategoriesPage() {
       });
     } else {
       setEditingCategory(null);
-      setForm({
-        name: '',
-        description: '',
-        image: '',
-        order: categories.length,
-        isActive: true,
-      });
+      setForm({ name: '', description: '', image: '', order: categories.length, isActive: true });
     }
     setError('');
     setModalOpen(true);
@@ -140,27 +122,17 @@ export default function AdminCategoriesPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name.trim()) {
-      setError('Category name is required');
-      return;
-    }
-
+    if (!form.name.trim()) { setError('Category name is required'); return; }
     setSaving(true);
     setError('');
-
     try {
-      const url = editingCategory 
-        ? `/api/admin/categories/${editingCategory._id}`
-        : '/api/admin/categories';
-      
+      const url = editingCategory ? `/api/admin/categories/${editingCategory._id}` : '/api/admin/categories';
       const res = await fetch(url, {
         method: editingCategory ? 'PUT' : 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       });
-
       const data = await res.json();
-
       if (data.success) {
         fetchCategories();
         fetchProductCounts();
@@ -183,10 +155,7 @@ export default function AdminCategoriesPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ isActive: !category.isActive }),
       });
-
-      if (res.ok) {
-        fetchCategories();
-      }
+      if (res.ok) fetchCategories();
     } catch (error) {
       console.error('Error toggling category:', error);
     }
@@ -195,19 +164,13 @@ export default function AdminCategoriesPage() {
   const deleteCategory = async (category: Category) => {
     const count = productCounts[category.name] || 0;
     if (count > 0) {
-      toast.error(`Cannot delete "${category.name}" because it has ${count} product(s). Reassign the products to another category first.`);
+      toast.error(`Cannot delete "${category.name}" — it has ${count} product(s). Reassign products first.`);
       return;
     }
-
     if (!confirm(`Are you sure you want to delete "${category.name}"?`)) return;
-
     try {
-      const res = await fetch(`/api/admin/categories/${category._id}`, {
-        method: 'DELETE',
-      });
-
+      const res = await fetch(`/api/admin/categories/${category._id}`, { method: 'DELETE' });
       const data = await res.json();
-
       if (data.success) {
         toast.success('Category deleted successfully!');
         fetchCategories();
@@ -221,96 +184,94 @@ export default function AdminCategoriesPage() {
 
   if (status === 'loading' || loading) return <BrandLoader label="Categories" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
-  if (!session) {
-    return null;
-  }
+  if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex flex-col scroll-mt-32">
-      <div className="max-w-7xl mx-auto px-4 py-8 w-full flex-1 flex flex-col">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-24 pb-16">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8">
-          <div className="flex items-center gap-3 md:gap-4">
-            <Link 
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 border-b border-zibara-cream/5 pb-8 mb-10">
+          <div className="flex items-start gap-4">
+            <Link
               href="/admin"
-              className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors shrink-0"
+              className="p-2 border border-zibara-cream/20 hover:border-zibara-cream/45 transition-colors text-zibara-cream/70 hover:text-zibara-cream shrink-0 mt-1"
             >
-              <ArrowLeft size={18} className="md:w-5 md:h-5 text-zibara-cream" />
+              <ArrowLeft size={16} />
             </Link>
             <div>
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zibara-cream uppercase tracking-wider">
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-2">Catalog</p>
+              <h1 className="font-cormorant text-4xl md:text-5xl font-light uppercase tracking-[0.15em] text-zibara-cream">
                 Categories
               </h1>
-              <p className="text-zinc-300 text-xs md:text-sm mt-1">
+              <p className="text-[11px] font-mono text-zibara-cream/65 mt-2">
                 {categories.length} {categories.length === 1 ? 'category' : 'categories'}
               </p>
             </div>
           </div>
           <button
             onClick={() => openModal()}
-            className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold hover:bg-zibara-blood transition-colors"
+            className="flex items-center gap-2 px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors shrink-0"
           >
-            <Plus className="w-4 h-4 md:w-5 md:h-5" />
+            <Plus size={14} />
             Add Category
           </button>
         </div>
 
         {/* Categories List */}
         {categories.length === 0 ? (
-          <div className="bg-zibara-crimson rounded-lg p-8 md:p-12 text-center flex-1 flex flex-col items-center justify-center">
-            <FolderOpen className="w-10 h-10 md:w-12 md:h-12 mx-auto text-white/60 mb-3 md:mb-4" />
-            <p className="text-base md:text-lg text-white mb-3 md:mb-4">No categories yet</p>
+          <div className="border border-zibara-cream/10 p-12 text-center">
+            <FolderOpen className="w-8 h-8 mx-auto text-zibara-cream/20 mb-4" />
+            <p className="text-[11px] font-mono text-zibara-cream/65 mb-6">No categories yet</p>
             <button
               onClick={() => openModal()}
-              className="inline-flex items-center gap-2 bg-white text-zibara-cream px-4 md:px-6 py-2 md:py-3 rounded-lg text-xs md:text-sm font-semibold hover:bg-zinc-700 transition-colors"
+              className="px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors"
             >
-              <Plus className="w-4 h-4" />
               Create Your First Category
             </button>
           </div>
         ) : (
-          <div className="space-y-3 md:space-y-4">
-            {categories.map((category) => (
-              <div 
-                key={category._id} 
-                className={`bg-zinc-800 rounded-lg shadow-md p-4 md:p-5 flex flex-col sm:flex-row sm:items-center gap-4 ${
-                  !category.isActive ? 'opacity-60' : ''
-                }`}
+          <div className="border border-zibara-cream/10 bg-zibara-deep">
+            {categories.map((category, idx) => (
+              <div
+                key={category._id}
+                className={`flex flex-col sm:flex-row sm:items-center gap-4 px-5 py-4 ${
+                  idx < categories.length - 1 ? 'border-b border-zibara-cream/8' : ''
+                } ${!category.isActive ? 'opacity-50' : ''}`}
               >
                 {/* Category Info */}
-                <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
-                  <div className="hidden sm:flex items-center justify-center w-8 h-8 text-zinc-500">
-                    <GripVertical size={20} />
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  <div className="hidden sm:flex items-center justify-center w-6 text-zibara-cream/25">
+                    <GripVertical size={16} />
                   </div>
-                  
+
                   {category.image ? (
-                    <img 
-                      src={category.image} 
+                    <img
+                      src={category.image}
                       alt={category.name}
-                      className="w-12 h-12 md:w-16 md:h-16 object-cover rounded-lg shrink-0"
+                      className="w-12 h-12 object-cover shrink-0"
                     />
                   ) : (
-                    <div className="w-12 h-12 md:w-16 md:h-16 bg-zinc-700/40 rounded-lg flex items-center justify-center shrink-0">
-                      <FolderOpen className="w-5 h-5 md:w-6 md:h-6 text-zibara-cream/50" />
+                    <div className="w-12 h-12 border border-zibara-cream/10 flex items-center justify-center shrink-0">
+                      <FolderOpen className="w-5 h-5 text-zibara-cream/25" />
                     </div>
                   )}
-                  
+
                   <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <h3 className="font-bold text-zinc-100 text-sm md:text-base truncate">
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h3 className="text-zibara-cream text-[11px] font-mono uppercase tracking-[0.1em] truncate">
                         {category.name}
                       </h3>
                       {!category.isActive && (
-                        <span className="text-[10px] md:text-xs bg-zinc-800/600 text-white px-2 py-0.5 rounded">
+                        <span className="text-[9px] font-mono uppercase tracking-[0.2em] px-2 py-0.5 border border-zibara-cream/15 text-zibara-cream/40">
                           Hidden
                         </span>
                       )}
                     </div>
-                    <p className="text-[10px] md:text-xs text-zinc-400">
+                    <p className="text-[9px] font-mono text-zibara-cream/40 tracking-[0.3em] uppercase">
                       {productCounts[category.name] || 0} product{(productCounts[category.name] || 0) !== 1 ? 's' : ''}
                     </p>
                     {category.description && (
-                      <p className="text-xs text-zinc-500 mt-1 line-clamp-1 hidden md:block">
+                      <p className="text-[11px] font-mono text-zibara-cream/55 mt-1 line-clamp-1 hidden md:block">
                         {category.description}
                       </p>
                     )}
@@ -318,35 +279,31 @@ export default function AdminCategoriesPage() {
                 </div>
 
                 {/* Actions */}
-                <div className="flex items-center gap-2 mt-auto sm:mt-0">
+                <div className="flex items-center gap-2">
                   <button
                     onClick={() => toggleActive(category)}
-                    className={`p-2 rounded-lg transition-colors ${
-                      category.isActive 
-                        ? 'bg-zibara-crimson text-white hover:bg-zibara-blood' 
-                        : 'bg-gray-200 text-zinc-400 hover:bg-gray-300'
+                    className={`p-2 border transition-colors ${
+                      category.isActive
+                        ? 'border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream'
+                        : 'border-zibara-crimson/50 text-zibara-crimson hover:bg-zibara-crimson hover:text-zibara-cream'
                     }`}
                     title={category.isActive ? 'Hide category' : 'Show category'}
                   >
-                    {category.isActive ? (
-                      <Eye className="w-4 h-4" />
-                    ) : (
-                      <EyeOff className="w-4 h-4" />
-                    )}
+                    {category.isActive ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
                   </button>
                   <button
                     onClick={() => openModal(category)}
-                    className="p-2 bg-zibara-crimson text-white rounded-lg hover:bg-zibara-blood transition-colors"
+                    className="p-2 bg-zibara-crimson text-zibara-cream hover:bg-zibara-blood transition-colors"
                     title="Edit category"
                   >
-                    <Edit2 className="w-4 h-4" />
+                    <Edit2 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => deleteCategory(category)}
-                    className="p-2 bg-zibara-crimson text-white rounded-lg hover:bg-zibara-blood transition-colors"
+                    className="p-2 border border-zibara-crimson/50 text-zibara-crimson hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                     title="Delete category"
                   >
-                    <Trash2 className="w-4 h-4" />
+                    <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               </div>
@@ -357,121 +314,107 @@ export default function AdminCategoriesPage() {
 
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-zinc-800 rounded-lg max-w-lg w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-4 md:p-6 border-b border-zinc-700">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg md:text-xl font-bold text-zinc-100">
+        <div className="fixed inset-0 bg-zibara-black/80 flex items-center justify-center z-50 p-4">
+          <div className="bg-zibara-deep border border-zibara-cream/10 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="p-6 border-b border-zibara-cream/8 flex justify-between items-center">
+              <div>
+                <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-1">
+                  {editingCategory ? 'Editing' : 'New'}
+                </p>
+                <h2 className="font-cormorant text-2xl font-light uppercase tracking-[0.15em] text-zibara-cream">
                   {editingCategory ? 'Edit Category' : 'Add Category'}
                 </h2>
-                <button
-                  onClick={closeModal}
-                  className="text-zinc-500 hover:text-zinc-400 text-xl"
-                >
-                  ✕
-                </button>
               </div>
+              <button
+                onClick={closeModal}
+                className="p-2 border border-zibara-cream/20 hover:border-zibara-cream/45 transition-colors text-zibara-cream/70 hover:text-zibara-cream text-lg leading-none"
+              >
+                ✕
+              </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-4 md:p-6 space-y-4">
+            <form onSubmit={handleSubmit} className="p-6 space-y-5">
               {error && (
-                <div className="p-3 bg-red-950/50 border border-red-500/30 text-red-300 rounded-lg text-sm">
+                <div className="p-3 border border-red-500/30 text-red-400 text-[11px] font-mono">
                   {error}
                 </div>
               )}
 
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Name *
                 </label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                  className="w-full border border-zibara-cream/35 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                   placeholder="e.g. Tops, Dresses"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Description
                 </label>
                 <textarea
                   value={form.description}
                   onChange={(e) => setForm({ ...form, description: e.target.value })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                  className="w-full border border-zibara-cream/35 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                   rows={2}
                   placeholder="Brief description of this category"
                 />
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Category Image
                 </label>
                 <ImageUploading
                   multiple={false}
                   value={form.image ? [{ data_url: form.image }] : []}
                   onChange={(imageList) => {
-                    if (imageList[0]?.file) {
-                      uploadFile(imageList[0].file);
-                    }
+                    if (imageList[0]?.file) uploadFile(imageList[0].file);
                   }}
                   maxNumber={1}
                   dataURLKey="data_url"
                 >
-                  {({
-                    imageList,
-                    onImageUpload,
-                    onImageUpdate,
-                    onImageRemove,
-                    isDragging,
-                    dragProps,
-                  }) => (
+                  {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                     <div className="space-y-2">
                       {form.image && (
-                        <div className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-300">
-                          <img 
-                            src={form.image} 
-                            alt="Preview" 
-                            className="w-full h-full object-cover"
-                          />
+                        <div className="relative w-32 h-32 overflow-hidden border border-zibara-cream/25">
+                          <img src={form.image} alt="Preview" className="w-full h-full object-cover" />
                           <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                             <button
                               type="button"
                               onClick={() => onImageUpdate(0)}
-                              className="px-3 py-1 bg-white text-zinc-300 rounded text-xs font-semibold hover:bg-zinc-700"
+                              className="px-3 py-1 border border-zibara-cream/25 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
                             >
                               Update
                             </button>
                             <button
                               type="button"
-                              onClick={() => {
-                                onImageRemove(0);
-                                setForm(prev => ({ ...prev, image: '' }));
-                              }}
-                              className="px-3 py-1 bg-red-500 text-white rounded text-xs font-semibold hover:bg-red-600"
+                              onClick={() => { onImageRemove(0); setForm(prev => ({ ...prev, image: '' })); }}
+                              className="px-3 py-1 border border-zibara-crimson/50 text-zibara-crimson text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                             >
                               Remove
                             </button>
                           </div>
                         </div>
                       )}
-                      
                       <button
                         type="button"
                         onClick={form.image ? () => onImageUpdate(0) : onImageUpload}
                         {...dragProps}
                         disabled={uploading}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors text-sm ${
+                        className={`flex items-center gap-2 px-5 py-2 text-[10px] font-mono uppercase tracking-[0.3em] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                           isDragging
-                            ? 'bg-zibara-crimson text-white'
-                            : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
-                        } disabled:opacity-50 disabled:cursor-not-allowed`}
+                            ? 'bg-zibara-crimson text-zibara-cream'
+                            : 'border border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream'
+                        }`}
                       >
-                        <Upload size={16} />
+                        <Upload size={14} />
                         {uploading ? 'Uploading...' : form.image ? 'Change Image' : 'Upload Image'}
                       </button>
                     </div>
@@ -480,17 +423,17 @@ export default function AdminCategoriesPage() {
               </div>
 
               <div>
-                <label className="block text-xs uppercase tracking-wider font-semibold mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Display Order
                 </label>
                 <input
                   type="number"
                   value={form.order}
                   onChange={(e) => setForm({ ...form, order: parseInt(e.target.value) || 0 })}
-                  className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                  className="w-full border border-zibara-cream/35 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                   min="0"
                 />
-                <p className="text-xs text-zinc-500 mt-1">Lower numbers appear first</p>
+                <p className="text-[9px] font-mono text-zibara-cream/40 tracking-[0.2em] mt-1">Lower numbers appear first</p>
               </div>
 
               <div className="flex items-center gap-3">
@@ -501,23 +444,23 @@ export default function AdminCategoriesPage() {
                   onChange={(e) => setForm({ ...form, isActive: e.target.checked })}
                   className="w-4 h-4"
                 />
-                <label htmlFor="isActive" className="text-sm">
+                <label htmlFor="isActive" className="text-[11px] font-mono text-zibara-cream/65">
                   Active (visible on site)
                 </label>
               </div>
 
-              <div className="flex gap-3 pt-4">
+              <div className="flex gap-3 pt-2">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="flex-1 py-2.5 border border-zinc-700 rounded-lg text-sm font-semibold hover:bg-zinc-700 transition-colors"
+                  className="flex-1 py-2.5 px-5 border border-zibara-cream/25 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={saving}
-                  className="flex-1 bg-zibara-crimson text-white py-2.5 rounded-lg text-sm font-semibold hover:bg-zibara-blood transition-colors disabled:opacity-50"
+                  className="flex-1 py-2.5 px-5 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors disabled:opacity-50"
                 >
                   {saving ? 'Saving...' : editingCategory ? 'Update' : 'Create'}
                 </button>

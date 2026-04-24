@@ -44,9 +44,7 @@ export default function CurrencyManagement() {
     try {
       const response = await fetch('/api/admin/currency');
       const data = await response.json();
-      if (data.success) {
-        setRates(data.rates);
-      }
+      if (data.success) setRates(data.rates);
     } catch (error) {
       console.error('Error fetching currency rates:', error);
       toast.error('Failed to fetch currency rates');
@@ -62,7 +60,6 @@ export default function CurrencyManagement() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(rate),
       });
-
       const data = await response.json();
       if (data.success) {
         toast.success('Currency rate saved successfully');
@@ -79,12 +76,8 @@ export default function CurrencyManagement() {
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this currency?')) return;
-
     try {
-      const response = await fetch(`/api/admin/currency?id=${id}`, {
-        method: 'DELETE',
-      });
-
+      const response = await fetch(`/api/admin/currency?id=${id}`, { method: 'DELETE' });
       const data = await response.json();
       if (data.success) {
         toast.success('Currency deleted successfully');
@@ -103,7 +96,6 @@ export default function CurrencyManagement() {
       toast.error('Please fill in all required fields');
       return;
     }
-
     await handleSave(newCurrency);
     setNewCurrency({ code: '', name: '', symbol: '', rate: 1, isActive: true });
     setShowAddForm(false);
@@ -111,83 +103,77 @@ export default function CurrencyManagement() {
 
   if (status === 'loading' || loading) return <BrandLoader label="Currency" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
-  if (!session) {
-    return null;
-  }
+  if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-900 scroll-mt-32 flex flex-col">
-      <div className="max-w-7xl mx-auto px-4 py-8 w-full flex-1 flex flex-col">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-24 pb-16">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 md:mb-8">
-          <div className="flex items-center gap-3 md:gap-4">
-            <Link 
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 border-b border-zibara-cream/5 pb-8 mb-10">
+          <div className="flex items-start gap-4">
+            <Link
               href="/admin"
-              className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors shrink-0"
+              className="p-2 border border-zibara-cream/20 hover:border-zibara-cream/45 transition-colors text-zibara-cream/70 hover:text-zibara-cream shrink-0 mt-1"
             >
-              <ArrowLeft size={18} className="md:w-5 md:h-5 text-zibara-cream" />
+              <ArrowLeft size={16} />
             </Link>
-            <h1 className="text-2xl md:text-3xl font-bold text-zibara-cream">
-              Currency Management
-            </h1>
+            <div>
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-2">Finance</p>
+              <h1 className="font-cormorant text-4xl md:text-5xl font-light uppercase tracking-[0.15em] text-zibara-cream">
+                Currency
+              </h1>
+              <p className="text-[11px] font-mono text-zibara-cream/65 mt-2">Manage exchange rates</p>
+            </div>
           </div>
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-zibara-blood transition-colors text-sm md:text-base shrink-0"
+            className="flex items-center gap-2 px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors shrink-0"
           >
-            <Plus size={18} className="md:w-5 md:h-5" />
+            <Plus size={14} />
             Add Currency
           </button>
         </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-6 md:p-8 flex-1">
+        <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-8">
           {/* Add New Currency Form */}
           {showAddForm && (
-            <div className="mb-6 p-4 bg-zinc-800 rounded-lg border border-zinc-700">
-              <h2 className="text-lg font-semibold text-zibara-cream mb-4">Add New Currency</h2>
+            <div className="mb-8 p-5 border border-zibara-cream/8 bg-zibara-black/20">
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-4">Add New Currency</p>
               <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-zibara-cream mb-1">
-                    Code *
-                  </label>
+                  <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">Code *</label>
                   <input
                     type="text"
                     value={newCurrency.code}
                     onChange={(e) => setNewCurrency({ ...newCurrency, code: e.target.value.toUpperCase() })}
                     placeholder="USD"
-                    className="w-full px-3 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:border-zinc-400"
+                    className="w-full px-3 py-2 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50"
                     maxLength={3}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zibara-cream mb-1">
-                    Name *
-                  </label>
+                  <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">Name *</label>
                   <input
                     type="text"
                     value={newCurrency.name}
                     onChange={(e) => setNewCurrency({ ...newCurrency, name: e.target.value })}
                     placeholder="US Dollar"
-                    className="w-full px-3 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:border-zinc-400"
+                    className="w-full px-3 py-2 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50"
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zibara-cream mb-1">
-                    Symbol *
-                  </label>
+                  <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">Symbol *</label>
                   <input
                     type="text"
                     value={newCurrency.symbol}
                     onChange={(e) => setNewCurrency({ ...newCurrency, symbol: e.target.value })}
                     placeholder="$"
-                    className="w-full px-3 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:border-zinc-400"
+                    className="w-full px-3 py-2 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50"
                     maxLength={5}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zibara-cream mb-1">
-                    Rate (to USD) *
-                  </label>
+                  <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">Rate (to USD) *</label>
                   <input
                     type="number"
                     step="0.01"
@@ -195,25 +181,25 @@ export default function CurrencyManagement() {
                     value={newCurrency.rate}
                     onChange={(e) => setNewCurrency({ ...newCurrency, rate: parseFloat(e.target.value) || 0 })}
                     placeholder="1.00"
-                    className="w-full px-3 py-2 border border-zinc-700 rounded-lg focus:outline-none focus:border-zinc-400"
+                    className="w-full px-3 py-2 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50"
                   />
                 </div>
                 <div className="flex items-end gap-2">
                   <button
                     onClick={handleAdd}
-                    className="flex-1 flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 py-2 rounded-lg hover:bg-zibara-blood transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors"
                   >
-                    <Save size={18} />
-                    <span>Save</span>
+                    <Save size={12} />
+                    Save
                   </button>
                   <button
                     onClick={() => {
                       setShowAddForm(false);
                       setNewCurrency({ code: '', name: '', symbol: '', rate: 1, isActive: true });
                     }}
-                    className="px-4 py-2 border border-zinc-700 rounded-lg hover:bg-zinc-700/40 transition-colors"
+                    className="p-2 border border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
                   >
-                    <X size={18} />
+                    <X size={16} />
                   </button>
                 </div>
               </div>
@@ -224,18 +210,18 @@ export default function CurrencyManagement() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-zinc-700">
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-zibara-cream">Code</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-zibara-cream">Name</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-zibara-cream">Symbol</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-zibara-cream">Rate (to USD)</th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-zibara-cream">Status</th>
-                  <th className="text-right py-3 px-4 text-sm font-semibold text-zibara-cream">Actions</th>
+                <tr className="border-b border-zibara-cream/8">
+                  <th className="text-left py-3 px-4 text-[9px] font-mono uppercase tracking-[0.4em] text-zibara-cream/55">Code</th>
+                  <th className="text-left py-3 px-4 text-[9px] font-mono uppercase tracking-[0.4em] text-zibara-cream/55">Name</th>
+                  <th className="text-left py-3 px-4 text-[9px] font-mono uppercase tracking-[0.4em] text-zibara-cream/55">Symbol</th>
+                  <th className="text-left py-3 px-4 text-[9px] font-mono uppercase tracking-[0.4em] text-zibara-cream/55">Rate (to USD)</th>
+                  <th className="text-left py-3 px-4 text-[9px] font-mono uppercase tracking-[0.4em] text-zibara-cream/55">Status</th>
+                  <th className="text-right py-3 px-4 text-[9px] font-mono uppercase tracking-[0.4em] text-zibara-cream/55">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {rates.map((rate) => (
-                  <tr key={rate._id || rate.code} className="border-b border-zinc-700/50">
+                  <tr key={rate._id || rate.code} className="border-b border-zibara-cream/5">
                     {editingId === rate._id ? (
                       <>
                         <td className="py-3 px-4">
@@ -243,7 +229,7 @@ export default function CurrencyManagement() {
                             type="text"
                             value={rate.code}
                             onChange={(e) => setRates(rates.map(r => r._id === rate._id ? { ...r, code: e.target.value.toUpperCase() } : r))}
-                            className="w-full px-2 py-1 border border-zinc-700 rounded focus:outline-none focus:border-zinc-400"
+                            className="w-full px-2 py-1 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-1 focus:ring-zibara-gold/50"
                             maxLength={3}
                           />
                         </td>
@@ -252,7 +238,7 @@ export default function CurrencyManagement() {
                             type="text"
                             value={rate.name}
                             onChange={(e) => setRates(rates.map(r => r._id === rate._id ? { ...r, name: e.target.value } : r))}
-                            className="w-full px-2 py-1 border border-zinc-700 rounded focus:outline-none focus:border-zinc-400"
+                            className="w-full px-2 py-1 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-1 focus:ring-zibara-gold/50"
                           />
                         </td>
                         <td className="py-3 px-4">
@@ -260,7 +246,7 @@ export default function CurrencyManagement() {
                             type="text"
                             value={rate.symbol}
                             onChange={(e) => setRates(rates.map(r => r._id === rate._id ? { ...r, symbol: e.target.value } : r))}
-                            className="w-full px-2 py-1 border border-zinc-700 rounded focus:outline-none focus:border-zinc-400"
+                            className="w-full px-2 py-1 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-1 focus:ring-zibara-gold/50"
                             maxLength={5}
                           />
                         </td>
@@ -271,14 +257,14 @@ export default function CurrencyManagement() {
                             min="0"
                             value={rate.rate}
                             onChange={(e) => setRates(rates.map(r => r._id === rate._id ? { ...r, rate: parseFloat(e.target.value) || 0 } : r))}
-                            className="w-full px-2 py-1 border border-zinc-700 rounded focus:outline-none focus:border-zinc-400"
+                            className="w-full px-2 py-1 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-1 focus:ring-zibara-gold/50"
                           />
                         </td>
                         <td className="py-3 px-4">
                           <select
                             value={rate.isActive ? 'active' : 'inactive'}
                             onChange={(e) => setRates(rates.map(r => r._id === rate._id ? { ...r, isActive: e.target.value === 'active' } : r))}
-                            className="w-full px-2 py-1 border border-zinc-700 rounded focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-zinc-800 text-zibara-cream"
+                            className="w-full px-2 py-1 border border-zibara-cream/35 bg-zibara-black/40 text-zibara-cream text-sm focus:outline-none focus:ring-2 focus:ring-zibara-gold/50"
                           >
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
@@ -288,30 +274,33 @@ export default function CurrencyManagement() {
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => handleSave(rate)}
-                              className="p-2 text-green-600 hover:bg-green-50 rounded transition-colors"
+                              className="p-2 bg-zibara-crimson text-zibara-cream hover:bg-zibara-blood transition-colors"
                             >
-                              <Save size={18} />
+                              <Save size={14} />
                             </button>
                             <button
-                              onClick={() => {
-                                setEditingId(null);
-                                fetchRates();
-                              }}
-                              className="p-2 text-zinc-400 hover:bg-zinc-800/60 rounded transition-colors"
+                              onClick={() => { setEditingId(null); fetchRates(); }}
+                              className="p-2 border border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
                             >
-                              <X size={18} />
+                              <X size={14} />
                             </button>
                           </div>
                         </td>
                       </>
                     ) : (
                       <>
-                        <td className="py-3 px-4 text-sm font-medium">{rate.code}</td>
-                        <td className="py-3 px-4 text-sm">{rate.name}</td>
-                        <td className="py-3 px-4 text-sm">{rate.symbol}</td>
-                        <td className="py-3 px-4 text-sm">{rate.rate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}</td>
+                        <td className="py-3 px-4 text-[10px] font-mono uppercase tracking-[0.2em] text-zibara-cream">{rate.code}</td>
+                        <td className="py-3 px-4 text-[11px] font-mono text-zibara-cream/80">{rate.name}</td>
+                        <td className="py-3 px-4 text-[11px] font-mono text-zibara-cream/80">{rate.symbol}</td>
+                        <td className="py-3 px-4 text-[11px] font-mono text-zibara-cream/80">
+                          {rate.rate.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 4 })}
+                        </td>
                         <td className="py-3 px-4">
-                          <span className={`px-2 py-1 rounded text-xs ${rate.isActive ? 'bg-green-900/40 text-green-300' : 'bg-zinc-700 text-gray-800'}`}>
+                          <span className={`text-[9px] font-mono uppercase tracking-[0.2em] px-2 py-0.5 ${
+                            rate.isActive
+                              ? 'border border-zibara-cream/20 text-zibara-cream/65'
+                              : 'border border-zibara-cream/10 text-zibara-cream/35'
+                          }`}>
                             {rate.isActive ? 'Active' : 'Inactive'}
                           </span>
                         </td>
@@ -319,16 +308,16 @@ export default function CurrencyManagement() {
                           <div className="flex items-center justify-end gap-2">
                             <button
                               onClick={() => setEditingId(rate._id || null)}
-                              className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                              className="p-2 border border-zibara-cream/20 text-zibara-cream/60 hover:border-zibara-cream/40 hover:text-zibara-cream transition-colors"
                             >
-                              <Edit2 size={18} />
+                              <Edit2 size={14} />
                             </button>
                             {rate.code !== 'USD' && (
                               <button
                                 onClick={() => rate._id && handleDelete(rate._id)}
-                                className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                className="p-2 border border-zibara-crimson/50 text-zibara-crimson hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                               >
-                                <Trash2 size={18} />
+                                <Trash2 size={14} />
                               </button>
                             )}
                           </div>
@@ -342,8 +331,8 @@ export default function CurrencyManagement() {
           </div>
 
           {rates.length === 0 && (
-            <div className="text-center py-12 text-zibara-cream/60">
-              <p>No currency rates found. Add your first currency above.</p>
+            <div className="text-center py-12">
+              <p className="text-[11px] font-mono text-zibara-cream/40">No currency rates found. Add your first currency above.</p>
             </div>
           )}
         </div>

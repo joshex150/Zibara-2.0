@@ -335,34 +335,37 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-900 scroll-mt-32">
-      <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-24 pb-16">
+
         {/* Header */}
-        <div className="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="mb-12 border-b border-zibara-cream/5 pb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6">
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zibara-cream uppercase tracking-wider mb-1 md:mb-2">
-              Admin Dashboard
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-3">
+              ZIBARASTUDIO Management
+            </p>
+            <h1
+              className="text-[clamp(2rem,5vw,3.5rem)] font-light uppercase tracking-[0.15em] leading-none text-zibara-cream"
+              style={{ fontFamily: 'var(--font-cormorant), serif' }}
+            >
+              Dashboard
             </h1>
-            <p className="text-sm md:text-base text-zinc-300">
-              Welcome back, {session.user?.name}
+            <p className="text-[10px] font-mono text-zibara-cream/55 uppercase tracking-[0.3em] mt-3">
+              Welcome back — {session.user?.name}
             </p>
           </div>
           <div className="flex items-center gap-3">
             <button
-              onClick={() => {
-                setRetryCount(0);
-                setError(null);
-                fetchStats();
-              }}
-              className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-zibara-blood transition-colors text-sm md:text-base"
+              onClick={() => { setRetryCount(0); setError(null); fetchStats(); }}
+              className="px-5 py-2 border border-zibara-cream/25 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/70 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
             >
               Refresh
             </button>
             <button
               onClick={() => signOut({ callbackUrl: '/admin/login' })}
-              className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold hover:bg-zibara-blood transition-colors text-sm md:text-base"
+              className="flex items-center gap-2 px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors"
             >
-              <LogOut size={18} className="md:w-5 md:h-5" />
+              <LogOut size={14} />
               Logout
             </button>
           </div>
@@ -370,48 +373,61 @@ export default function AdminDashboard() {
 
         {/* Error Message */}
         {error && (
-          <div className="mb-6 p-4 bg-red-950/50 border border-red-500/30 text-red-300 rounded-lg">
-            <p className="text-sm">{error}</p>
+          <div className="mb-8 p-4 bg-zibara-crimson/10 border border-zibara-crimson/30 text-zibara-cream/80 text-[11px] font-mono">
+            {error}
           </div>
         )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-8">
+        <div className="mb-4">
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-6">Overview</p>
+        </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-zibara-cream/5 border border-zibara-cream/5 mb-14">
           {statCards.map((stat) => (
-            <div key={stat.title} className="bg-zinc-800 rounded-lg shadow-md p-4 md:p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs md:text-sm text-zinc-400 mb-1">{stat.title}</p>
-                  <p className="text-lg md:text-2xl font-bold text-zinc-100">{stat.value}</p>
-                </div>
-                <div className="bg-zibara-crimson p-2 md:p-3 rounded-full">
-                  <stat.icon className="w-4 h-4 md:w-6 md:h-6 text-white" />
-                </div>
+            <div key={stat.title} className="bg-zibara-black p-5 md:p-6 flex flex-col justify-between gap-4">
+              <div className="flex items-start justify-between">
+                <p className="text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 leading-relaxed max-w-[120px]">
+                  {stat.title}
+                </p>
+                <stat.icon className="w-4 h-4 text-zibara-cream/30 shrink-0 mt-0.5" />
               </div>
+              <p
+                className="text-3xl md:text-4xl font-light text-zibara-cream tracking-tight"
+                style={{ fontFamily: 'var(--font-cormorant), serif' }}
+              >
+                {stat.value}
+              </p>
             </div>
           ))}
         </div>
 
         {/* Menu Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
+        <div className="mb-4">
+          <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-6">Manage</p>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-px bg-zibara-cream/5 border border-zibara-cream/5">
           {menuItems.map((item) => (
             <Link
               key={item.title}
               href={item.href}
-              className="bg-zinc-800 rounded-lg shadow-md p-4 md:p-6 hover:shadow-lg transition-shadow group"
+              className="group bg-zibara-black p-5 md:p-6 flex flex-col gap-4 hover:bg-zibara-deep transition-colors"
             >
-              <div className="bg-zibara-crimson w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center mb-3 md:mb-4 group-hover:scale-110 transition-transform">
-                <item.icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
+              <item.icon className="w-5 h-5 text-zibara-cream/40 group-hover:text-zibara-cream/70 transition-colors" />
+              <div>
+                <p
+                  className="text-base font-light uppercase tracking-[0.2em] text-zibara-cream/85 group-hover:text-zibara-cream transition-colors mb-1"
+                  style={{ fontFamily: 'var(--font-cormorant), serif' }}
+                >
+                  {item.title}
+                </p>
+                <p className="text-[9px] font-mono uppercase tracking-[0.3em] text-zibara-cream/45 group-hover:text-zibara-cream/60 transition-colors leading-relaxed">
+                  {item.description}
+                </p>
               </div>
-              <h3 className="text-sm md:text-lg font-bold text-zinc-100 mb-1 md:mb-2">
-                {item.title}
-              </h3>
-              <p className="text-xs md:text-sm text-zinc-400">
-                {item.description}
-              </p>
             </Link>
           ))}
         </div>
+
       </div>
     </div>
   );

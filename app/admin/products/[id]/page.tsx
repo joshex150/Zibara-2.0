@@ -57,7 +57,7 @@ export default function AdminProductEditPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [uploading, setUploading] = useState(false);
-  
+
   const categoryNames = getCategoryNames();
 
   const uploadFile = async (file: File, imageIndex?: number) => {
@@ -65,33 +65,15 @@ export default function AdminProductEditPage() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload file');
-      }
-
+      const response = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!response.ok) throw new Error('Failed to upload file');
       const data = await response.json();
       toast.success('Image uploaded successfully!');
-      
       if (imageIndex !== undefined) {
-        // Update specific image
-        setForm(prev => ({
-          ...prev,
-          images: prev.images.map((img, i) => (i === imageIndex ? data.url : img)),
-        }));
+        setForm(prev => ({ ...prev, images: prev.images.map((img, i) => (i === imageIndex ? data.url : img)) }));
       } else {
-        // Add new image
-        setForm(prev => ({
-          ...prev,
-          images: [...prev.images.filter(img => img.trim()), data.url],
-        }));
+        setForm(prev => ({ ...prev, images: [...prev.images.filter(img => img.trim()), data.url] }));
       }
-      
       return data;
     } catch (error: any) {
       console.error('Error uploading file:', error.message);
@@ -114,7 +96,6 @@ export default function AdminProductEditPage() {
     try {
       const res = await fetch(`/api/admin/products/${params.id}`);
       const data = await res.json();
-
       if (data.success) {
         setForm({
           name: data.data.name || '',
@@ -144,25 +125,10 @@ export default function AdminProductEditPage() {
     e.preventDefault();
     setError('');
     setSaving(true);
+    if (!form.name.trim()) { setError('Product name is required'); setSaving(false); return; }
+    if (form.price <= 0) { setError('Price must be greater than 0'); setSaving(false); return; }
+    if (!form.category.trim()) { setError('Category is required'); setSaving(false); return; }
 
-    // Validation
-    if (!form.name.trim()) {
-      setError('Product name is required');
-      setSaving(false);
-      return;
-    }
-    if (form.price <= 0) {
-      setError('Price must be greater than 0');
-      setSaving(false);
-      return;
-    }
-    if (!form.category.trim()) {
-      setError('Category is required');
-      setSaving(false);
-      return;
-    }
-
-    // Filter out empty values
     const cleanedForm = {
       ...form,
       images: form.images.filter(img => img.trim()),
@@ -172,15 +138,12 @@ export default function AdminProductEditPage() {
     try {
       const url = isNew ? '/api/admin/products' : `/api/admin/products/${params.id}`;
       const method = isNew ? 'POST' : 'PUT';
-
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cleanedForm),
       });
-
       const data = await res.json();
-
       if (data.success) {
         router.push('/admin/products');
       } else {
@@ -195,15 +158,9 @@ export default function AdminProductEditPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this product?')) {
-      return;
-    }
-
+    if (!confirm('Are you sure you want to delete this product?')) return;
     try {
-      const res = await fetch(`/api/admin/products/${params.id}`, {
-        method: 'DELETE',
-      });
-
+      const res = await fetch(`/api/admin/products/${params.id}`, { method: 'DELETE' });
       if (res.ok) {
         router.push('/admin/products');
       } else {
@@ -216,82 +173,50 @@ export default function AdminProductEditPage() {
   };
 
   const removeImageField = (index: number) => {
-    setForm(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index),
-    }));
+    setForm(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
   };
 
-  const addCareField = () => {
-    setForm(prev => ({ ...prev, care: [...prev.care, ''] }));
-  };
+  const addCareField = () => setForm(prev => ({ ...prev, care: [...prev.care, ''] }));
+  const removeCareField = (index: number) => setForm(prev => ({ ...prev, care: prev.care.filter((_, i) => i !== index) }));
+  const updateCare = (index: number, value: string) => setForm(prev => ({ ...prev, care: prev.care.map((c, i) => (i === index ? value : c)) }));
 
-  const removeCareField = (index: number) => {
-    setForm(prev => ({
-      ...prev,
-      care: prev.care.filter((_, i) => i !== index),
-    }));
-  };
-
-  const updateCare = (index: number, value: string) => {
-    setForm(prev => ({
-      ...prev,
-      care: prev.care.map((c, i) => (i === index ? value : c)),
-    }));
-  };
-
-  const addColorField = () => {
-    setForm(prev => ({ ...prev, colors: [...prev.colors, { name: '', hex: '#000000' }] }));
-  };
-
-  const removeColorField = (index: number) => {
-    setForm(prev => ({
-      ...prev,
-      colors: prev.colors.filter((_, i) => i !== index),
-    }));
-  };
-
+  const addColorField = () => setForm(prev => ({ ...prev, colors: [...prev.colors, { name: '', hex: '#000000' }] }));
+  const removeColorField = (index: number) => setForm(prev => ({ ...prev, colors: prev.colors.filter((_, i) => i !== index) }));
   const updateColor = (index: number, field: 'name' | 'hex', value: string) => {
-    setForm(prev => ({
-      ...prev,
-      colors: prev.colors.map((color, i) => 
-        i === index ? { ...color, [field]: value } : color
-      ),
-    }));
+    setForm(prev => ({ ...prev, colors: prev.colors.map((color, i) => i === index ? { ...color, [field]: value } : color) }));
   };
 
   const toggleSize = (size: string) => {
     setForm(prev => ({
       ...prev,
-      sizes: prev.sizes.includes(size)
-        ? prev.sizes.filter(s => s !== size)
-        : [...prev.sizes, size],
+      sizes: prev.sizes.includes(size) ? prev.sizes.filter(s => s !== size) : [...prev.sizes, size],
     }));
   };
 
   if (status === 'loading' || loading) return <BrandLoader label="Product" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
-  if (!session) {
-    return null;
-  }
+  if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-900 scroll-mt-32">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 pt-24 pb-16">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
+        <div className="flex items-start justify-between gap-4 border-b border-zibara-cream/5 pb-8 mb-10">
+          <div className="flex items-start gap-4">
             <Link
               href="/admin/products"
-              className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+              className="p-2 border border-zibara-cream/20 hover:border-zibara-cream/45 transition-colors text-zibara-cream/70 hover:text-zibara-cream shrink-0 mt-1"
             >
-              <ArrowLeft size={20} className="text-zibara-cream" />
+              <ArrowLeft size={16} />
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-zibara-cream uppercase tracking-wider">
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-2">
+                {isNew ? 'New' : 'Editing'}
+              </p>
+              <h1 className="font-cormorant text-4xl md:text-5xl font-light uppercase tracking-[0.15em] text-zibara-cream">
                 {isNew ? 'Add Product' : 'Edit Product'}
               </h1>
-              <p className="text-zinc-300 text-sm mt-1">
+              <p className="text-[11px] font-mono text-zibara-cream/65 mt-2">
                 {isNew ? 'Create a new product' : 'Update product details'}
               </p>
             </div>
@@ -299,9 +224,9 @@ export default function AdminProductEditPage() {
           {!isNew && (
             <button
               onClick={handleDelete}
-              className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors"
+              className="px-4 py-2 border border-zibara-crimson/50 text-zibara-crimson text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-crimson hover:text-zibara-cream transition-colors shrink-0"
             >
-              <Trash2 size={18} />
+              <Trash2 size={14} className="inline mr-1.5" />
               Delete
             </button>
           )}
@@ -309,7 +234,7 @@ export default function AdminProductEditPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-950/50 border border-red-500/30 text-red-300 px-4 py-3 rounded mb-6">
+          <div className="border border-red-500/30 bg-red-950/20 text-red-400 px-4 py-3 text-[11px] font-mono mb-8">
             {error}
           </div>
         )}
@@ -317,45 +242,45 @@ export default function AdminProductEditPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Info */}
-          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-zibara-cream mb-4">Basic Information</h2>
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6 space-y-5">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Basic Information</p>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-300 mb-2">
+              <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                 Product Name *
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 placeholder="e.g., CROCHET LACE ROMPER"
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-zinc-300 mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Price ($) *
                 </label>
                 <input
                   type="number"
                   value={form.price}
                   onChange={(e) => setForm(prev => ({ ...prev, price: parseFloat(e.target.value) || 0 }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                  className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                   min="0"
                   step="0.01"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-zinc-300 mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Category *
                 </label>
                 <select
                   value={form.category}
                   onChange={(e) => setForm(prev => ({ ...prev, category: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-zinc-800 text-zibara-cream"
+                  className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                   disabled={categoriesLoading}
                 >
                   <option value="">
@@ -366,7 +291,7 @@ export default function AdminProductEditPage() {
                   ))}
                 </select>
                 {categoryNames.length === 0 && !categoriesLoading && (
-                  <p className="text-xs text-red-600 mt-1">
+                  <p className="text-[9px] font-mono text-zibara-crimson/80 tracking-[0.2em] mt-1">
                     No categories found. <Link href="/admin/categories" className="underline">Create categories first</Link>
                   </p>
                 )}
@@ -374,36 +299,36 @@ export default function AdminProductEditPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-300 mb-2">
+              <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                 Description
               </label>
               <textarea
                 value={form.description}
                 onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 rows={4}
                 placeholder="Describe your product..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-300 mb-2">
+              <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                 Material
               </label>
               <input
                 type="text"
                 value={form.material}
                 onChange={(e) => setForm(prev => ({ ...prev, material: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 placeholder="e.g., 100% Premium Cotton Yarn"
               />
             </div>
           </div>
 
           {/* Images */}
-          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-zibara-cream">Images</h2>
-            
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6 space-y-4">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Images</p>
+
             <ImageUploading
               multiple
               value={form.images.filter(img => img.trim()).map(url => ({ data_url: url }))}
@@ -416,40 +341,30 @@ export default function AdminProductEditPage() {
               maxNumber={10}
               dataURLKey="data_url"
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
+              {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                 <div className="space-y-4">
                   <div className="flex flex-wrap gap-2">
                     {imageList.map((image, index) => {
                       const imageUrl = typeof image.data_url === 'string' ? image.data_url : '';
                       return (
-                        <div key={index} className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-300">
+                        <div key={index} className="relative w-28 h-28 overflow-hidden border border-zibara-cream/25">
                           <img
                             src={imageUrl}
                             alt={`Product image ${index + 1}`}
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                          <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
                             <button
                               type="button"
                               onClick={() => onImageUpdate(index)}
-                              className="px-3 py-1 bg-white text-zinc-300 rounded text-xs font-semibold hover:bg-zinc-700"
+                              className="px-2 py-1 border border-zibara-cream/25 text-[9px] font-mono uppercase tracking-[0.2em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
                             >
                               Update
                             </button>
                             <button
                               type="button"
-                              onClick={() => {
-                                onImageRemove(index);
-                                removeImageField(index);
-                              }}
-                              className="px-3 py-1 bg-red-500 text-white rounded text-xs font-semibold hover:bg-red-600"
+                              onClick={() => { onImageRemove(index); removeImageField(index); }}
+                              className="px-2 py-1 border border-zibara-crimson/50 text-zibara-crimson text-[9px] font-mono uppercase tracking-[0.2em] hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                             >
                               Remove
                             </button>
@@ -458,19 +373,18 @@ export default function AdminProductEditPage() {
                       );
                     })}
                   </div>
-                  
                   <button
                     type="button"
                     onClick={onImageUpload}
                     {...dragProps}
                     disabled={uploading}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    className={`flex items-center gap-2 px-5 py-2 text-[10px] font-mono uppercase tracking-[0.3em] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                       isDragging
-                        ? 'bg-zibara-crimson text-white'
-                        : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                        ? 'bg-zibara-crimson text-zibara-cream'
+                        : 'border border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream'
+                    }`}
                   >
-                    <Upload size={18} />
+                    <Upload size={12} />
                     {uploading ? 'Uploading...' : 'Upload Images'}
                   </button>
                 </div>
@@ -479,18 +393,18 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Sizes */}
-          <div className="bg-zinc-800 rounded-lg p-6">
-            <h2 className="text-lg font-bold text-zibara-cream mb-4">Available Sizes</h2>
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-4">Available Sizes</p>
             <div className="flex flex-wrap gap-2">
               {availableSizes.map(size => (
                 <button
                   key={size}
                   type="button"
                   onClick={() => toggleSize(size)}
-                  className={`px-6 py-3 rounded-full font-semibold transition-colors ${
+                  className={`px-5 py-2 text-[10px] font-mono uppercase tracking-[0.3em] transition-colors ${
                     form.sizes.includes(size)
-                      ? 'bg-zibara-crimson text-white'
-                      : 'bg-white text-zinc-300 hover:bg-zinc-700'
+                      ? 'bg-zibara-crimson text-zibara-cream'
+                      : 'border border-zibara-cream/20 text-zibara-cream/60 hover:border-zibara-cream/40 hover:text-zibara-cream/80'
                   }`}
                 >
                   {size}
@@ -500,48 +414,48 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Colors */}
-          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-zibara-cream">Product Colors</h2>
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Product Colors</p>
               <button
                 type="button"
                 onClick={addColorField}
-                className="flex items-center gap-1 text-sm text-zibara-cream hover:underline"
+                className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/60 hover:text-zibara-cream transition-colors"
               >
-                <Plus size={16} />
+                <Plus size={12} />
                 Add Color
               </button>
             </div>
 
             {form.colors.length === 0 ? (
-              <p className="text-sm text-zinc-400 italic">No colors added yet. Click "Add Color" to add one.</p>
+              <p className="text-[11px] font-mono text-zibara-cream/40">No colors added yet. Click "Add Color" to add one.</p>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2">
                 {form.colors.map((color, index) => (
-                  <div key={index} className="flex items-center gap-3 bg-white p-3 rounded-lg">
+                  <div key={index} className="flex items-center gap-3 border border-zibara-cream/8 p-3">
                     <div className="flex items-center gap-2 flex-1">
                       <input
                         type="color"
                         value={color.hex}
                         onChange={(e) => updateColor(index, 'hex', e.target.value)}
-                        className="w-12 h-12 rounded border border-gray-300 cursor-pointer"
+                        className="w-10 h-10 border border-zibara-cream/25 cursor-pointer bg-transparent"
                         title="Select color"
                       />
                       <input
                         type="text"
                         value={color.name}
                         onChange={(e) => updateColor(index, 'name', e.target.value)}
-                        className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                        className="flex-1 px-4 py-2 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream text-sm"
                         placeholder="Color name (e.g., Berry Red)"
                       />
                     </div>
                     <button
                       type="button"
                       onClick={() => removeColorField(index)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 border border-zibara-crimson/50 text-zibara-crimson hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                       title="Remove color"
                     >
-                      <X size={18} />
+                      <X size={14} />
                     </button>
                   </div>
                 ))}
@@ -550,15 +464,15 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Care Instructions */}
-          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-bold text-zibara-cream">Care Instructions</h2>
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Care Instructions</p>
               <button
                 type="button"
                 onClick={addCareField}
-                className="flex items-center gap-1 text-sm text-zibara-cream hover:underline"
+                className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/60 hover:text-zibara-cream transition-colors"
               >
-                <Plus size={16} />
+                <Plus size={12} />
                 Add Instruction
               </button>
             </div>
@@ -569,16 +483,16 @@ export default function AdminProductEditPage() {
                   type="text"
                   value={care}
                   onChange={(e) => updateCare(index, e.target.value)}
-                  className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                  className="flex-1 px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                   placeholder="e.g., Hand wash cold"
                 />
                 {form.care.length > 1 && (
                   <button
                     type="button"
                     onClick={() => removeCareField(index)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+                    className="p-2 border border-zibara-crimson/50 text-zibara-crimson hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                   >
-                    <X size={20} />
+                    <X size={14} />
                   </button>
                 )}
               </div>
@@ -586,27 +500,26 @@ export default function AdminProductEditPage() {
           </div>
 
           {/* Status */}
-          <div className="bg-zinc-800 rounded-lg p-6">
-            <h2 className="text-lg font-bold text-zibara-cream mb-4">Status</h2>
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-4">Status</p>
             <div className="flex flex-wrap gap-6">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.inStock}
                   onChange={(e) => setForm(prev => ({ ...prev, inStock: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
+                  className="w-4 h-4 border-zibara-cream/35 text-zibara-crimson focus:ring-zibara-gold/50"
                 />
-                <span className="text-sm font-medium text-zinc-300">In Stock</span>
+                <span className="text-[11px] font-mono text-zibara-cream/65">In Stock</span>
               </label>
-
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.featured}
                   onChange={(e) => setForm(prev => ({ ...prev, featured: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
+                  className="w-4 h-4 border-zibara-cream/35 text-zibara-crimson focus:ring-zibara-gold/50"
                 />
-                <span className="text-sm font-medium text-zinc-300">Featured Product</span>
+                <span className="text-[11px] font-mono text-zibara-cream/65">Featured Product</span>
               </label>
             </div>
           </div>
@@ -615,16 +528,16 @@ export default function AdminProductEditPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href="/admin/products"
-              className="px-6 py-3 bg-gray-200 text-zinc-300 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              className="px-5 py-2 border border-zibara-cream/25 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 bg-zibara-crimson text-white rounded-lg font-semibold hover:bg-zibara-blood transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors disabled:opacity-50"
             >
-              <Save size={18} />
+              <Save size={12} />
               {saving ? 'Saving...' : isNew ? 'Create Product' : 'Save Changes'}
             </button>
           </div>

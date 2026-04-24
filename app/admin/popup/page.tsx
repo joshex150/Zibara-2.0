@@ -132,7 +132,7 @@ export default function AdminPopupPage() {
 
   return (
     <div className="min-h-screen bg-zibara-black text-zibara-cream scroll-mt-32">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 pt-24 pb-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0 mb-6 md:mb-8">
           <div className="flex items-center gap-3 md:gap-4">
@@ -185,11 +185,11 @@ export default function AdminPopupPage() {
                 <button
                   onClick={() => setData({ ...data, enabled: !data.enabled })}
                   className={`relative w-14 h-7 rounded-full transition-colors ${
-                    data.enabled ? 'bg-green-500' : 'bg-gray-300'
+                    data.enabled ? 'bg-zibara-crimson' : 'bg-zibara-cream/20'
                   }`}
                 >
                   <span
-                    className={`absolute top-1 w-5 h-5 bg-white rounded-full transition-transform ${
+                    className={`absolute top-1 w-5 h-5 bg-zibara-cream rounded-full transition-transform ${
                       data.enabled ? 'left-8' : 'left-1'
                     }`}
                   />
@@ -239,11 +239,11 @@ export default function AdminPopupPage() {
                 <button
                   onClick={() => setData({ ...data, showButton: !data.showButton })}
                   className={`relative w-12 h-6 rounded-full transition-colors ${
-                    data.showButton ? 'bg-green-500' : 'bg-gray-300'
+                    data.showButton ? 'bg-zibara-crimson' : 'bg-zibara-cream/20'
                   }`}
                 >
                   <span
-                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                    className={`absolute top-1 w-4 h-4 bg-zibara-cream rounded-full transition-transform ${
                       data.showButton ? 'left-7' : 'left-1'
                     }`}
                   />
@@ -315,11 +315,11 @@ export default function AdminPopupPage() {
                 <button
                   onClick={() => setData({ ...data, showOnce: !data.showOnce })}
                   className={`relative w-12 h-6 rounded-full transition-colors ${
-                    data.showOnce ? 'bg-green-500' : 'bg-gray-300'
+                    data.showOnce ? 'bg-zibara-crimson' : 'bg-zibara-cream/20'
                   }`}
                 >
                   <span
-                    className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                    className={`absolute top-1 w-4 h-4 bg-zibara-cream rounded-full transition-transform ${
                       data.showOnce ? 'left-7' : 'left-1'
                     }`}
                   />

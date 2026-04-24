@@ -64,33 +64,17 @@ export default function AdminCollectionEditPage() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload file');
-      }
-
+      const response = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!response.ok) throw new Error('Failed to upload file');
       const data = await response.json();
       toast.success('Image uploaded successfully!');
-      
       if (isCoverImage) {
         setForm(prev => ({ ...prev, coverImage: data.url }));
       } else if (imageIndex !== undefined) {
-        setForm(prev => ({
-          ...prev,
-          images: prev.images.map((img, i) => (i === imageIndex ? data.url : img)),
-        }));
+        setForm(prev => ({ ...prev, images: prev.images.map((img, i) => (i === imageIndex ? data.url : img)) }));
       } else {
-        setForm(prev => ({
-          ...prev,
-          images: [...prev.images.filter(img => img.trim()), data.url],
-        }));
+        setForm(prev => ({ ...prev, images: [...prev.images.filter(img => img.trim()), data.url] }));
       }
-      
       return data;
     } catch (error: any) {
       console.error('Error uploading file:', error.message);
@@ -106,9 +90,7 @@ export default function AdminCollectionEditPage() {
       router.push('/admin/login');
     } else if (status === 'authenticated') {
       fetchProducts();
-      if (!isNew) {
-        fetchCollection();
-      }
+      if (!isNew) fetchCollection();
     }
   }, [status, router, isNew]);
 
@@ -116,9 +98,7 @@ export default function AdminCollectionEditPage() {
     try {
       const res = await fetch('/api/admin/products');
       const data = await res.json();
-      if (data.success) {
-        setProducts(data.data);
-      }
+      if (data.success) setProducts(data.data);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -128,7 +108,6 @@ export default function AdminCollectionEditPage() {
     try {
       const res = await fetch(`/api/admin/collections/${params.id}`);
       const data = await res.json();
-
       if (data.success) {
         const collection = data.data;
         setForm({
@@ -155,77 +134,35 @@ export default function AdminCollectionEditPage() {
     }
   };
 
-  const generateSlug = (name: string) => {
-    return name
-      .toLowerCase()
-      .trim()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-  };
+  const generateSlug = (name: string) =>
+    name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
   const handleNameChange = (name: string) => {
-    setForm(prev => ({
-      ...prev,
-      name,
-      slug: isNew ? generateSlug(name) : prev.slug,
-    }));
+    setForm(prev => ({ ...prev, name, slug: isNew ? generateSlug(name) : prev.slug }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSaving(true);
+    if (!form.name.trim()) { setError('Collection name is required'); setSaving(false); return; }
+    if (!form.slug.trim()) { setError('Slug is required'); setSaving(false); return; }
+    if (!form.season) { setError('Season is required'); setSaving(false); return; }
+    if (!form.description.trim()) { setError('Description is required'); setSaving(false); return; }
+    if (!form.writeUp.trim()) { setError('Write-up is required'); setSaving(false); return; }
+    if (!form.coverImage.trim()) { setError('Cover image is required'); setSaving(false); return; }
 
-    // Validation
-    if (!form.name.trim()) {
-      setError('Collection name is required');
-      setSaving(false);
-      return;
-    }
-    if (!form.slug.trim()) {
-      setError('Slug is required');
-      setSaving(false);
-      return;
-    }
-    if (!form.season) {
-      setError('Season is required');
-      setSaving(false);
-      return;
-    }
-    if (!form.description.trim()) {
-      setError('Description is required');
-      setSaving(false);
-      return;
-    }
-    if (!form.writeUp.trim()) {
-      setError('Write-up is required');
-      setSaving(false);
-      return;
-    }
-    if (!form.coverImage.trim()) {
-      setError('Cover image is required');
-      setSaving(false);
-      return;
-    }
-
-    // Filter out empty values
-    const cleanedForm = {
-      ...form,
-      images: form.images.filter(img => img.trim()),
-    };
+    const cleanedForm = { ...form, images: form.images.filter(img => img.trim()) };
 
     try {
       const url = isNew ? '/api/admin/collections' : `/api/admin/collections/${params.id}`;
       const method = isNew ? 'POST' : 'PUT';
-
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cleanedForm),
       });
-
       const data = await res.json();
-
       if (data.success) {
         router.push('/admin/collections');
       } else {
@@ -240,15 +177,9 @@ export default function AdminCollectionEditPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm('Are you sure you want to delete this collection?')) {
-      return;
-    }
-
+    if (!confirm('Are you sure you want to delete this collection?')) return;
     try {
-      const res = await fetch(`/api/admin/collections/${params.id}`, {
-        method: 'DELETE',
-      });
-
+      const res = await fetch(`/api/admin/collections/${params.id}`, { method: 'DELETE' });
       if (res.ok) {
         router.push('/admin/collections');
       } else {
@@ -261,10 +192,7 @@ export default function AdminCollectionEditPage() {
   };
 
   const removeImageField = (index: number) => {
-    setForm(prev => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index),
-    }));
+    setForm(prev => ({ ...prev, images: prev.images.filter((_, i) => i !== index) }));
   };
 
   const toggleProduct = (productId: string) => {
@@ -278,27 +206,28 @@ export default function AdminCollectionEditPage() {
 
   if (status === 'loading' || loading) return <BrandLoader label="Collection" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
-  if (!session) {
-    return null;
-  }
+  if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-900 scroll-mt-32">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div className="max-w-4xl mx-auto px-6 md:px-8 pt-24 pb-16">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
+        <div className="flex items-start justify-between gap-4 border-b border-zibara-cream/5 pb-8 mb-10">
+          <div className="flex items-start gap-4">
             <Link
               href="/admin/collections"
-              className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors"
+              className="p-2 border border-zibara-cream/20 hover:border-zibara-cream/45 transition-colors text-zibara-cream/70 hover:text-zibara-cream shrink-0 mt-1"
             >
-              <ArrowLeft size={20} className="text-zibara-cream" />
+              <ArrowLeft size={16} />
             </Link>
             <div>
-              <h1 className="text-3xl font-bold text-zibara-cream uppercase tracking-wider">
+              <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-2">
+                {isNew ? 'New' : 'Editing'}
+              </p>
+              <h1 className="font-cormorant text-4xl md:text-5xl font-light uppercase tracking-[0.15em] text-zibara-cream">
                 {isNew ? 'New Collection' : 'Edit Collection'}
               </h1>
-              <p className="text-zinc-300 text-sm mt-1">
+              <p className="text-[11px] font-mono text-zibara-cream/65 mt-2">
                 {isNew ? 'Create a new curated collection' : 'Update collection details'}
               </p>
             </div>
@@ -306,9 +235,9 @@ export default function AdminCollectionEditPage() {
           {!isNew && (
             <button
               onClick={handleDelete}
-              className="flex items-center gap-2 bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors"
+              className="px-4 py-2 border border-zibara-crimson/50 text-zibara-crimson text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-crimson hover:text-zibara-cream transition-colors shrink-0"
             >
-              <Trash2 size={18} />
+              <Trash2 size={14} className="inline mr-1.5" />
               Delete
             </button>
           )}
@@ -316,7 +245,7 @@ export default function AdminCollectionEditPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-950/50 border border-red-500/30 text-red-300 px-4 py-3 rounded mb-6">
+          <div className="border border-red-500/30 bg-red-950/20 text-red-400 px-4 py-3 text-[11px] font-mono mb-8">
             {error}
           </div>
         )}
@@ -324,47 +253,47 @@ export default function AdminCollectionEditPage() {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Info */}
-          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-zibara-cream mb-4">Basic Information</h2>
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6 space-y-5">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Basic Information</p>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-300 mb-2">
+              <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                 Collection Name *
               </label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => handleNameChange(e.target.value)}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 placeholder="e.g., Summer Paradise 2026"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-300 mb-2">
+              <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                 URL Slug *
               </label>
               <input
                 type="text"
                 value={form.slug}
                 onChange={(e) => setForm(prev => ({ ...prev, slug: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 placeholder="summer-paradise-2026"
               />
-              <p className="text-xs text-zinc-500 mt-1">
-                Used in URL: /collections/{form.slug || 'your-slug'}
+              <p className="text-[9px] font-mono text-zibara-cream/40 tracking-[0.2em] mt-1">
+                URL: /collections/{form.slug || 'your-slug'}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-zinc-300 mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Season *
                 </label>
                 <select
                   value={form.season}
                   onChange={(e) => setForm(prev => ({ ...prev, season: e.target.value }))}
-                  className="w-full px-4 py-3 rounded-lg border border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-zinc-800 text-zibara-cream"
+                  className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 >
                   <option value="">Select a season</option>
                   {seasons.map(season => (
@@ -374,14 +303,14 @@ export default function AdminCollectionEditPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-zinc-300 mb-2">
+                <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                   Year *
                 </label>
                 <input
                   type="number"
                   value={form.year}
                   onChange={(e) => setForm(prev => ({ ...prev, year: parseInt(e.target.value) || new Date().getFullYear() }))}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                  className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                   min="2020"
                   max="2030"
                 />
@@ -389,26 +318,26 @@ export default function AdminCollectionEditPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-300 mb-2">
+              <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                 Short Description *
               </label>
               <textarea
                 value={form.description}
                 onChange={(e) => setForm(prev => ({ ...prev, description: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 rows={2}
                 placeholder="A brief description for previews..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-semibold text-zinc-300 mb-2">
+              <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                 Full Write-up *
               </label>
               <textarea
                 value={form.writeUp}
                 onChange={(e) => setForm(prev => ({ ...prev, writeUp: e.target.value }))}
-                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent bg-white"
+                className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent bg-zibara-black/40 text-zibara-cream"
                 rows={6}
                 placeholder="Tell the story of this collection..."
               />
@@ -416,71 +345,59 @@ export default function AdminCollectionEditPage() {
           </div>
 
           {/* Cover Image */}
-          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-zibara-cream mb-4">Cover Image *</h2>
-            
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6 space-y-4">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Cover Image *</p>
+
             <ImageUploading
               multiple={false}
               value={form.coverImage ? [{ data_url: form.coverImage }] : []}
               onChange={(imageList) => {
-                if (imageList[0]?.file) {
-                  uploadFile(imageList[0].file, true);
-                }
+                if (imageList[0]?.file) uploadFile(imageList[0].file, true);
               }}
               maxNumber={1}
               dataURLKey="data_url"
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
+              {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                 <div className="space-y-4">
                   {form.coverImage && (
-                    <div className="aspect-video bg-white rounded-lg overflow-hidden max-w-md border-2 border-gray-300">
+                    <div className="aspect-video bg-zibara-deep overflow-hidden max-w-md border border-zibara-cream/25">
                       <img src={form.coverImage} alt="Cover preview" className="w-full h-full object-cover" />
                     </div>
                   )}
-                  
-                  <button
-                    type="button"
-                    onClick={form.coverImage ? () => onImageUpdate(0) : onImageUpload}
-                    {...dragProps}
-                    disabled={uploading}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
-                      isDragging
-                        ? 'bg-zibara-crimson text-white'
-                        : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
-                  >
-                    <Upload size={18} />
-                    {uploading ? 'Uploading...' : form.coverImage ? 'Change Cover Image' : 'Upload Cover Image'}
-                  </button>
-                  
-                  {form.coverImage && (
+                  <div className="flex gap-2 flex-wrap">
                     <button
                       type="button"
-                      onClick={() => {
-                        onImageRemove(0);
-                        setForm(prev => ({ ...prev, coverImage: '' }));
-                      }}
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg font-semibold hover:bg-red-600 transition-colors"
+                      onClick={form.coverImage ? () => onImageUpdate(0) : onImageUpload}
+                      {...dragProps}
+                      disabled={uploading}
+                      className={`flex items-center gap-2 px-5 py-2 text-[10px] font-mono uppercase tracking-[0.3em] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                        isDragging
+                          ? 'bg-zibara-crimson text-zibara-cream'
+                          : 'border border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream'
+                      }`}
                     >
-                      Remove Cover Image
+                      <Upload size={12} />
+                      {uploading ? 'Uploading...' : form.coverImage ? 'Change Cover Image' : 'Upload Cover Image'}
                     </button>
-                  )}
+                    {form.coverImage && (
+                      <button
+                        type="button"
+                        onClick={() => { onImageRemove(0); setForm(prev => ({ ...prev, coverImage: '' })); }}
+                        className="px-5 py-2 border border-zibara-crimson/50 text-zibara-crimson text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
+                      >
+                        Remove
+                      </button>
+                    )}
+                  </div>
                 </div>
               )}
             </ImageUploading>
           </div>
 
           {/* Gallery Images */}
-          <div className="bg-zinc-800 rounded-lg p-6 space-y-4">
-            <h2 className="text-lg font-bold text-zibara-cream">Gallery Images</h2>
-            
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6 space-y-4">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase">Gallery Images</p>
+
             <ImageUploading
               multiple
               value={form.images.filter(img => img.trim()).map(url => ({ data_url: url }))}
@@ -493,40 +410,26 @@ export default function AdminCollectionEditPage() {
               maxNumber={20}
               dataURLKey="data_url"
             >
-              {({
-                imageList,
-                onImageUpload,
-                onImageUpdate,
-                onImageRemove,
-                isDragging,
-                dragProps,
-              }) => (
+              {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                 <div className="space-y-4">
                   <div className="flex flex-wrap gap-2">
                     {imageList.map((image, index) => {
                       const imageUrl = typeof image.data_url === 'string' ? image.data_url : '';
                       return (
-                        <div key={index} className="relative w-32 h-32 rounded-lg overflow-hidden border-2 border-gray-300">
-                          <img
-                            src={imageUrl}
-                            alt={`Gallery image ${index + 1}`}
-                            className="w-full h-full object-cover"
-                          />
-                          <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                        <div key={index} className="relative w-28 h-28 overflow-hidden border border-zibara-cream/25">
+                          <img src={imageUrl} alt={`Gallery image ${index + 1}`} className="w-full h-full object-cover" />
+                          <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-1.5">
                             <button
                               type="button"
                               onClick={() => onImageUpdate(index)}
-                              className="px-3 py-1 bg-white text-zinc-300 rounded text-xs font-semibold hover:bg-zinc-700"
+                              className="px-2 py-1 border border-zibara-cream/25 text-[9px] font-mono uppercase tracking-[0.2em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
                             >
                               Update
                             </button>
                             <button
                               type="button"
-                              onClick={() => {
-                                onImageRemove(index);
-                                removeImageField(index);
-                              }}
-                              className="px-3 py-1 bg-red-500 text-white rounded text-xs font-semibold hover:bg-red-600"
+                              onClick={() => { onImageRemove(index); removeImageField(index); }}
+                              className="px-2 py-1 border border-zibara-crimson/50 text-zibara-crimson text-[9px] font-mono uppercase tracking-[0.2em] hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                             >
                               Remove
                             </button>
@@ -535,19 +438,18 @@ export default function AdminCollectionEditPage() {
                       );
                     })}
                   </div>
-                  
                   <button
                     type="button"
                     onClick={onImageUpload}
                     {...dragProps}
                     disabled={uploading}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    className={`flex items-center gap-2 px-5 py-2 text-[10px] font-mono uppercase tracking-[0.3em] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                       isDragging
-                        ? 'bg-zibara-crimson text-white'
-                        : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                        ? 'bg-zibara-crimson text-zibara-cream'
+                        : 'border border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream'
+                    }`}
                   >
-                    <Upload size={18} />
+                    <Upload size={12} />
                     {uploading ? 'Uploading...' : 'Upload Gallery Images'}
                   </button>
                 </div>
@@ -556,15 +458,14 @@ export default function AdminCollectionEditPage() {
           </div>
 
           {/* Products */}
-          <div className="bg-zinc-800 rounded-lg p-6">
-            <h2 className="text-lg font-bold text-zibara-cream mb-4">
-              Products in Collection ({form.productIds.length} selected)
-            </h2>
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-1">Products in Collection</p>
+            <p className="text-[11px] font-mono text-zibara-cream/40 mb-4">{form.productIds.length} selected</p>
 
             {products.length === 0 ? (
-              <p className="text-zinc-400 text-sm">No products available. Create products first.</p>
+              <p className="text-[11px] font-mono text-zibara-cream/40">No products available. Create products first.</p>
             ) : (
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-h-96 overflow-y-auto">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-zibara-cream/5 max-h-96 overflow-y-auto">
                 {products.map(product => {
                   const isSelected = form.productIds.includes(product._id);
                   return (
@@ -572,26 +473,24 @@ export default function AdminCollectionEditPage() {
                       key={product._id}
                       type="button"
                       onClick={() => toggleProduct(product._id)}
-                      className={`relative p-2 rounded-lg border-2 transition-colors text-left ${
-                        isSelected
-                          ? 'border-zinc-600 bg-zinc-700/40'
-                          : 'border-transparent bg-white hover:border-gray-300'
+                      className={`relative p-2 text-left bg-zibara-black transition-colors hover:bg-zibara-cream/5 ${
+                        isSelected ? 'ring-1 ring-inset ring-zibara-crimson/60' : ''
                       }`}
                     >
                       {isSelected && (
-                        <div className="absolute top-2 right-2 w-6 h-6 bg-zibara-crimson rounded-full flex items-center justify-center">
-                          <Check size={14} className="text-white" />
+                        <div className="absolute top-2 right-2 w-5 h-5 bg-zibara-crimson flex items-center justify-center">
+                          <Check size={10} className="text-white" />
                         </div>
                       )}
-                      <div className="aspect-square bg-zinc-700 rounded overflow-hidden mb-2">
+                      <div className="aspect-square bg-zibara-deep overflow-hidden mb-2">
                         <img
                           src={product.images[0] || '/placeholder.png'}
                           alt={product.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <p className="text-xs font-medium text-zinc-100 truncate">{product.name}</p>
-                      <p className="text-xs text-zinc-500">${product.price}</p>
+                      <p className="text-[9px] font-mono uppercase tracking-[0.1em] text-zibara-cream truncate">{product.name}</p>
+                      <p className="text-[9px] font-mono text-zibara-cream/40">${product.price}</p>
                     </button>
                   );
                 })}
@@ -600,27 +499,26 @@ export default function AdminCollectionEditPage() {
           </div>
 
           {/* Status */}
-          <div className="bg-zinc-800 rounded-lg p-6">
-            <h2 className="text-lg font-bold text-zibara-cream mb-4">Status</h2>
+          <div className="border border-zibara-cream/10 bg-zibara-deep p-5 md:p-6">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-4">Status</p>
             <div className="flex flex-wrap gap-6">
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.published}
                   onChange={(e) => setForm(prev => ({ ...prev, published: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
+                  className="w-4 h-4 border-zibara-cream/35 text-zibara-crimson focus:ring-zibara-gold/50"
                 />
-                <span className="text-sm font-medium text-zinc-300">Published (visible to customers)</span>
+                <span className="text-[11px] font-mono text-zibara-cream/65">Published (visible to customers)</span>
               </label>
-
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={form.featured}
                   onChange={(e) => setForm(prev => ({ ...prev, featured: e.target.checked }))}
-                  className="w-5 h-5 rounded border-gray-300 text-zibara-cream focus:ring-zinc-400"
+                  className="w-4 h-4 border-zibara-cream/35 text-zibara-crimson focus:ring-zibara-gold/50"
                 />
-                <span className="text-sm font-medium text-zinc-300">Featured Collection</span>
+                <span className="text-[11px] font-mono text-zibara-cream/65">Featured Collection</span>
               </label>
             </div>
           </div>
@@ -629,16 +527,16 @@ export default function AdminCollectionEditPage() {
           <div className="flex items-center justify-end gap-4">
             <Link
               href="/admin/collections"
-              className="px-6 py-3 bg-gray-200 text-zinc-300 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              className="px-5 py-2 border border-zibara-cream/25 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
             >
               Cancel
             </Link>
             <button
               type="submit"
               disabled={saving}
-              className="flex items-center gap-2 px-6 py-3 bg-zibara-crimson text-white rounded-lg font-semibold hover:bg-zibara-blood transition-colors disabled:opacity-50"
+              className="flex items-center gap-2 px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors disabled:opacity-50"
             >
-              <Save size={18} />
+              <Save size={12} />
               {saving ? 'Saving...' : isNew ? 'Create Collection' : 'Save Changes'}
             </button>
           </div>

@@ -33,16 +33,8 @@ export default function AdminSiteContentPage() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-
-      const response = await fetch('/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to upload file');
-      }
-
+      const response = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!response.ok) throw new Error('Failed to upload file');
       const data = await response.json();
       toast.success('Image uploaded successfully!');
       setEditingContent(prev => prev ? { ...prev, value: data.url } : null);
@@ -68,10 +60,7 @@ export default function AdminSiteContentPage() {
     try {
       const res = await fetch('/api/admin/site-content');
       const data = await res.json();
-      
-      if (data.success) {
-        setContents(data.data);
-      }
+      if (data.success) setContents(data.data);
     } catch (error) {
       console.error('Error fetching content:', error);
     } finally {
@@ -87,7 +76,6 @@ export default function AdminSiteContentPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ value: content.value }),
       });
-
       if (res.ok) {
         fetchContent();
         setEditingContent(null);
@@ -102,46 +90,42 @@ export default function AdminSiteContentPage() {
   };
 
   const sections = [...new Set(contents.map(c => c.section))];
-  const filteredContents = filter === 'all' 
-    ? contents 
-    : contents.filter(c => c.section === filter);
+  const filteredContents = filter === 'all' ? contents : contents.filter(c => c.section === filter);
 
   if (status === 'loading' || loading) return <BrandLoader label="Site Content" sublabel="ZIBARASTUDIO" tone="crimson" />;
 
-  if (!session) {
-    return null;
-  }
+  if (!session) return null;
 
   return (
-    <div className="min-h-screen bg-zinc-900 scroll-mt-32 flex flex-col">
-      <div className="max-w-7xl mx-auto px-4 py-8 w-full flex-1 flex flex-col">
+    <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-24 pb-16">
         {/* Header */}
-        <div className="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
-          <Link 
+        <div className="flex items-start gap-4 border-b border-zibara-cream/5 pb-8 mb-10">
+          <Link
             href="/admin"
-            className="p-2 bg-zinc-800 rounded-lg hover:bg-zinc-700 transition-colors shrink-0"
+            className="p-2 border border-zibara-cream/20 hover:border-zibara-cream/45 transition-colors text-zibara-cream/70 hover:text-zibara-cream shrink-0 mt-1"
           >
-            <ArrowLeft size={18} className="md:w-5 md:h-5 text-zibara-cream" />
+            <ArrowLeft size={16} />
           </Link>
           <div>
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-zibara-cream uppercase tracking-wider">
+            <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-2">Editorial</p>
+            <h1 className="font-cormorant text-4xl md:text-5xl font-light uppercase tracking-[0.15em] text-zibara-cream">
               Site Content
             </h1>
-            <p className="text-zinc-300 text-xs md:text-sm mt-1">
+            <p className="text-[11px] font-mono text-zibara-cream/65 mt-2">
               Edit text, images, and content across the site
             </p>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="mb-4 md:mb-6 flex gap-2 flex-wrap">
+        <div className="mb-8 flex gap-2 flex-wrap">
           <button
             onClick={() => setFilter('all')}
-            className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-medium text-xs md:text-sm ${
-              filter === 'all'
-                ? 'bg-zibara-crimson text-white'
-                : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-            }`}
+            className={filter === 'all'
+              ? 'px-3 py-1.5 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em]'
+              : 'px-3 py-1.5 border border-zibara-cream/20 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/60 hover:border-zibara-cream/40 hover:text-zibara-cream/80 transition-colors'
+            }
           >
             All ({contents.length})
           </button>
@@ -149,11 +133,10 @@ export default function AdminSiteContentPage() {
             <button
               key={section}
               onClick={() => setFilter(section)}
-              className={`px-3 md:px-4 py-1.5 md:py-2 rounded-lg font-medium capitalize text-xs md:text-sm ${
-                filter === section
-                  ? 'bg-zibara-crimson text-white'
-                  : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'
-              }`}
+              className={filter === section
+                ? 'px-3 py-1.5 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em]'
+                : 'px-3 py-1.5 border border-zibara-cream/20 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/60 hover:border-zibara-cream/40 hover:text-zibara-cream/80 transition-colors'
+              }
             >
               {section} ({contents.filter(c => c.section === section).length})
             </button>
@@ -162,44 +145,40 @@ export default function AdminSiteContentPage() {
 
         {/* Content Grid */}
         {filteredContents.length === 0 ? (
-          <div className="bg-zibara-crimson rounded-lg p-8 md:p-12 text-center flex-1 flex flex-col items-center justify-center">
-            <p className="text-base md:text-lg text-white mb-3 md:mb-4">No content found</p>
-            <p className="text-xs md:text-sm text-white/80">
-              Run the seed script to populate site content.
-            </p>
+          <div className="border border-zibara-cream/10 p-12 text-center">
+            <p className="text-[11px] font-mono text-zibara-cream/65 mb-2">No content found</p>
+            <p className="text-[11px] font-mono text-zibara-cream/40">Run the seed script to populate site content.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-zibara-cream/5 border border-zibara-cream/5">
             {filteredContents.map((content) => (
-              <div key={content._id} className="bg-zinc-800 rounded-lg shadow-md p-4 md:p-6 flex flex-col">
+              <div key={content._id} className="bg-zibara-black p-5 flex flex-col">
                 <div className="flex-1">
                   <div className="flex items-start justify-between gap-2 mb-2">
-                    <h3 className="font-bold text-zinc-100 text-xs md:text-sm break-all">{content.key}</h3>
-                    <span className="text-[10px] md:text-xs bg-zibara-crimson text-white px-1.5 md:px-2 py-0.5 md:py-1 rounded shrink-0">
+                    <h3 className="text-[10px] font-mono uppercase tracking-[0.2em] text-zibara-cream break-all">{content.key}</h3>
+                    <span className="text-[9px] font-mono uppercase tracking-[0.2em] px-2 py-0.5 border border-zibara-cream/20 text-zibara-cream/55 shrink-0">
                       {content.type}
                     </span>
                   </div>
-                  <p className="text-[10px] md:text-xs text-zinc-400 mb-2 md:mb-3">{content.description}</p>
-                  
+                  <p className="text-[9px] font-mono text-zibara-cream/40 tracking-[0.2em] uppercase mb-3">{content.description}</p>
+
                   {content.type === 'image' ? (
-                    <div className="aspect-video bg-zinc-700 rounded overflow-hidden">
-                      <img 
-                        src={content.value} 
+                    <div className="aspect-video bg-zibara-deep overflow-hidden">
+                      <img
+                        src={content.value}
                         alt={content.key}
                         className="w-full h-full object-cover"
                       />
                     </div>
                   ) : (
-                    <p className="text-xs md:text-sm text-gray-800 line-clamp-3">
-                      {typeof content.value === 'string' 
-                        ? content.value 
-                        : JSON.stringify(content.value)}
+                    <p className="text-[11px] font-mono text-zibara-cream/65 line-clamp-3 leading-relaxed">
+                      {typeof content.value === 'string' ? content.value : JSON.stringify(content.value)}
                     </p>
                   )}
                 </div>
                 <button
                   onClick={() => setEditingContent(content)}
-                  className="w-full bg-zibara-crimson text-white px-4 py-2 rounded text-xs md:text-sm font-semibold hover:bg-zibara-blood transition-colors mt-3 md:mt-4"
+                  className="w-full mt-4 px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors"
                 >
                   Edit
                 </button>
@@ -210,81 +189,66 @@ export default function AdminSiteContentPage() {
 
         {/* Edit Modal */}
         {editingContent && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 md:p-4">
-            <div className="bg-zinc-800 rounded-lg max-w-2xl w-full max-h-[95vh] overflow-y-auto">
-              <div className="p-4 md:p-6 border-b">
-                <h2 className="text-lg md:text-2xl font-bold text-zinc-100">
-                  Edit Content
+          <div className="fixed inset-0 bg-zibara-black/80 flex items-center justify-center z-50 p-4">
+            <div className="bg-zibara-deep border border-zibara-cream/10 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+              <div className="p-6 border-b border-zibara-cream/8">
+                <p className="text-[9px] tracking-[0.5em] font-mono text-zibara-cream/55 uppercase mb-1">Editing</p>
+                <h2 className="font-cormorant text-2xl font-light uppercase tracking-[0.15em] text-zibara-cream mb-1">
+                  Content Block
                 </h2>
-                <p className="text-xs md:text-sm text-zinc-400 mt-1">{editingContent.description}</p>
+                <p className="text-[11px] font-mono text-zibara-cream/55">{editingContent.description}</p>
               </div>
-              
-              <div className="p-4 md:p-6 space-y-3 md:space-y-4">
+
+              <div className="p-6 space-y-4">
                 {/* Read-only info */}
-                <div className="bg-white/50 rounded-lg p-3 md:p-4 space-y-1.5 md:space-y-2">
+                <div className="border border-zibara-cream/8 p-4 space-y-2 bg-zibara-black/20">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] md:text-xs font-semibold text-zinc-500 uppercase">Key:</span>
-                    <span className="text-xs md:text-sm text-zinc-100 break-all">{editingContent.key}</span>
+                    <span className="text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55">Key:</span>
+                    <span className="text-[11px] font-mono text-zibara-cream/80 break-all">{editingContent.key}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] md:text-xs font-semibold text-zinc-500 uppercase">Section:</span>
-                    <span className="text-xs md:text-sm text-zinc-100 capitalize">{editingContent.section}</span>
+                    <span className="text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55">Section:</span>
+                    <span className="text-[11px] font-mono text-zibara-cream/80 capitalize">{editingContent.section}</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] md:text-xs font-semibold text-zinc-500 uppercase">Type:</span>
-                    <span className="text-xs md:text-sm text-zinc-100 capitalize">{editingContent.type}</span>
+                    <span className="text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55">Type:</span>
+                    <span className="text-[11px] font-mono text-zibara-cream/80 capitalize">{editingContent.type}</span>
                   </div>
                 </div>
 
                 {/* Value input */}
                 <div>
-                  <label className="block text-xs md:text-sm font-semibold text-zinc-300 mb-1.5 md:mb-2">
+                  <label className="block text-[9px] font-mono uppercase tracking-[0.35em] text-zibara-cream/55 mb-2">
                     Value
                   </label>
                   {editingContent.type === 'richtext' || editingContent.type === 'text' ? (
                     <textarea
                       value={editingContent.value}
-                      onChange={(e) => setEditingContent({
-                        ...editingContent,
-                        value: e.target.value,
-                      })}
-                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent min-h-[120px] md:min-h-[150px] text-sm bg-white"
+                      onChange={(e) => setEditingContent({ ...editingContent, value: e.target.value })}
+                      className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent min-h-[150px] text-sm bg-zibara-black/40 text-zibara-cream"
                       placeholder="Enter content..."
                     />
                   ) : editingContent.type === 'image' ? (
-                    <div className="space-y-2 md:space-y-3">
+                    <div className="space-y-3">
                       <ImageUploading
                         multiple={false}
                         value={editingContent.value ? [{ data_url: editingContent.value }] : []}
                         onChange={(imageList) => {
-                          if (imageList[0]?.file) {
-                            uploadFile(imageList[0].file);
-                          }
+                          if (imageList[0]?.file) uploadFile(imageList[0].file);
                         }}
                         maxNumber={1}
                         dataURLKey="data_url"
                       >
-                        {({
-                          imageList,
-                          onImageUpload,
-                          onImageUpdate,
-                          onImageRemove,
-                          isDragging,
-                          dragProps,
-                        }) => (
+                        {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
                           <div className="space-y-3">
                             {editingContent.value && (
-                              <div className="relative aspect-video bg-zinc-700 rounded-lg overflow-hidden border-2 border-gray-300">
-                                <img 
-                                  src={editingContent.value} 
-                                  alt="Preview" 
-                                  className="w-full h-full object-cover"
-                                />
+                              <div className="relative aspect-video bg-zibara-deep overflow-hidden border border-zibara-cream/25">
+                                <img src={editingContent.value} alt="Preview" className="w-full h-full object-cover" />
                                 <div className="absolute inset-0 bg-black/50 opacity-0 hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                                   <button
                                     type="button"
                                     onClick={() => onImageUpdate(0)}
-                                    className="px-4 py-2 bg-white text-zinc-300 rounded text-sm font-semibold hover:bg-zinc-700"
+                                    className="px-4 py-2 border border-zibara-cream/25 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors"
                                   >
                                     Update
                                   </button>
@@ -294,37 +258,34 @@ export default function AdminSiteContentPage() {
                                       onImageRemove(0);
                                       setEditingContent(prev => prev ? { ...prev, value: '' } : null);
                                     }}
-                                    className="px-4 py-2 bg-red-500 text-white rounded text-sm font-semibold hover:bg-red-600"
+                                    className="px-4 py-2 border border-zibara-crimson/50 text-zibara-crimson text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-crimson hover:text-zibara-cream transition-colors"
                                   >
                                     Remove
                                   </button>
                                 </div>
                               </div>
                             )}
-                            
+
                             <button
                               type="button"
                               onClick={editingContent.value ? () => onImageUpdate(0) : onImageUpload}
                               {...dragProps}
                               disabled={uploading}
-                              className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors text-sm ${
+                              className={`flex items-center gap-2 px-5 py-2 text-[10px] font-mono uppercase tracking-[0.3em] transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
                                 isDragging
-                                  ? 'bg-zibara-crimson text-white'
-                                  : 'bg-zinc-700 text-zinc-200 border border-zinc-600 hover:bg-zinc-600'
-                              } disabled:opacity-50 disabled:cursor-not-allowed`}
+                                  ? 'bg-zibara-crimson text-zibara-cream'
+                                  : 'border border-zibara-cream/25 text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream'
+                              }`}
                             >
-                              <Upload size={16} />
+                              <Upload size={14} />
                               {uploading ? 'Uploading...' : editingContent.value ? 'Change Image' : 'Upload Image'}
                             </button>
-                            
+
                             <input
                               type="url"
                               value={editingContent.value}
-                              onChange={(e) => setEditingContent({
-                                ...editingContent,
-                                value: e.target.value,
-                              })}
-                              className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent text-sm bg-white"
+                              onChange={(e) => setEditingContent({ ...editingContent, value: e.target.value })}
+                              className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent text-sm bg-zibara-black/40 text-zibara-cream"
                               placeholder="Or paste image URL here"
                             />
                           </div>
@@ -335,30 +296,27 @@ export default function AdminSiteContentPage() {
                     <input
                       type="text"
                       value={editingContent.value}
-                      onChange={(e) => setEditingContent({
-                        ...editingContent,
-                        value: e.target.value,
-                      })}
-                      className="w-full px-3 md:px-4 py-2 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-zinc-400 focus:border-transparent text-sm bg-white"
+                      onChange={(e) => setEditingContent({ ...editingContent, value: e.target.value })}
+                      className="w-full px-4 py-3 border border-zibara-cream/35 focus:outline-none focus:ring-2 focus:ring-zibara-gold/50 focus:border-transparent text-sm bg-zibara-black/40 text-zibara-cream"
                       placeholder="Value"
                     />
                   )}
                 </div>
               </div>
 
-              <div className="p-4 md:p-6 border-t flex flex-col sm:flex-row justify-end gap-2 md:gap-4">
+              <div className="p-6 border-t border-zibara-cream/8 flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   onClick={() => setEditingContent(null)}
-                  className="px-4 md:px-6 py-2 border border-gray-300 rounded-lg font-semibold hover:bg-zinc-800/60 transition-colors text-sm order-2 sm:order-1"
+                  className="px-5 py-2 border border-zibara-cream/25 text-[10px] font-mono uppercase tracking-[0.3em] text-zibara-cream/65 hover:border-zibara-cream/50 hover:text-zibara-cream transition-colors order-2 sm:order-1"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => handleSave(editingContent)}
                   disabled={saving}
-                  className="flex items-center justify-center gap-2 bg-zibara-crimson text-white px-4 md:px-6 py-2 rounded-lg font-semibold hover:bg-zibara-blood transition-colors disabled:opacity-50 text-sm order-1 sm:order-2"
+                  className="flex items-center justify-center gap-2 px-5 py-2 bg-zibara-crimson text-zibara-cream text-[10px] font-mono uppercase tracking-[0.3em] hover:bg-zibara-blood transition-colors disabled:opacity-50 order-1 sm:order-2"
                 >
-                  <Save size={14} className="md:w-4 md:h-4" />
+                  <Save size={12} />
                   {saving ? 'Saving...' : 'Save Changes'}
                 </button>
               </div>
