@@ -17,6 +17,7 @@ export default function Home() {
     siteContentLoading,
     categories,
     categoriesLoading,
+    getContentValue,
   } = useData();
   const { formatPrice } = useCurrency();
   const [preloaderDone, setPreloaderDone] = useState(false);
@@ -77,7 +78,7 @@ export default function Home() {
                 } as React.CSSProperties
               }
             >
-              For nights that matter.
+              {getContentValue('home_hero_headline', 'For nights that matter.')}
             </AnimatedHeading>
 
             <AnimatedText
@@ -85,7 +86,7 @@ export default function Home() {
               className="mt-6 text-[12px] tracking-[0.3em] font-mono text-zibara-cream/70 uppercase"
               onScroll={false}
             >
-              Silhouette over decoration. Form over noise.
+              {getContentValue('home_hero_subtext', 'Silhouette over decoration. Form over noise.')}
             </AnimatedText>
 
             <div className="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -341,7 +342,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-zibara-black/55" />
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
               <p className="text-[11px] tracking-[0.5em] font-mono text-zibara-cream/70 uppercase mb-4">
-                Bespoke
+                {getContentValue('home_bespoke_label', 'Bespoke')}
               </p>
               <AnimatedHeading
                 tag="h2"
@@ -353,13 +354,13 @@ export default function Home() {
                   } as React.CSSProperties
                 }
               >
-                Made for your exact silhouette.
+                {getContentValue('home_bespoke_heading', 'Made for your exact silhouette.')}
               </AnimatedHeading>
               <Link
                 href="/custom-order"
                 className="inline-flex items-center gap-3 text-[10px] tracking-[0.35em] uppercase font-mono border border-zibara-cream/50 text-zibara-cream/90 px-6 md:px-8 py-3 hover:bg-zibara-cream hover:text-zibara-black transition-all duration-300"
               >
-                Start your custom order
+                {getContentValue('home_bespoke_cta', 'Start your custom order')}
               </Link>
             </div>
           </div>

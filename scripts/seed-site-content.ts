@@ -26,51 +26,67 @@ const SiteContentSchema = new mongoose.Schema({
 const SiteContent = mongoose.models.SiteContent || mongoose.model('SiteContent', SiteContentSchema);
 
 const siteContentData = [
+  // ============ HEADER ============
+  {
+    key: 'header_announcement_left',
+    type: 'text',
+    value: 'Lagos · Abuja · London',
+    section: 'header',
+    description: 'Left slot of the desktop announcement bar',
+  },
+  {
+    key: 'header_announcement_center',
+    type: 'text',
+    value: 'You belong in rooms where taste is understood',
+    section: 'header',
+    description: 'Centre slot of the desktop announcement bar',
+  },
+  {
+    key: 'header_announcement_right',
+    type: 'text',
+    value: 'New arrivals — Season III',
+    section: 'header',
+    description: 'Right slot of the desktop announcement bar',
+  },
+
   // ============ HOME PAGE ============
   {
-    key: 'home_hero_image',
-    type: 'image',
-    value: 'zibara://hero/season-iii',
-    section: 'home',
-    description: 'Hero banner image on the homepage',
-  },
-  {
-    key: 'home_banner_image',
-    type: 'image',
-    value: 'zibara://banner/home',
-    section: 'home',
-    description: 'Full width banner image at bottom of homepage',
-  },
-  {
-    key: 'home_customs_title',
+    key: 'home_hero_headline',
     type: 'text',
-    value: 'ZIBARA BESPOKE',
+    value: 'For nights that matter.',
     section: 'home',
-    description: 'Title for the customs section',
+    description: 'Hero section main headline',
   },
   {
-    key: 'home_customs_description',
-    type: 'richtext',
-    value: 'Made to the exact architecture of your body. Our atelier translates your silhouette into a single piece — constructed, fitted, and finished by hand in Lagos. For ceremonies, for boardrooms, for the nights that require more than ready-to-wear can offer.',
+    key: 'home_hero_subtext',
+    type: 'text',
+    value: 'Silhouette over decoration. Form over noise.',
     section: 'home',
-    description: 'Description text for the customs section',
+    description: 'Hero section subtext below headline',
   },
   {
-    key: 'home_customs_image',
-    type: 'image',
-    value: 'zibara://customs/atelier',
+    key: 'home_bespoke_label',
+    type: 'text',
+    value: 'Bespoke',
     section: 'home',
-    description: 'Main image for customs section',
+    description: 'Eyebrow label on the custom order banner',
+  },
+  {
+    key: 'home_bespoke_heading',
+    type: 'text',
+    value: 'Made for your exact silhouette.',
+    section: 'home',
+    description: 'Heading on the custom order banner',
+  },
+  {
+    key: 'home_bespoke_cta',
+    type: 'text',
+    value: 'Start your custom order',
+    section: 'home',
+    description: 'CTA button text on the custom order banner',
   },
 
   // ============ ABOUT PAGE ============
-  {
-    key: 'about_hero_image',
-    type: 'image',
-    value: 'zibara://about/studio',
-    section: 'about',
-    description: 'Hero image at top of about page',
-  },
   {
     key: 'about_story_title',
     type: 'text',
@@ -92,21 +108,6 @@ const siteContentData = [
     section: 'about',
     description: 'Main story section text',
   },
-  {
-    key: 'about_studio_image',
-    type: 'image',
-    value: 'zibara://about/workspace',
-    section: 'about',
-    description: 'Studio/workspace image',
-  },
-  {
-    key: 'about_banner_image',
-    type: 'image',
-    value: 'zibara://about/editorial',
-    section: 'about',
-    description: 'Full-width editorial banner on about page',
-  },
-
   // ============ CONTACT PAGE ============
   {
     key: 'contact_email',

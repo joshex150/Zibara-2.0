@@ -5,6 +5,7 @@ import { Link } from 'next-view-transitions';
 import { usePathname } from 'next/navigation';
 import { ShoppingBag, Search, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { useData } from '@/context/DataContext';
 import { useRouter } from 'next/navigation';
 import gsap from 'gsap';
 
@@ -20,6 +21,7 @@ export default function Header() {
   const router   = useRouter();
   const pathname = usePathname();
   const { cartCount } = useCart();
+  const { getContentValue } = useData();
 
   const [menuOpen,    setMenuOpen]    = useState(false);
   const [searchOpen,  setSearchOpen]  = useState(false);
@@ -95,13 +97,13 @@ export default function Header() {
              <div className="hidden md:block">
           <div className="max-w-[1400px] mx-auto px-6 h-9 flex items-center justify-between">
             <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/65 uppercase font-mono">
-              Lagos · Abuja · London
+              {getContentValue('header_announcement_left', 'Lagos · Abuja · London')}
             </span>
             <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/65 uppercase font-mono">
-              You belong in rooms where taste is understood
+              {getContentValue('header_announcement_center', 'You belong in rooms where taste is understood')}
             </span>
             <span className="text-[10px] leading-none tracking-[0.35em] text-zibara-cream/65 uppercase font-mono">
-              New arrivals — Season III
+              {getContentValue('header_announcement_right', 'New arrivals — Season III')}
             </span>
           </div>
         </div>
