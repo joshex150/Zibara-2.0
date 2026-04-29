@@ -33,6 +33,12 @@ export default function ParallaxImage({
     const media = mediaRef.current;
     if (!wrap || !media) return;
 
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion) return;
+
     const glowLayers = media.querySelectorAll('.zibara-placeholder-glow, .zibara-placeholder-shimmer');
     const ringLayers = media.querySelectorAll('.zibara-placeholder-ring-primary, .zibara-placeholder-ring-secondary');
     const panel = media.querySelector('.zibara-placeholder-panel');
@@ -51,6 +57,7 @@ export default function ParallaxImage({
           start: 'top bottom',
           end: 'bottom top',
           scrub: 0.7,
+          invalidateOnRefresh: true,
         },
       })
         .to(media, {
@@ -75,7 +82,15 @@ export default function ParallaxImage({
         }, 0);
     }, wrap);
 
-    return () => ctx.revert();
+    const refresh = () => ScrollTrigger.refresh();
+    window.addEventListener('load', refresh);
+    const refreshTimer = window.setTimeout(refresh, 1200);
+
+    return () => {
+      window.removeEventListener('load', refresh);
+      window.clearTimeout(refreshTimer);
+      ctx.revert();
+    };
   }, [speed]);
 
   return (

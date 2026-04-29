@@ -69,14 +69,32 @@ export const metadata: Metadata = {
     images: ['/opengraph-image'],
   },
   manifest: '/site.webmanifest',
-  alternates: { canonical: 'https://zibarastudio.com' },
 };
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  themeColor: '#030303',
+};
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'ZIBARASTUDIO',
+  url: 'https://zibarastudio.com',
+  logo: 'https://zibarastudio.com/icon.svg',
+};
+
+const websiteJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'ZIBARASTUDIO',
+  url: 'https://zibarastudio.com',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://zibarastudio.com/shop?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
 };
 
 export default function RootLayout({
@@ -88,12 +106,23 @@ export default function RootLayout({
         lang="en"
         className={`${cormorant.variable} ${cormorantGaramond.variable} ${spaceMono.variable}`}
       >
+        <head>
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+          />
+        </head>
         <body className="antialiased bg-zibara-black text-zibara-cream">
+          <a href="#main" className="skip-to-content">Skip to content</a>
           <DataProvider>
             <CurrencyProvider>
               <CartProvider>
                 <Header />
-                {children}
+                <main id="main">{children}</main>
                 <Footer />
                 <NoticePopup />
                 <Toastie />

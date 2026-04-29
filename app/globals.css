@@ -29,10 +29,6 @@
     color: var(--zibara-cream);
   }
 
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
     font-family: var(--font-space-mono), monospace;
     font-size: 13px;
@@ -43,9 +39,7 @@
 
   img {
     display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 100%;
   }
 
   button {
@@ -76,20 +70,47 @@
   }
 
   *:focus-visible {
-    outline: 1px solid color-mix(in srgb, var(--zibara-gold) 90%, transparent);
+    outline: 2px solid var(--zibara-gold);
     outline-offset: 3px;
+    box-shadow: 0 0 0 4px rgba(3, 3, 3, 0.85);
   }
+}
+
+/* ── SKIP-TO-CONTENT ──────────────────────────── */
+.skip-to-content {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 10000;
+  padding: 10px 14px;
+  background: var(--zibara-cream);
+  color: var(--zibara-black);
+  font-family: var(--font-space-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateY(-150%);
+  transition: transform 0.18s ease-out;
+}
+.skip-to-content:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--zibara-gold);
+  outline-offset: 2px;
 }
 
 /* ── SCROLLBAR ────────────────────────────────── */
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--zibara-black);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(239, 239, 201, 0.25);
+  background: rgba(239, 239, 201, 0.28);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(239, 239, 201, 0.45);
 }
 
 .scrollbar-hide {
@@ -195,6 +216,25 @@
 /* ── UTILITY ──────────────────────────────────── */
 .will-change-transform {
   will-change: transform;
+}
+
+/* ── REDUCED MOTION ───────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
 }
 
 select {

@@ -32,54 +32,82 @@ export default function AnimatedText({
     const el = ref.current;
     if (!el) return;
 
-    el.style.opacity = '0';
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const split = new SplitType(el, { types: 'lines' });
-    const lines = split.lines ?? [];
+    if (reduceMotion) {
+      el.style.opacity = '1';
+      return;
+    }
 
-    lines.forEach((line) => {
-      const inner = document.createElement('span');
-      inner.style.display = 'block';
-      inner.style.willChange = 'transform, opacity, filter';
-      while (line.firstChild) inner.appendChild(line.firstChild);
-      line.style.overflow = 'hidden';
-      line.style.display = 'block';
-      line.style.paddingBottom = '0.1em';
-      line.appendChild(inner);
-      gsap.set(inner, { yPercent: 105, opacity: 0, filter: 'blur(4px)' });
-    });
-
-    el.style.opacity = '1';
-
-    const innerSpans = lines.map((l) => l.querySelector('span')!).filter(Boolean);
-
-    const animate = () =>
-      gsap.to(innerSpans, {
-        yPercent: 0,
-        opacity: 1,
-        filter: 'blur(0px)',
-        duration,
-        delay,
-        ease: 'power3.out',
-        stagger,
-      });
-
+    let split: SplitType | null = null;
     let trigger: ScrollTrigger | undefined;
-    if (onScroll) {
-      trigger = ScrollTrigger.create({
-        trigger: el,
-        start: 'top 92%',
-        onEnter: animate,
-        once: true,
+    let tween: gsap.core.Tween | undefined;
+
+    try {
+      split = new SplitType(el, { types: 'lines' });
+      const lines = split.lines ?? [];
+      if (!lines.length) {
+        el.style.opacity = '1';
+        return;
+      }
+
+      lines.forEach((line) => {
+        const inner = document.createElement('span');
+        inner.style.display = 'block';
+        inner.style.willChange = 'transform, opacity, filter';
+        inner.setAttribute('aria-hidden', 'true');
+        while (line.firstChild) inner.appendChild(line.firstChild);
+        line.style.overflow = 'hidden';
+        line.style.display = 'block';
+        line.style.paddingBottom = '0.1em';
+        line.setAttribute('aria-hidden', 'true');
+        line.appendChild(inner);
+        gsap.set(inner, { yPercent: 105, opacity: 0, filter: 'blur(4px)' });
       });
-    } else {
-      animate();
+
+      el.setAttribute('aria-label', children);
+      el.style.opacity = '1';
+
+      const innerSpans = lines
+        .map((l) => l.querySelector('span'))
+        .filter((s): s is HTMLSpanElement => !!s);
+
+      const animate = () => {
+        tween = gsap.to(innerSpans, {
+          yPercent: 0,
+          opacity: 1,
+          filter: 'blur(0px)',
+          duration,
+          delay,
+          ease: 'power3.out',
+          stagger,
+        });
+      };
+
+      if (onScroll) {
+        trigger = ScrollTrigger.create({
+          trigger: el,
+          start: 'top 92%',
+          onEnter: animate,
+          once: true,
+        });
+      } else {
+        animate();
+      }
+    } catch {
+      el.style.opacity = '1';
     }
 
     return () => {
+      tween?.kill();
       trigger?.kill();
-      el.style.opacity = '0';
-      split.revert();
+      try {
+        split?.revert();
+      } catch {
+        /* noop */
+      }
     };
   }, [children, delay, duration, stagger, onScroll]);
 

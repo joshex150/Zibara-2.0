@@ -1,7 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "next-view-transitions";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useData } from "@/context/DataContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import Preloader from "@/components/Preloader";
@@ -9,6 +11,8 @@ import AnimatedHeading from "@/components/AnimatedHeading";
 import AnimatedText from "@/components/AnimatedText";
 import ParallaxImage from "@/components/ParallaxImage";
 import ZibaraPlaceholder from "@/components/ZibaraPlaceholder";
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function Home() {
   const {
@@ -27,6 +31,12 @@ export default function Home() {
   };
 
   const isLoading = productsLoading || siteContentLoading || categoriesLoading;
+
+  useEffect(() => {
+    if (isLoading || !preloaderDone) return;
+    const id = window.setTimeout(() => ScrollTrigger.refresh(), 50);
+    return () => window.clearTimeout(id);
+  }, [isLoading, preloaderDone]);
   const featuredProducts = products.slice(0, 4);
   const editorialProducts = products.slice(4, 8);
 
@@ -51,8 +61,8 @@ export default function Home() {
       <div
         className="min-h-screen bg-zibara-black text-zibara-cream"
         style={{
-          opacity: preloaderDone ? 1 : 0,
-          transition: "opacity 0.4s ease",
+          opacity: preloaderDone ? 1 : 0.001,
+          transition: "opacity 0.6s ease",
         }}
       >
         {/* ── HERO ─────────────────────────────────────── */}
@@ -65,7 +75,13 @@ export default function Home() {
             className="absolute inset-0 w-full h-full"
             speed={0.25}
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-zibara-black/30 via-transparent to-zibara-black/80" />
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(3,3,3,0.55) 0%, rgba(3,3,3,0.05) 38%, rgba(3,3,3,0.05) 58%, rgba(3,3,3,0.92) 100%)",
+            }}
+          />
 
           <div className="absolute bottom-12 left-6 md:left-12 right-6 md:right-auto max-w-[min(90vw,640px)]">
             <AnimatedHeading
