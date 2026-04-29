@@ -122,6 +122,13 @@
 }
 
 /* ── PRELOADER ────────────────────────────────── */
+body:has(#zibara-preloader) {
+  overflow: hidden;
+}
+body:has(#zibara-preloader)::-webkit-scrollbar {
+  display: none;
+}
+
 #zibara-preloader {
   position: fixed;
   inset: 0;
