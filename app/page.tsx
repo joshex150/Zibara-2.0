@@ -58,8 +58,7 @@ export default function Home() {
         <Preloader onComplete={handlePreloaderComplete} />
       )}
 
-      {preloaderDone && (
-        <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div className="min-h-screen bg-zibara-black text-zibara-cream">
         {/* ── HERO ─────────────────────────────────────── */}
         <section className="relative w-full h-screen overflow-hidden">
           <ParallaxImage
@@ -500,7 +499,6 @@ export default function Home() {
           }}
         />
         </div>
-      )}
     </>
   );
 }
