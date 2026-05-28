@@ -92,10 +92,10 @@ export const buildOrderReceiptHtml = (
         .join(' &nbsp;·&nbsp; ');
       return `
         <tr>
-          <td style="padding:20px 0;border-bottom:1px solid rgba(239,239,201,0.08);">
-            <p style="margin:0 0 4px 0;font-family:monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#EFEFC9;">${item.name}</p>
-            ${meta ? `<p style="margin:0 0 4px 0;font-family:monospace;font-size:10px;color:rgba(239,239,201,0.55);">${meta}</p>` : ''}
-            <p style="margin:0;font-family:monospace;font-size:10px;color:rgba(239,239,201,0.55);">Qty: ${item.quantity} &nbsp;·&nbsp; ${formatCurrency(item.price * item.quantity)}</p>
+          <td style="padding:20px 0;border-bottom:1px solid rgba(3,3,3,0.12);">
+            <p style="margin:0 0 4px 0;font-family:monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#030303;">${item.name}</p>
+            ${meta ? `<p style="margin:0 0 4px 0;font-family:monospace;font-size:10px;color:#1a1a0f;">${meta}</p>` : ''}
+            <p style="margin:0;font-family:monospace;font-size:10px;color:#1a1a0f;">Qty: ${item.quantity} &nbsp;·&nbsp; ${formatCurrency(item.price * item.quantity)}</p>
           </td>
         </tr>`;
     })
@@ -139,16 +139,16 @@ export const buildOrderReceiptHtml = (
   <meta name="color-scheme" content="dark"/>
   <title>${subject}</title>
 </head>
-<body style="margin:0;padding:0;background:#030303;color:#EFEFC9;-webkit-text-size-adjust:100%;mso-line-height-rule:exactly;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#030303;min-height:100vh;">
+<body style="margin:0;padding:0;background:#f5f4ee;color:#030303;-webkit-text-size-adjust:100%;mso-line-height-rule:exactly;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f5f4ee;min-height:100vh;">
     <tr>
       <td style="padding:0;">
 
-        <!-- TOP BAR -->
+        <!-- TOP BAR — dark accent strip -->
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <td style="padding:40px 56px 36px;border-bottom:1px solid rgba(239,239,201,0.08);">
-              <p style="margin:0;font-family:monospace;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(239,239,201,0.5);">ZIBARASTUDIO</p>
+            <td style="padding:40px 56px 36px;background:#030303;">
+              <p style="margin:0;font-family:monospace;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:#EFEFC9;">ZIBARASTUDIO</p>
             </td>
           </tr>
         </table>
@@ -159,19 +159,19 @@ export const buildOrderReceiptHtml = (
             <td style="padding:64px 56px 0;">
 
               <!-- Heading -->
-              <h1 style="margin:0 0 8px 0;font-family:Georgia,'Times New Roman',serif;font-weight:300;font-size:42px;letter-spacing:0.28em;text-transform:uppercase;color:#EFEFC9;line-height:1.1;">Order<br/>Confirmed</h1>
-              <p style="margin:0 0 48px 0;font-family:monospace;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(239,239,201,0.5);">Hi ${order.customer.firstName} — ${order.orderNumber}</p>
+              <h1 style="margin:0 0 8px 0;font-family:Georgia,'Times New Roman',serif;font-weight:300;font-size:42px;letter-spacing:0.28em;text-transform:uppercase;color:#030303;line-height:1.1;">Order<br/>Confirmed</h1>
+              <p style="margin:0 0 48px 0;font-family:monospace;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(3,3,3,0.5);">Hi ${order.customer.firstName} — ${order.orderNumber}</p>
 
               <!-- Intro -->
-              <p style="margin:0 0 56px 0;font-family:monospace;font-size:12px;line-height:1.85;color:rgba(239,239,201,0.72);max-width:560px;">${intro}</p>
+              <p style="margin:0 0 56px 0;font-family:monospace;font-size:12px;line-height:1.85;color:#1a1a0f;max-width:560px;">${intro}</p>
 
               <!-- Divider -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-                <tr><td style="border-top:1px solid rgba(239,239,201,0.08);padding-bottom:0;font-size:0;">&nbsp;</td></tr>
+                <tr><td style="border-top:1px solid rgba(3,3,3,0.15);padding-bottom:0;font-size:0;">&nbsp;</td></tr>
               </table>
 
               <!-- Section label -->
-              <p style="margin:32px 0 0;font-family:monospace;font-size:9px;letter-spacing:0.5em;text-transform:uppercase;color:rgba(239,239,201,0.4);">Order Details</p>
+              <p style="margin:32px 0 0;font-family:monospace;font-size:9px;letter-spacing:0.5em;text-transform:uppercase;color:rgba(3,3,3,0.4);">Order Details</p>
 
               <!-- Items -->
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:0;">
@@ -179,15 +179,15 @@ export const buildOrderReceiptHtml = (
               </table>
 
               <!-- Total -->
-              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:32px;border-top:1px solid rgba(239,239,201,0.08);">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:32px;border-top:1px solid rgba(3,3,3,0.15);">
                 <tr>
                   <td style="padding:24px 0;">
                     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                       <tr>
-                        <td style="font-family:monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(239,239,201,0.55);">Total Paid</td>
-                        <td align="right" style="font-family:monospace;font-size:15px;color:#EFEFC9;">${formatCurrency(order.total)}</td>
+                        <td style="font-family:monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(3,3,3,0.5);">Total Paid</td>
+                        <td align="right" style="font-family:monospace;font-size:15px;color:#030303;">${formatCurrency(order.total)}</td>
                       </tr>
-                      ${order.paymentMethod ? `<tr><td colspan="2" style="padding-top:6px;font-family:monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(239,239,201,0.35);">Via ${order.paymentMethod}</td></tr>` : ''}
+                      ${order.paymentMethod ? `<tr><td colspan="2" style="padding-top:6px;font-family:monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(3,3,3,0.4);">Via ${order.paymentMethod}</td></tr>` : ''}
                     </table>
                   </td>
                 </tr>
@@ -197,12 +197,12 @@ export const buildOrderReceiptHtml = (
           </tr>
         </table>
 
-        <!-- FOOTER -->
-        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:80px;border-top:1px solid rgba(239,239,201,0.08);">
+        <!-- FOOTER — dark accent strip -->
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:80px;">
           <tr>
-            <td style="padding:40px 56px 56px;">
-              <p style="margin:0 0 32px 0;font-family:monospace;font-size:11px;line-height:1.8;color:rgba(239,239,201,0.55);max-width:480px;">${footer}</p>
-              <p style="margin:0;font-family:monospace;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(239,239,201,0.3);">ZIBARASTUDIO &nbsp;·&nbsp; AFRO-FUTURIST LUXURY</p>
+            <td style="padding:40px 56px 56px;background:#030303;">
+              <p style="margin:0 0 32px 0;font-family:monospace;font-size:11px;line-height:1.8;color:#EFEFC9;max-width:480px;">${footer}</p>
+              <p style="margin:0;font-family:monospace;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(239,239,201,0.45);">ZIBARASTUDIO &nbsp;·&nbsp; AFRO-FUTURIST LUXURY</p>
             </td>
           </tr>
         </table>
