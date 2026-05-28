@@ -13,7 +13,7 @@ const DEFAULT_TEMPLATE = {
   intro:
     'Thank you for your order. We are preparing your pieces with care and will notify you once they ship.',
   footer:
-    'Questions? Reply to this email or visit zibarastudio.com/contact — we respond within 24 hours.',
+    'Questions? Reply to this email or visit zibara.store/contact — we respond within 24 hours.',
 };
 
 const PLACEHOLDERS = {

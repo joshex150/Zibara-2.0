@@ -45,7 +45,7 @@ Use the credentials you just created!
 
 If you want to manually create a test admin in MongoDB:
 
-**Email:** admin@zibarastudio.com  
+**Email:** admin@zibara.store  
 **Password:** admin123
 
 ⚠️ **Change this immediately in production!**
@@ -53,7 +53,7 @@ If you want to manually create a test admin in MongoDB:
 To add this manually in MongoDB:
 ```javascript
 db.admins.insertOne({
-  email: "admin@zibarastudio.com",
+  email: "admin@zibara.store",
   password: "$2a$10$YourHashedPasswordHere",
   name: "ZIBARA Admin",
   role: "super_admin",

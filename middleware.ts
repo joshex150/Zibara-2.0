@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
   // Only redirect on the production ZIBARASTUDIO domains
-  if (!['zibarastudio.com', 'www.zibarastudio.com'].includes(request.nextUrl.hostname)) {
+  if (!['zibara.store', 'www.zibara.store'].includes(request.nextUrl.hostname)) {
     return NextResponse.next();
   }
 

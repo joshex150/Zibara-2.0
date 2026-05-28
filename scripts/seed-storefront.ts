@@ -583,7 +583,7 @@ const siteContent = [
   {
     key: 'contact_email',
     type: 'text',
-    value: 'studio@zibarastudio.com',
+    value: 'studio@zibara.store',
     section: 'contact',
     description: 'Contact email address',
   },

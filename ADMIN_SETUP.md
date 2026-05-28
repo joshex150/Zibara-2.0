@@ -64,7 +64,7 @@ If you want to quickly test, you can manually create an admin user in MongoDB:
 ```javascript
 // In MongoDB shell or Compass
 db.admins.insertOne({
-  email: "admin@zibarastudio.com",
+  email: "admin@zibara.store",
   password: "$2a$10$K8yJ3Z9X5k.qZ9X5k.qZ9euBZ9X5k.qZ9X5k.qZ9X5k.qZ9X5k.q", // password: admin123
   name: "ZIBARA Admin",
   role: "super_admin",

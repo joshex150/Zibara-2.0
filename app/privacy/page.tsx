@@ -90,7 +90,7 @@ export default function PrivacyPage() {
             </ul>
             <p className="mt-4">
               To exercise these rights, please contact us at{' '}
-              <a href="mailto:studio@zibarastudio.com" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibarastudio.com</a>
+              <a href="mailto:studio@zibara.store" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibara.store</a>
             </p>
           </div>
 
@@ -114,8 +114,8 @@ export default function PrivacyPage() {
             <h2 className="text-[9px] tracking-[0.45em] font-mono uppercase text-zibara-cream/65 mb-6">Contact Us</h2>
             <p className="mb-4">If you have questions or concerns about this Privacy Policy or our data practices, please contact us:</p>
             <div className="space-y-2">
-              <p><span className="text-zibara-cream/90">Email:</span>{' '}<a href="mailto:studio@zibarastudio.com" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibarastudio.com</a></p>
-              <p><span className="text-zibara-cream/90">Website:</span> www.zibarastudio.com</p>
+              <p><span className="text-zibara-cream/90">Email:</span>{' '}<a href="mailto:studio@zibara.store" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibara.store</a></p>
+              <p><span className="text-zibara-cream/90">Website:</span> www.zibara.store</p>
             </div>
           </div>
 

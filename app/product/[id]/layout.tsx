@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       };
     }
 
-    const productUrl = `https://zibarastudio.com/product/${id}`;
+    const productUrl = `https://zibara.store/product/${id}`;
     
     // Get the first product image and ensure it's an absolute URL
     let productImage = product.images?.[0] || BRAND_ICON;
@@ -103,7 +103,7 @@ export default async function ProductLayout({
         category: product.category,
         offers: {
           '@type': 'Offer',
-          url: `https://zibarastudio.com/product/${id}`,
+          url: `https://zibara.store/product/${id}`,
           priceCurrency: 'USD',
           price: product.price,
           availability: product.inStock

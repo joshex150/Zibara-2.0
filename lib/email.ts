@@ -34,7 +34,7 @@ export const DEFAULT_EMAIL_TEMPLATE: EmailTemplateData = {
   intro:
     'Thank you for your order. We are preparing your pieces with care and will notify you once they ship.',
   footer:
-    'Questions? Reply to this email or visit zibarastudio.com/contact — we respond within 24 hours.',
+    'Questions? Reply to this email or visit zibara.store/contact — we respond within 24 hours.',
 };
 
 let cachedTransporter: Transporter | null = null;

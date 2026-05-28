@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       };
     }
 
-    const collectionUrl = `https://zibarastudio.com/collections/${slug}`;
+    const collectionUrl = `https://zibara.store/collections/${slug}`;
     const collectionImage = getCloudinaryOgImage(absoluteUrl(collection.coverImage || BRAND_ICON));
 
     return {
@@ -86,12 +86,12 @@ export default async function CollectionLayout({
         '@type': 'CollectionPage',
         name: `${collection.name} Collection`,
         description: collection.description,
-        url: `https://zibarastudio.com/collections/${slug}`,
+        url: `https://zibara.store/collections/${slug}`,
         image: absoluteUrl(collection.coverImage || BRAND_ICON),
         isPartOf: {
           '@type': 'WebSite',
           name: SITE_NAME,
-          url: 'https://zibarastudio.com',
+          url: 'https://zibara.store',
         },
       };
     }

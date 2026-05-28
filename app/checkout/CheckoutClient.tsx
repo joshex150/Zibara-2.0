@@ -93,7 +93,7 @@ export default function CheckoutClient() {
     customizations: {
       title: "ZIBARASTUDIO",
       description: "Afro-futurist luxury fashion",
-      logo: "https://zibarastudio.com/android-chrome-512x512.png",
+      logo: "https://zibara.store/android-chrome-512x512.png",
     },
   };
 

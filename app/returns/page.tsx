@@ -45,7 +45,7 @@ export default function ReturnsPage() {
             <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.25em] text-zibara-cream mb-5">How to Initiate a Return</h2>
             <div className="space-y-5">
               {[
-                { step: '01', title: 'Contact Us', body: <>Email us at <a href="mailto:studio@zibarastudio.com" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibarastudio.com</a> with your order number, item(s) to return, reason for return, and photos if applicable.</> },
+                { step: '01', title: 'Contact Us', body: <>Email us at <a href="mailto:studio@zibara.store" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibara.store</a> with your order number, item(s) to return, reason for return, and photos if applicable.</> },
                 { step: '02', title: 'Get Authorization', body: "We'll review your request and send you a return authorization number (RMA) and instructions within 24–48 hours." },
                 { step: '03', title: 'Ship Your Return', body: 'Package your item securely with the RMA number clearly marked. Ship to the address provided in your return authorization email.' },
                 { step: '04', title: 'Receive Your Refund', body: "Once we receive and inspect your return, we'll process your refund within 5–7 business days to your original payment method." },

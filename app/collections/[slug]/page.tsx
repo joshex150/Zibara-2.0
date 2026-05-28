@@ -169,7 +169,7 @@ export default function CollectionDetailPage() {
               name: collection.name,
               description: collection.description,
               image: collection.coverImage,
-              url: `https://zibarastudio.com/collections/${collection.slug}`,
+              url: `https://zibara.store/collections/${collection.slug}`,
               mainEntity: {
                 '@type': 'ItemList',
                 name: collection.name,

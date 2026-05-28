@@ -40,7 +40,7 @@ export default function ShippingPage() {
           <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
             <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.25em] text-zibara-cream mb-5">Tracking Your Order</h2>
             <p className="mb-4">Once your order ships, you&apos;ll receive a confirmation email with tracking information. You can track your package using the provided tracking number on our courier&apos;s website.</p>
-            <p>If you don&apos;t receive tracking information within 4 business days of placing your order, please contact us at <a href="mailto:studio@zibarastudio.com" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibarastudio.com</a></p>
+            <p>If you don&apos;t receive tracking information within 4 business days of placing your order, please contact us at <a href="mailto:studio@zibara.store" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibara.store</a></p>
           </div>
 
           <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
@@ -52,7 +52,7 @@ export default function ShippingPage() {
           <div className="bg-zibara-deep/50 border border-zibara-cream/10 p-6 md:p-8">
             <h2 className="text-xs md:text-sm font-mono uppercase tracking-[0.25em] text-zibara-cream mb-5">Lost or Damaged Packages</h2>
             <p className="mb-4">If your package is lost or arrives damaged, please contact us immediately at{' '}
-              <a href="mailto:studio@zibarastudio.com" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibarastudio.com</a>{' '}
+              <a href="mailto:studio@zibara.store" className="text-zibara-cream underline hover:text-zibara-gold transition-colors">studio@zibara.store</a>{' '}
               with photos of the damage (if applicable) and your order number.
             </p>
             <p>We&apos;ll work with you and our courier to resolve the issue as quickly as possible, including arranging a replacement or refund where appropriate.</p>

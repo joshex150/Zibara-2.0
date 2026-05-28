@@ -493,7 +493,7 @@ export default function Home() {
               name: "ZIBARASTUDIO",
               description:
                 "Afro-futurist fashion for the woman who arrives composed.",
-              url: "https://zibarastudio.com",
+              url: "https://zibara.store",
               address: { "@type": "PostalAddress", addressCountry: "NG" },
             }),
           }}

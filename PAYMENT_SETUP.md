@@ -83,7 +83,7 @@ To receive payment confirmations:
 ## Customer Support
 
 For payment issues or questions:
-- Email: studio@zibarastudio.com
+- Email: studio@zibara.store
 - Phone: +234 801 234 5678
 
 ## Resources

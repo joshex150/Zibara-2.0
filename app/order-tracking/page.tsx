@@ -110,7 +110,7 @@ function OrderTrackingContent() {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 className="w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors"
-                placeholder="studio@zibarastudio.com"
+                placeholder="studio@zibara.store"
                 required
               />
             </div>

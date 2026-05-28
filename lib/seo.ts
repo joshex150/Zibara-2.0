@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-export const SITE_URL = 'https://zibarastudio.com';
+export const SITE_URL = 'https://zibara.store';
 export const SITE_NAME = 'ZIBARASTUDIO';
 export const DEFAULT_TITLE = 'ZIBARASTUDIO - For Nights That Matter';
 export const DEFAULT_DESCRIPTION =

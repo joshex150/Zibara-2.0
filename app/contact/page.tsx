@@ -23,7 +23,7 @@ export default function ContactPage() {
   });
   const [sending, setSending] = useState(false);
 
-  const contactEmail = getContentValue('contact_email', 'studio@zibarastudio.com');
+  const contactEmail = getContentValue('contact_email', 'studio@zibara.store');
   const instagramUrl = getContentValue('contact_instagram', 'https://instagram.com/zibarastudio');
   const tiktokUrl    = getContentValue('contact_tiktok',    'https://tiktok.com/@zibarastudio');
 
