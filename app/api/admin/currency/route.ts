@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import CurrencyRate from '@/models/CurrencyRate';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
+async function requireAdmin() {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+  return null;
+}
+
 
 export async function GET(request: NextRequest) {
+  const authError = await requireAdmin(); if (authError) return authError;
   try {
     await connectDB();
     
@@ -31,6 +40,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(); if (authError) return authError;
   try {
     const body = await request.json();
     const { code, name, symbol, rate, isActive } = body;
@@ -98,6 +108,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const authError = await requireAdmin(); if (authError) return authError;
   try {
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');

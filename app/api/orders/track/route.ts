@@ -10,7 +10,7 @@ type TrackRequestBody = {
 export async function POST(request: NextRequest) {
   try {
     const body = (await request.json()) as TrackRequestBody;
-    const orderNumber = body?.orderNumber?.trim();
+    const orderNumber = body?.orderNumber?.trim().replace(/[$\x00]/g, '');
     const email = body?.email?.trim()?.toLowerCase();
 
     if (!orderNumber || !email) {

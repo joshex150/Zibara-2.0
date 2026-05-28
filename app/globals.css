@@ -60,6 +60,14 @@
     background: transparent;
     color: inherit;
     font-family: inherit;
+    /* Prevent iOS Safari auto-zoom on focus (requires font-size >= 16px) */
+    font-size: 16px;
+  }
+
+  button,
+  [role="button"] {
+    /* Prevent double-tap delay on iOS */
+    touch-action: manipulation;
   }
 
   a {
@@ -221,6 +229,18 @@ body:has(#zibara-preloader)::-webkit-scrollbar {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ── iOS VIEWPORT HEIGHT FIX ──────────────────── */
+/* iOS Safari's 100vh includes browser chrome, causing overflow.
+   Use 100dvh (dynamic viewport height) where supported. */
+.min-h-screen {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+.h-screen {
+  height: 100vh;
+  height: 100dvh;
 }
 
 /* ── UTILITY ──────────────────────────────────── */
