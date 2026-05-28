@@ -1,26 +1,26 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useParams } from "next/navigation";
 import { Link } from "next-view-transitions";
 import { Minus, Plus, ChevronDown } from "lucide-react";
 import { useData } from "@/context/DataContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import AnimatedHeading from "@/components/AnimatedHeading";
-import ZibaraPlaceholder from "@/components/ZibaraPlaceholder";
+import ProductImage, { pickTone } from "@/components/ProductImage";
 import BrandLoader from "@/components/BrandLoader";
 import toast from "react-hot-toast";
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const { addToCart } = useCart();
   const { products, productsLoading } = useData();
   const { formatPrice } = useCurrency();
 
   const product = products.find((p) => p._id === params.id);
   const productColors = product?.colors?.length ? product.colors : [];
+  const productImages = product?.images?.length ? product.images : [];
 
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState(
@@ -32,14 +32,11 @@ export default function ProductDetailPage() {
   const [careOpen, setCareOpen] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
 
-  useEffect(() => {
-    if (
-      productColors.length &&
-      (!selectedColor || !productColors.find((c) => c.name === selectedColor))
-    ) {
-      setSelectedColor(productColors[0].name);
-    }
-  }, [product]);
+  const activeColor = productColors.find((color) => color.name === selectedColor)
+    ? selectedColor
+    : productColors[0]?.name ?? "";
+  const activeImageIndex =
+    selectedImageIndex < productImages.length ? selectedImageIndex : 0;
 
   const handleAddToCart = () => {
     if (!product) return;
@@ -58,9 +55,9 @@ export default function ProductDetailPage() {
       name: product.name,
       price: product.price,
       size: selectedSize,
-      color: selectedColor,
-      image: product.images[0],
-    });
+      color: activeColor,
+      image: productImages[0] || "",
+    }, quantity);
     setAddedToCart(true);
     toast.success("Added to bag", {
       style: {
@@ -120,36 +117,37 @@ export default function ProductDetailPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 lg:gap-24">
           {/* ── LEFT: Image gallery ───────────── */}
           <div className="flex gap-3">
-            {product.images.length > 1 && (
+            {productImages.length > 1 && (
               <div className="hidden md:flex flex-col gap-2 w-[68px] flex-shrink-0">
-                {product.images.map((img, i) => (
+                {productImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImageIndex(i)}
                     className={`relative w-full aspect-[3/4] overflow-hidden transition-all duration-300 ${
-                      selectedImageIndex === i
+                      activeImageIndex === i
                         ? "border-b-2 border-zibara-cream"
                         : "opacity-40 hover:opacity-75"
                     }`}
                   >
-                    <ZibaraPlaceholder
-                      label={product.name}
+                    <ProductImage
+                      src={img}
+                      name={product.name}
                       sublabel={`VIEW ${i + 1}`}
                       variant="compact"
-                      tone={i % 2 === 0 ? "deep" : "olive"}
+                      tone={pickTone(`${product._id}-${i}`)}
                       className="w-full h-full"
-                      hideLabel
                     />
                   </button>
                 ))}
               </div>
             )}
             <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-zibara-espresso">
-              <ZibaraPlaceholder
-                label={product.name}
-                sublabel={selectedColor || product.category || "ZIBARASTUDIO"}
+              <ProductImage
+                src={productImages[activeImageIndex]}
+                name={product.name}
+                sublabel={activeColor || product.category || "ZIBARASTUDIO"}
                 variant="hero"
-                tone={selectedImageIndex % 2 === 0 ? "espresso" : "crimson"}
+                tone={pickTone(`${product._id}-${activeImageIndex}`)}
                 className="w-full h-full transition-opacity duration-400"
               />
               {!product.inStock && (
@@ -201,7 +199,7 @@ export default function ProductDetailPage() {
               <div className="space-y-3">
                 <p className="text-[9px] tracking-[0.35em] font-mono text-zibara-cream/70 uppercase">
                   Colour —{" "}
-                  <span className="text-zibara-cream">{selectedColor}</span>
+                  <span className="text-zibara-cream">{activeColor}</span>
                 </p>
                 <div className="flex gap-3 flex-wrap">
                   {productColors.map((color) => (
@@ -210,7 +208,7 @@ export default function ProductDetailPage() {
                       onClick={() => setSelectedColor(color.name)}
                       title={color.name}
                       className={`w-7 h-7 rounded-full transition-all duration-200 ${
-                        selectedColor === color.name
+                        activeColor === color.name
                           ? "ring-1 ring-offset-2 ring-offset-zibara-black ring-zibara-cream/60"
                           : "ring-1 ring-transparent hover:ring-zibara-cream/20"
                       }`}
@@ -374,8 +372,9 @@ export default function ProductDetailPage() {
             {relatedProducts.map((p, i) => (
               <Link key={p._id} href={`/product/${p._id}`} className="group">
                 <div className="aspect-[3/4] overflow-hidden bg-zibara-espresso mb-3">
-                  <ZibaraPlaceholder
-                    label={p.name}
+                  <ProductImage
+                    src={p.images[0]}
+                    name={p.name}
                     sublabel={p.category || "RELATED"}
                     variant="compact"
                     tone={

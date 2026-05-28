@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Size Guide',
   description: 'Find your ZIBARASTUDIO fit with body measurements, garment sizing, and styling guidance.',
+  path: '/size-guide',
   keywords: [
     'size guide',
     'fashion sizing',
@@ -10,22 +12,7 @@ export const metadata: Metadata = {
     'measurements',
     'fit guide',
   ],
-  openGraph: {
-    type: 'website',
-    url: 'https://zibarastudio.com/size-guide',
-    title: 'Size Guide',
-    description: 'Find your ZIBARASTUDIO fit with body measurements and garment sizing.',
-    siteName: 'ZIBARASTUDIO',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Size Guide',
-    description: 'Find your ZIBARASTUDIO fit with body measurements and garment sizing.',
-  },
-  alternates: {
-    canonical: 'https://zibarastudio.com/size-guide',
-  },
-};
+});
 
 export default function SizeGuideLayout({
   children,

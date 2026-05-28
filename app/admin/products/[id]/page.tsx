@@ -50,7 +50,7 @@ export default function AdminProductEditPage() {
   const router = useRouter();
   const params = useParams();
   const isNew = params.id === 'new';
-  const { categories, categoriesLoading, getCategoryNames } = useData();
+  const { categoriesLoading, getCategoryNames } = useData();
 
   const [form, setForm] = useState<ProductForm>(defaultForm);
   const [loading, setLoading] = useState(!isNew);
@@ -66,18 +66,23 @@ export default function AdminProductEditPage() {
       const formData = new FormData();
       formData.append('file', file);
       const response = await fetch('/api/upload', { method: 'POST', body: formData });
-      if (!response.ok) throw new Error('Failed to upload file');
       const data = await response.json();
+      if (!response.ok) throw new Error(data.details || data.error || 'Failed to upload file');
       toast.success('Image uploaded successfully!');
-      if (imageIndex !== undefined) {
-        setForm(prev => ({ ...prev, images: prev.images.map((img, i) => (i === imageIndex ? data.url : img)) }));
-      } else {
-        setForm(prev => ({ ...prev, images: [...prev.images.filter(img => img.trim()), data.url] }));
-      }
+      setForm(prev => {
+        const images = prev.images.filter(img => img.trim());
+        if (imageIndex !== undefined && imageIndex < images.length) {
+          images[imageIndex] = data.url;
+        } else {
+          images.push(data.url);
+        }
+        return { ...prev, images };
+      });
       return data;
-    } catch (error: any) {
-      console.error('Error uploading file:', error.message);
-      toast.error('Failed to upload image');
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to upload image';
+      console.error('Error uploading file:', message);
+      toast.error(message);
       return null;
     } finally {
       setUploading(false);
@@ -333,12 +338,15 @@ export default function AdminProductEditPage() {
               multiple
               value={form.images.filter(img => img.trim()).map(url => ({ data_url: url }))}
               onChange={(imageList, addUpdateIndex) => {
-                const index = Array.isArray(addUpdateIndex) ? addUpdateIndex[0] : addUpdateIndex;
-                if (index !== undefined && imageList[index]?.file) {
-                  uploadFile(imageList[index].file, index);
-                }
+                const indices = Array.isArray(addUpdateIndex) ? addUpdateIndex : [addUpdateIndex];
+                indices.forEach((index) => {
+                  if (index !== undefined && imageList[index]?.file) {
+                    uploadFile(imageList[index].file as File, index);
+                  }
+                });
               }}
               maxNumber={10}
+              acceptType={['jpg', 'jpeg', 'png', 'webp', 'gif', 'heic', 'heif']}
               dataURLKey="data_url"
             >
               {({ imageList, onImageUpload, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
@@ -428,7 +436,7 @@ export default function AdminProductEditPage() {
             </div>
 
             {form.colors.length === 0 ? (
-              <p className="text-[11px] font-mono text-zibara-cream/40">No colors added yet. Click "Add Color" to add one.</p>
+              <p className="text-[11px] font-mono text-zibara-cream/40">No colors added yet. Click &quot;Add Color&quot; to add one.</p>
             ) : (
               <div className="space-y-2">
                 {form.colors.map((color, index) => (

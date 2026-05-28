@@ -1,12 +1,10 @@
 'use client';
 
-import { useRef, useLayoutEffect, CSSProperties } from 'react';
+import { useEffect, useRef, useState, CSSProperties } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CustomEase } from 'gsap/CustomEase';
-import SplitType from 'split-type';
 
-gsap.registerPlugin(ScrollTrigger, CustomEase);
+gsap.registerPlugin(CustomEase);
 if (!CustomEase.get('zibaraReveal')) {
   CustomEase.create('zibaraReveal', 'M0,0 C0.22,0.01 0.11,1 1,1');
 }
@@ -21,6 +19,7 @@ interface AnimatedHeadingProps {
   stagger?: number;
   direction?: 'up' | 'down';
   onScroll?: boolean;
+  split?: boolean;
 }
 
 export default function AnimatedHeading({
@@ -29,105 +28,94 @@ export default function AnimatedHeading({
   className = '',
   style,
   delay = 0,
-  duration = 1.6,
-  stagger = 0.11,
+  duration = 0.85,
   direction = 'up',
   onScroll = false,
 }: AnimatedHeadingProps) {
   const ref = useRef<HTMLElement>(null);
+  const [initialized, setInitialized] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const reduceMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let io: IntersectionObserver | null = null;
+    let tween: gsap.core.Tween | null = null;
+    let setupFrame = 0;
+    let hasPlayed = false;
+    let firstReveal = true;
 
-    if (reduceMotion) {
-      el.style.opacity = '1';
-      return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setupFrame = window.requestAnimationFrame(() => setInitialized(true));
+      return () => {
+        if (setupFrame) window.cancelAnimationFrame(setupFrame);
+      };
     }
 
-    let split: SplitType | null = null;
-    let trigger: ScrollTrigger | undefined;
-    let tween: gsap.core.Tween | undefined;
-
-    try {
-      split = new SplitType(el, { types: 'lines' });
-      const lines = split.lines ?? [];
-      if (!lines.length) {
-        el.style.opacity = '1';
+    const reveal = () => {
+      hasPlayed = true;
+      if (tween) {
+        tween.play();
         return;
       }
 
-      lines.forEach((line) => {
-        const inner = document.createElement('span');
-        inner.style.display = 'block';
-        inner.style.willChange = 'transform, opacity, filter';
-        inner.setAttribute('aria-hidden', 'true');
-        while (line.firstChild) inner.appendChild(line.firstChild);
-        line.style.overflow = 'hidden';
-        line.style.display = 'block';
-        line.style.paddingBottom = '0.08em';
-        line.setAttribute('aria-hidden', 'true');
-        line.appendChild(inner);
-        gsap.set(inner, {
-          yPercent: direction === 'up' ? 110 : -110,
-          opacity: 0,
-          filter: 'blur(6px)',
-        });
+      tween = gsap.to(el, {
+        y: 0,
+        opacity: 1,
+        duration,
+        delay: firstReveal ? delay : 0,
+        ease: 'zibaraReveal',
+        force3D: true,
+        overwrite: 'auto',
       });
+      firstReveal = false;
+    };
 
-      el.setAttribute('aria-label', children);
-      el.style.opacity = '1';
+    const reverse = () => {
+      if (!hasPlayed) return;
+      tween?.reverse();
+    };
 
-      const innerSpans = lines
-        .map((l) => l.querySelector('span'))
-        .filter((s): s is HTMLSpanElement => !!s);
+    const setup = () => {
+      el.style.willChange = 'transform, opacity';
+      gsap.set(el, {
+        y: direction === 'up' ? 18 : -18,
+        opacity: 0,
+        force3D: true,
+      });
+      setInitialized(true);
 
-      const animate = () => {
-        tween = gsap.to(innerSpans, {
-          yPercent: 0,
-          opacity: 1,
-          filter: 'blur(0px)',
-          duration,
-          delay,
-          ease: 'zibaraReveal',
-          stagger,
-        });
-      };
-
-      if (onScroll) {
-        trigger = ScrollTrigger.create({
-          trigger: el,
-          start: 'top 86%',
-          onEnter: animate,
-          once: true,
-        });
+      if (onScroll && 'IntersectionObserver' in window) {
+        io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) reveal();
+              else reverse();
+            });
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0 },
+        );
+        io.observe(el);
       } else {
-        animate();
-      }
-    } catch {
-      el.style.opacity = '1';
-    }
-
-    return () => {
-      tween?.kill();
-      trigger?.kill();
-      try {
-        split?.revert();
-      } catch {
-        /* noop */
+        reveal();
       }
     };
-  }, [children, delay, duration, stagger, direction, onScroll]);
+
+    setupFrame = window.requestAnimationFrame(setup);
+
+    return () => {
+      if (setupFrame) window.cancelAnimationFrame(setupFrame);
+      io?.disconnect();
+      tween?.kill();
+      gsap.set(el, { clearProps: 'transform,opacity,willChange' });
+    };
+  }, [children, delay, duration, direction, onScroll]);
 
   return (
     <Tag
       ref={ref as React.RefObject<HTMLHeadingElement>}
       className={className}
-      style={style}
+      style={{ ...style, visibility: initialized ? style?.visibility : 'hidden' }}
     >
       {children}
     </Tag>

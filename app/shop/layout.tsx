@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Shop',
   description: 'Browse ZIBARASTUDIO pieces designed for galas, private dinners, and nights that matter.',
+  path: '/shop',
   keywords: [
     'Afro-futurist fashion shop',
     'luxury womenswear',
@@ -11,22 +13,7 @@ export const metadata: Metadata = {
     'ZIBARASTUDIO',
     'editorial fashion',
   ],
-  openGraph: {
-    type: 'website',
-    url: 'https://zibarastudio.com/shop',
-    title: 'Shop',
-    description: 'Browse ZIBARASTUDIO pieces designed for nights that matter.',
-    siteName: 'ZIBARASTUDIO',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Shop',
-    description: 'Browse ZIBARASTUDIO pieces designed for nights that matter.',
-  },
-  alternates: {
-    canonical: 'https://zibarastudio.com/shop',
-  },
-};
+});
 
 export default function ShopLayout({
   children,

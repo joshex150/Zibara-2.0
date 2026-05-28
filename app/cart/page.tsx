@@ -5,13 +5,13 @@ import { Link } from 'next-view-transitions';
 import { Minus, Plus, X } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useCurrency } from '@/context/CurrencyContext';
-import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import ProductImage from '@/components/ProductImage';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, cartTotal } = useCart();
   const { formatPrice } = useCurrency();
 
-  const shippingUSD = cartTotal > 500 ? 0 : 15;
+  const shippingUSD = cartTotal > 500 ? 0 : 10;
   const totalUSD    = cartTotal + shippingUSD;
 
   return (
@@ -44,15 +44,16 @@ export default function CartPage() {
 
             {/* Cart items */}
             <div className="lg:col-span-2 space-y-0">
-              {cart.map((item, i) => (
+              {cart.map((item) => (
                 <div
                   key={`${item.id}-${item.size}-${item.color}`}
                   className="flex gap-5 py-6 border-b border-zibara-cream/10"
                 >
                   {/* Image */}
                   <div className="w-24 md:w-32 flex-shrink-0 aspect-[3/4] overflow-hidden bg-zibara-espresso">
-                    <ZibaraPlaceholder
-                      label={item.name}
+                    <ProductImage
+                      src={item.image}
+                      name={item.name}
                       sublabel={item.color || item.size || 'BAG ITEM'}
                       variant="compact"
                       tone="espresso"

@@ -1,7 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react';
-import { useCurrency } from './CurrencyContext';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
 export interface CartItem {
   id: string;
@@ -15,7 +14,7 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (item: Omit<CartItem, 'quantity'>) => void;
+  addToCart: (item: Omit<CartItem, 'quantity'>, quantity?: number) => void;
   removeFromCart: (id: string, size: string, color?: string) => void;
   updateQuantity: (id: string, size: string, quantity: number, color?: string) => void;
   clearCart: () => void;
@@ -33,7 +32,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const savedCart = localStorage.getItem('zibara_cart');
     if (savedCart) {
-      setCart(JSON.parse(savedCart));
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        if (Array.isArray(parsedCart)) {
+          setCart(parsedCart);
+        }
+      } catch {
+        localStorage.removeItem('zibara_cart');
+      }
     }
     setIsInitialized(true);
   }, []);
@@ -45,7 +51,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [cart, isInitialized]);
 
-  const addToCart = (item: Omit<CartItem, 'quantity'>) => {
+  const addToCart = (item: Omit<CartItem, 'quantity'>, quantity = 1) => {
+    const safeQuantity = Math.max(1, Math.floor(quantity));
     setCart((prevCart) => {
       const itemColor = item.color ?? '';
       const existingItem = prevCart.find(
@@ -60,12 +67,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
           cartItem.id === item.id &&
           cartItem.size === item.size &&
           (cartItem.color ?? '') === itemColor
-            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            ? { ...cartItem, quantity: cartItem.quantity + safeQuantity }
             : cartItem
         );
       }
 
-      return [...prevCart, { ...item, quantity: 1 }];
+      return [...prevCart, { ...item, quantity: safeQuantity }];
     });
   };
 

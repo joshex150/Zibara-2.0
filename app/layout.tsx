@@ -5,10 +5,19 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NoticePopup from "@/components/NoticePopup";
+import ScrollTriggerRefresh from "@/components/ScrollTriggerRefresh";
 import Toastie from "@/components/toastie/Toastie";
 import { CartProvider } from "@/context/CartContext";
 import { DataProvider } from "@/context/DataContext";
 import { CurrencyProvider } from "@/context/CurrencyContext";
+import {
+  BRAND_ICON,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_OG_IMAGE,
+  DEFAULT_TITLE,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/seo";
 
 const cormorant = Cormorant({
   subsets: ['latin'],
@@ -35,12 +44,16 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://zibarastudio.com'),
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  category: 'fashion',
   title: {
-    default: 'ZIBARASTUDIO — For Nights That Matter',
-    template: '%s | ZIBARASTUDIO',
+    default: DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
   },
-  description: 'Afro-futurist fashion for the woman who arrives composed. Silhouette over decoration. Form over noise.',
+  description: DEFAULT_DESCRIPTION,
   keywords: [
     'Zibara',
     'ZibaraStudio',
@@ -50,23 +63,45 @@ export const metadata: Metadata = {
     'editorial fashion',
     'intentional design',
   ],
+  alternates: {
+    canonical: SITE_URL,
+  },
   icons: {
-    icon: '/icon.svg',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
+      { url: BRAND_ICON, sizes: '512x512', type: 'image/png' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
     apple: '/apple-icon.png',
+    other: [
+      { rel: 'mask-icon', url: '/icon.svg', color: '#030303' },
+    ],
   },
   openGraph: {
     type: 'website',
-    url: 'https://zibarastudio.com',
-    siteName: 'ZIBARASTUDIO',
-    title: 'ZIBARASTUDIO — For Nights That Matter',
-    description: 'Afro-futurist fashion for the woman who arrives composed.',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: 'ZIBARASTUDIO — For Nights That Matter' }],
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    locale: 'en_US',
+    images: [{ url: DEFAULT_OG_IMAGE, width: 1200, height: 630, alt: DEFAULT_TITLE }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ZIBARASTUDIO — For Nights That Matter',
-    description: 'Afro-futurist fashion for the woman who arrives composed.',
-    images: ['/opengraph-image'],
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
+  appleWebApp: {
+    capable: true,
+    title: SITE_NAME,
+    statusBarStyle: 'black-translucent',
+  },
+  formatDetection: {
+    telephone: false,
   },
   manifest: '/site.webmanifest',
 };
@@ -80,19 +115,20 @@ export const viewport = {
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
-  name: 'ZIBARASTUDIO',
-  url: 'https://zibarastudio.com',
-  logo: 'https://zibarastudio.com/icon.svg',
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: `${SITE_URL}${BRAND_ICON}`,
+  image: `${SITE_URL}${BRAND_ICON}`,
 };
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'ZIBARASTUDIO',
-  url: 'https://zibarastudio.com',
+  name: SITE_NAME,
+  url: SITE_URL,
   potentialAction: {
     '@type': 'SearchAction',
-    target: 'https://zibarastudio.com/shop?q={search_term_string}',
+    target: `${SITE_URL}/shop?q={search_term_string}`,
     'query-input': 'required name=search_term_string',
   },
 };
@@ -122,6 +158,7 @@ export default function RootLayout({
             <CurrencyProvider>
               <CartProvider>
                 <Header />
+                <ScrollTriggerRefresh />
                 <main id="main">{children}</main>
                 <Footer />
                 <NoticePopup />

@@ -1,4 +1,15 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect width="32" height="32" fill="#030303"/>
-  <path d="M7 8h18v2.8L11.4 22.2H25v1.8H7v-2.8L20.6 9.8H7z" fill="#EFEFC9" fill-opacity="0.92"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#030303"/>
+  <path
+    d="M206 145H818C850 153 875 178 886 207C881 236 861 265 861 265L637 512L861 759C861 759 881 788 886 817C875 846 850 871 818 879H206C174 871 149 846 138 817C143 788 163 759 163 759L387 512L163 265C163 265 143 236 138 207C149 178 174 153 206 145Z"
+    fill="#EFEFC9"
+  />
+  <path
+    d="M268 240H778L242 786H756"
+    fill="none"
+    stroke="#030303"
+    stroke-width="39"
+    stroke-linejoin="round"
+    stroke-linecap="butt"
+  />
 </svg>

@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'Custom Order',
   description: 'Request a bespoke ZIBARASTUDIO piece tailored to your event, silhouette, and measurements.',
+  path: '/custom-order',
   keywords: [
     'bespoke fashion',
     'custom order',
@@ -10,22 +12,7 @@ export const metadata: Metadata = {
     'private order',
     'custom fashion',
   ],
-  openGraph: {
-    type: 'website',
-    url: 'https://zibarastudio.com/custom-order',
-    title: 'Custom Order',
-    description: 'Request a bespoke ZIBARASTUDIO piece tailored to your event, silhouette, and measurements.',
-    siteName: 'ZIBARASTUDIO',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Custom Order',
-    description: 'Request a bespoke ZIBARASTUDIO piece tailored to your event, silhouette, and measurements.',
-  },
-  alternates: {
-    canonical: 'https://zibarastudio.com/custom-order',
-  },
-};
+});
 
 export default function CustomOrderLayout({
   children,

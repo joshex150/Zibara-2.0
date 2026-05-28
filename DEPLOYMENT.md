@@ -37,7 +37,7 @@ NEXTAUTH_URL=https://yourdomain.com
 NEXTAUTH_SECRET=your-secret-key-here
 
 # Cloudinary (for image uploads)
-CLOUDINARY_CLOUD_NAME=your-cloud-name
+CLOUDINARY_NAME=your-cloud-name
 CLOUDINARY_API_KEY=your-api-key
 CLOUDINARY_API_SECRET=your-api-secret
 ```

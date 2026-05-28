@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: 'About Us',
   description: 'Learn about ZIBARASTUDIO, an Afro-futurist luxury fashion house creating intentional silhouettes for nights that matter.',
+  path: '/about',
   keywords: [
     'about ZIBARASTUDIO',
     'Afro-futurism',
@@ -10,22 +12,7 @@ export const metadata: Metadata = {
     'Lagos fashion',
     'intentional design',
   ],
-  openGraph: {
-    type: 'website',
-    url: 'https://zibarastudio.com/about',
-    title: 'About Us',
-    description: 'Learn about ZIBARASTUDIO, an Afro-futurist luxury fashion house.',
-    siteName: 'ZIBARASTUDIO',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'About Us',
-    description: 'Learn about ZIBARASTUDIO, an Afro-futurist luxury fashion house.',
-  },
-  alternates: {
-    canonical: 'https://zibarastudio.com/about',
-  },
-};
+});
 
 export default function AboutLayout({
   children,

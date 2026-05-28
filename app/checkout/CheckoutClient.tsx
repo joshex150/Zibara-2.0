@@ -7,12 +7,24 @@ import { useCurrency } from "@/context/CurrencyContext";
 import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { usePaystackPayment } from "react-paystack";
 import toast from "react-hot-toast";
-import ZibaraPlaceholder from "@/components/ZibaraPlaceholder";
+import ProductImage from "@/components/ProductImage";
 
 const inputClass =
   "w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors";
 const labelClass =
   "block text-[8px] uppercase tracking-[0.4em] font-mono text-zibara-cream/60 mb-2";
+
+type FlutterwavePaymentResponse = {
+  status?: string;
+  transaction_id?: string | number;
+};
+
+type PaystackPaymentResponse = {
+  reference: string;
+};
+
+const getErrorMessage = (error: unknown, fallback: string) =>
+  error instanceof Error ? error.message : fallback;
 
 export default function CheckoutClient() {
   const router = useRouter();
@@ -32,9 +44,8 @@ export default function CheckoutClient() {
   });
 
   const [paymentMethod, setPaymentMethod] = useState<
-    "flutterwave" | "paystack" | ""
+    "flutterwave" | "paystack" | "test" | ""
   >("");
-  const [isProcessing, setIsProcessing] = useState(false);
   const [paymentError, setPaymentError] = useState("");
   const [isPaymentProcessing, setIsPaymentProcessing] = useState(false);
   const paymentInitiatedRef = useRef(false);
@@ -42,7 +53,6 @@ export default function CheckoutClient() {
   const shippingInUSD = cartTotal > 500 ? 0 : 10;
   const totalInUSD = cartTotal + shippingInUSD;
 
-  const shipping = convertPrice(shippingInUSD, "USD");
   const total = convertPrice(totalInUSD, "USD");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +66,7 @@ export default function CheckoutClient() {
 
   const flutterwavePublicKey = process.env.NEXT_PUBLIC_FLUTTERWAVE_PUBLIC_KEY;
   const paystackPublicKey = process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY;
+  const isE2ETestMode = process.env.NEXT_PUBLIC_E2E_TEST_MODE === "1";
 
   const isFlutterwaveKeyValid =
     flutterwavePublicKey &&
@@ -72,7 +83,7 @@ export default function CheckoutClient() {
     public_key: flutterwavePublicKey || "FLWPUBK-your-public-key-here",
     tx_ref: txRef,
     amount: total,
-    currency: selectedCurrency === "NGN" ? "NGN" : "USD",
+    currency: selectedCurrency,
     payment_options: "card,banktransfer,ussd",
     customer: {
       email: formData.email,
@@ -92,6 +103,7 @@ export default function CheckoutClient() {
     reference: txRef,
     email: formData.email,
     amount: Math.round(total * 100),
+    currency: selectedCurrency,
     publicKey: paystackPublicKey || "pk_test_your-public-key-here",
   };
 
@@ -151,9 +163,60 @@ export default function CheckoutClient() {
     paymentInitiatedRef.current = true;
     setIsPaymentProcessing(true);
 
-    if (paymentMethod === "flutterwave") {
+    if (paymentMethod === "test" && isE2ETestMode) {
+      try {
+        const testResponse = await fetch("/api/test/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            reference: newTxRef,
+            amount: total,
+            currency: selectedCurrency,
+            customer: formData,
+            items: cart,
+          }),
+        });
+        const testPayload = await testResponse.json();
+        if (!testResponse.ok || !testPayload?.success) {
+          throw new Error(testPayload?.error || "Test checkout failed.");
+        }
+        const orderData = testPayload.data;
+        localStorage.setItem(
+          "lastOrder",
+          JSON.stringify({
+            _id: orderData._id,
+            orderId: orderData._id,
+            orderNumber: orderData.orderNumber,
+            customer: formData,
+            items: cart.map((item) => ({
+              id: item.id,
+              name: item.name,
+              price: item.price,
+              quantity: item.quantity,
+              size: item.size,
+              color: item.color,
+              image: item.image,
+            })),
+            total,
+            paymentMethod: "Test Checkout",
+          }),
+        );
+        clearCart();
+        setTimeout(() => {
+          router.push(
+            `/order-confirmation?orderNumber=${encodeURIComponent(orderData.orderNumber)}&email=${encodeURIComponent(formData.email)}`,
+          );
+        }, 100);
+      } catch (error) {
+        const message = getErrorMessage(error, "Test checkout failed.");
+        toast.error(message);
+        setPaymentError(message);
+        setIsPaymentProcessing(false);
+        paymentInitiatedRef.current = false;
+      }
+    } else if (paymentMethod === "flutterwave") {
       handleFlutterwavePayment({
-        callback: async (response: any) => {
+        callback: async (response: FlutterwavePaymentResponse) => {
           closePaymentModal();
           if (
             response.status === "successful" ||
@@ -169,6 +232,7 @@ export default function CheckoutClient() {
                     transactionId: String(response.transaction_id),
                     txRef: newTxRef,
                     amount: total,
+                    currency: selectedCurrency,
                     customer: formData,
                     items: cart,
                   }),
@@ -206,9 +270,10 @@ export default function CheckoutClient() {
                   `/order-confirmation?orderNumber=${encodeURIComponent(orderData.orderNumber)}&email=${encodeURIComponent(formData.email)}`,
                 );
               }, 100);
-            } catch (error: any) {
-              toast.error(error.message || "Payment verification failed.");
-              setPaymentError(error.message || "Payment verification failed.");
+            } catch (error) {
+              const message = getErrorMessage(error, "Payment verification failed.");
+              toast.error(message);
+              setPaymentError(message);
               setIsPaymentProcessing(false);
               paymentInitiatedRef.current = false;
             }
@@ -225,7 +290,7 @@ export default function CheckoutClient() {
       });
     } else if (paymentMethod === "paystack") {
       initializePaystackPayment({
-        onSuccess: async (ref: any) => {
+        onSuccess: async (ref: PaystackPaymentResponse) => {
           try {
             const verifyResponse = await fetch(
               "/api/payments/paystack/verify",
@@ -235,6 +300,7 @@ export default function CheckoutClient() {
                 body: JSON.stringify({
                   reference: ref.reference,
                   amount: total,
+                  currency: selectedCurrency,
                   customer: formData,
                   items: cart,
                 }),
@@ -272,9 +338,10 @@ export default function CheckoutClient() {
                 `/order-confirmation?orderNumber=${encodeURIComponent(orderData.orderNumber)}&email=${encodeURIComponent(formData.email)}`,
               );
             }, 100);
-          } catch (error: any) {
-            toast.error(error.message || "Payment verification failed.");
-            setPaymentError(error.message || "Payment verification failed.");
+          } catch (error) {
+            const message = getErrorMessage(error, "Payment verification failed.");
+            toast.error(message);
+            setPaymentError(message);
             setIsPaymentProcessing(false);
             paymentInitiatedRef.current = false;
           }
@@ -470,6 +537,24 @@ export default function CheckoutClient() {
                   )}
 
                   <div className="space-y-3">
+                    {isE2ETestMode && (
+                      <label
+                        className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentMethod === "test" ? "border-zibara-cream/40 bg-zibara-cream/5" : "border-zibara-cream/10 hover:border-zibara-cream/25"}`}
+                      >
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="test"
+                          checked={paymentMethod === "test"}
+                          onChange={() => setPaymentMethod("test")}
+                          className="w-4 h-4 accent-zibara-cream"
+                        />
+                        <span className="text-[11px] font-mono text-zibara-cream/80">
+                          E2E Test Checkout
+                        </span>
+                      </label>
+                    )}
+
                     <label
                       className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentMethod === "flutterwave" ? "border-zibara-cream/40 bg-zibara-cream/5" : "border-zibara-cream/10 hover:border-zibara-cream/25"} ${!isFlutterwaveKeyValid ? "opacity-40 cursor-not-allowed" : ""}`}
                     >
@@ -521,10 +606,11 @@ export default function CheckoutClient() {
 
                 <div className="space-y-5 mb-8">
                   {cart.map((item) => (
-                    <div key={`${item.id}-${item.size}`} className="flex gap-4">
+                    <div key={`${item.id}-${item.size}-${item.color ?? "default"}`} className="flex gap-4">
                       <div className="w-20 aspect-[3/4] bg-zibara-espresso overflow-hidden flex-shrink-0">
-                        <ZibaraPlaceholder
-                          label={item.name}
+                        <ProductImage
+                          src={item.image}
+                          name={item.name}
                           sublabel={item.color || item.size || "ORDER ITEM"}
                           variant="compact"
                           tone="espresso"
@@ -582,10 +668,10 @@ export default function CheckoutClient() {
 
                 <button
                   type="submit"
-                  disabled={isProcessing}
+                  disabled={isPaymentProcessing}
                   className="w-full py-4 border border-zibara-cream/35 text-[10px] uppercase tracking-[0.4em] font-mono bg-zibara-crimson border-zibara-crimson text-zibara-cream hover:bg-zibara-cream hover:text-zibara-black hover:border-zibara-cream transition-all duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
                 >
-                  {isProcessing ? "Processing..." : "Place Order"}
+                  {isPaymentProcessing ? "Processing..." : "Place Order"}
                 </button>
               </div>
             </div>

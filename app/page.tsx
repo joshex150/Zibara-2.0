@@ -58,13 +58,8 @@ export default function Home() {
         <Preloader onComplete={handlePreloaderComplete} />
       )}
 
-      <div
-        className="min-h-screen bg-zibara-black text-zibara-cream"
-        style={{
-          opacity: preloaderDone ? 1 : 0.001,
-          transition: "opacity 0.6s ease",
-        }}
-      >
+      {preloaderDone && (
+        <div className="min-h-screen bg-zibara-black text-zibara-cream">
         {/* ── HERO ─────────────────────────────────────── */}
         <section className="relative w-full h-screen overflow-hidden">
           <ParallaxImage
@@ -86,7 +81,7 @@ export default function Home() {
           <div className="absolute bottom-12 left-6 md:left-12 right-6 md:right-auto max-w-[min(90vw,640px)]">
             <AnimatedHeading
               tag="h1"
-              delay={preloaderDone ? 0.1 : 2.8}
+              delay={0.1}
               className="font-display font-light text-zibara-cream text-[clamp(2.4rem,6vw,6rem)] leading-[0.95] tracking-tight uppercase"
               style={
                 {
@@ -98,7 +93,7 @@ export default function Home() {
             </AnimatedHeading>
 
             <AnimatedText
-              delay={preloaderDone ? 0.4 : 3.2}
+              delay={0.4}
               className="mt-6 text-[12px] tracking-[0.3em] font-mono text-zibara-cream/70 uppercase"
               onScroll={false}
             >
@@ -504,7 +499,8 @@ export default function Home() {
             }),
           }}
         />
-      </div>
+        </div>
+      )}
     </>
   );
 }

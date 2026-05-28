@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test:e2e": "playwright test",
     "seed-db": "ts-node -P tsconfig.json scripts/seed-storefront.ts",
     "seed-products": "ts-node -P tsconfig.json scripts/seed-products.ts",
     "seed-admin": "ts-node -P tsconfig.json scripts/seed-admin.ts",
@@ -34,6 +35,7 @@
     "split-type": "^0.3.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.60.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/nodemailer": "^7.0.5",

@@ -2,6 +2,16 @@ import { v2 as cloudinary, type UploadApiErrorResponse, type UploadApiOptions, t
 import { NextRequest, NextResponse } from 'next/server';
 import { PassThrough } from 'stream';
 
+const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
+const ALLOWED_IMAGE_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/heic',
+  'image/heif',
+]);
+
 // Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -11,51 +21,53 @@ cloudinary.config({
 
 export async function POST(req: NextRequest) {
   try {
-    const contentType = req.headers.get('content-type') || '';
-    if (!contentType.startsWith('multipart/form-data')) {
-      throw new Error('Invalid content type');
+    if (!process.env.CLOUDINARY_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+      return NextResponse.json(
+        { error: 'Upload failed', details: 'Cloudinary is not configured.' },
+        { status: 500 }
+      );
     }
 
-    const boundary = contentType.split('boundary=')[1];
-    if (!boundary) {
-      throw new Error('Boundary not found in content type');
+    const formData = await req.formData();
+    const file = formData.get('file');
+
+    if (!(file instanceof File)) {
+      return NextResponse.json(
+        { error: 'Upload failed', details: 'File is missing in the request.' },
+        { status: 400 }
+      );
     }
 
-    const chunks: Uint8Array[] = [];
-    const reader = req.body?.getReader();
-    if (!reader) {
-      throw new Error('Request body is missing');
+    if (file.size === 0) {
+      return NextResponse.json(
+        { error: 'Upload failed', details: 'File is empty.' },
+        { status: 400 }
+      );
     }
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      if (value) chunks.push(value);
+    if (file.size > MAX_UPLOAD_BYTES) {
+      return NextResponse.json(
+        { error: 'Upload failed', details: 'Image must be 10MB or smaller.' },
+        { status: 400 }
+      );
     }
 
-    const buffer = Buffer.concat(chunks.map(chunk => Buffer.from(chunk)));
-
-    const parts = buffer
-      .toString('binary')
-      .split(`--${boundary}`)
-      .filter((part) => part.trim() && part.trim() !== '--');
-
-    const filePart = parts.find((part) =>
-      part.includes('Content-Disposition: form-data; name="file"')
-    );
-
-    if (!filePart) {
-      throw new Error('File is missing in the request');
+    if (file.type && !ALLOWED_IMAGE_TYPES.has(file.type)) {
+      return NextResponse.json(
+        { error: 'Upload failed', details: 'Unsupported image type.' },
+        { status: 400 }
+      );
     }
 
-    const fileContent = filePart.split('\r\n\r\n')[1].split('\r\n--')[0];
-    const fileBuffer = Buffer.from(fileContent, 'binary');
+    const fileBuffer = Buffer.from(await file.arrayBuffer());
 
     // Upload options - explicitly set resource_type to image
     // This is important for HEIC files which Cloudinary might misidentify as video
     const uploadOptions: UploadApiOptions = {
       folder: 'zibara',
       resource_type: 'image', // Explicitly set to image to prevent video detection
+      use_filename: true,
+      unique_filename: true,
     };
 
     // For HEIC files, Cloudinary will automatically convert them to a web-compatible format
@@ -83,7 +95,13 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json(
-      { url: uploadResult.secure_url },
+      {
+        url: uploadResult.secure_url,
+        publicId: uploadResult.public_id,
+        width: uploadResult.width,
+        height: uploadResult.height,
+        format: uploadResult.format,
+      },
       { status: 200 }
     );
   } catch (error) {

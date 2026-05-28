@@ -1,5 +1,7 @@
 import nodemailer from 'nodemailer';
 import type { Transporter } from 'nodemailer';
+import { appendFile, mkdir } from 'fs/promises';
+import path from 'path';
 
 type OrderReceiptItem = {
   name: string;
@@ -51,14 +53,10 @@ const formatCurrency = (amount: number) => {
   return `$${amount.toLocaleString('en-US')}`;
 };
 
+const isE2ETestMode = () =>
+  process.env.E2E_TEST_MODE === '1' && process.env.NODE_ENV !== 'production';
+
 export const sendOrderReceipt = async (order: OrderReceipt) => {
-  const transporter = getTransporter();
-  const from = process.env.SMTP_FROM;
-
-  if (!transporter || !from) {
-    return { skipped: true };
-  }
-
   const itemLines = order.items
     .map((item) => {
       const details = [
@@ -106,6 +104,30 @@ export const sendOrderReceipt = async (order: OrderReceipt) => {
     <p>We will notify you when your order ships.</p>
     <p>ZIBARASTUDIO</p>
   `;
+
+  if (isE2ETestMode()) {
+    const artifactDir = process.env.E2E_ARTIFACT_DIR || path.join(process.cwd(), '.test-artifacts');
+    await mkdir(artifactDir, { recursive: true });
+    await appendFile(
+      path.join(artifactDir, 'emails.jsonl'),
+      `${JSON.stringify({
+        to: order.customer.email,
+        subject,
+        text,
+        orderNumber: order.orderNumber,
+        total: order.total,
+      })}\n`,
+      'utf8',
+    );
+    return { captured: true };
+  }
+
+  const transporter = getTransporter();
+  const from = process.env.SMTP_FROM;
+
+  if (!transporter || !from) {
+    return { skipped: true };
+  }
 
   await transporter.sendMail({
     from,

@@ -1,11 +1,16 @@
 'use client';
 
-import { useRef, useLayoutEffect, ElementType } from 'react';
+import { useEffect, useRef, useState, ElementType } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SplitType from 'split-type';
 
-gsap.registerPlugin(ScrollTrigger);
+const inheritTextStyles = (node: HTMLElement) => {
+  node.style.fontFamily = 'inherit';
+  node.style.fontSize = 'inherit';
+  node.style.fontWeight = 'inherit';
+  node.style.letterSpacing = 'inherit';
+  node.style.textTransform = 'inherit';
+};
 
 interface AnimatedTextProps {
   children: string;
@@ -17,6 +22,8 @@ interface AnimatedTextProps {
   onScroll?: boolean;
 }
 
+let idCounter = 0;
+
 export default function AnimatedText({
   children,
   tag: Tag = 'p',
@@ -27,92 +34,156 @@ export default function AnimatedText({
   onScroll = true,
 }: AnimatedTextProps) {
   const ref = useRef<HTMLElement>(null);
+  const uid = useRef(`zibara-text-${++idCounter}`).current;
+  const [initialized, setInitialized] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    const reduceMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    setInitialized(false);
 
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduceMotion) {
-      el.style.opacity = '1';
+      setInitialized(true);
       return;
     }
 
     let split: SplitType | null = null;
-    let trigger: ScrollTrigger | undefined;
-    let tween: gsap.core.Tween | undefined;
+    let io: IntersectionObserver | null = null;
+    let animation: gsap.core.Tween | null = null;
+    let innerNodes: HTMLElement[] = [];
+    let resizeFrame = 0;
+    let splitWidth = 0;
+    let setupFrame = 0;
+    let played = false;
+    let firstReveal = true;
 
-    try {
-      split = new SplitType(el, { types: 'lines' });
-      const lines = split.lines ?? [];
-      if (!lines.length) {
-        el.style.opacity = '1';
+    const restoreResponsiveText = () => {
+      if (!split) return;
+      played = true;
+      io?.disconnect();
+      io = null;
+      animation?.kill();
+      animation = null;
+      split.revert();
+      split = null;
+      innerNodes = [];
+      setInitialized(true);
+    };
+
+    const handleResize = () => {
+      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(() => {
+        resizeFrame = 0;
+        if (!split) return;
+
+        const nextWidth = el.getBoundingClientRect().width;
+        if (Math.abs(nextWidth - splitWidth) > 1) restoreResponsiveText();
+      });
+    };
+
+    const reverseReveal = () => {
+      if (!split || !played) return;
+      animation?.reverse();
+    };
+
+    const reveal = () => {
+      played = true;
+      if (animation) {
+        animation.play();
         return;
       }
 
-      lines.forEach((line) => {
-        const inner = document.createElement('span');
-        inner.style.display = 'block';
-        inner.style.willChange = 'transform, opacity, filter';
-        inner.setAttribute('aria-hidden', 'true');
-        while (line.firstChild) inner.appendChild(line.firstChild);
-        line.style.overflow = 'hidden';
-        line.style.display = 'block';
-        line.style.paddingBottom = '0.1em';
-        line.setAttribute('aria-hidden', 'true');
-        line.appendChild(inner);
-        gsap.set(inner, { yPercent: 105, opacity: 0, filter: 'blur(4px)' });
+      animation = gsap.to(innerNodes, {
+        y: '0%',
+        opacity: 1,
+        filter: 'blur(0px)',
+        stagger,
+        delay: firstReveal ? delay : 0,
+        duration,
+        ease: 'power3.out',
+        force3D: true,
+        overwrite: 'auto',
       });
+      firstReveal = false;
+    };
 
-      el.setAttribute('aria-label', children);
-      el.style.opacity = '1';
-
-      const innerSpans = lines
-        .map((l) => l.querySelector('span'))
-        .filter((s): s is HTMLSpanElement => !!s);
-
-      const animate = () => {
-        tween = gsap.to(innerSpans, {
-          yPercent: 0,
-          opacity: 1,
-          filter: 'blur(0px)',
-          duration,
-          delay,
-          ease: 'power3.out',
-          stagger,
-        });
-      };
-
-      if (onScroll) {
-        trigger = ScrollTrigger.create({
-          trigger: el,
-          start: 'top 92%',
-          onEnter: animate,
-          once: true,
-        });
-      } else {
-        animate();
-      }
-    } catch {
-      el.style.opacity = '1';
-    }
-
-    return () => {
-      tween?.kill();
-      trigger?.kill();
+    const setup = () => {
       try {
-        split?.revert();
+        const computedLH = window.getComputedStyle(el).lineHeight;
+        split = new SplitType(el, { types: 'lines', lineClass: `zibara-text-line-${uid}` });
+
+        split.lines?.forEach((line) => {
+          const lineEl = line as HTMLElement;
+          const inner = document.createElement('span');
+
+          inner.className = `zibara-text-inner-${uid}`;
+          inner.innerHTML = lineEl.innerHTML;
+          inner.style.display = 'block';
+          inner.style.willChange = 'transform, opacity, filter';
+          inheritTextStyles(inner);
+
+          lineEl.innerHTML = '';
+          lineEl.style.overflow = 'clip';
+          lineEl.style.display = 'block';
+          lineEl.style.lineHeight = computedLH;
+          lineEl.style.margin = '0';
+          lineEl.style.padding = '0';
+          inheritTextStyles(lineEl);
+          lineEl.appendChild(inner);
+        });
+
+        innerNodes = Array.from(el.querySelectorAll<HTMLElement>(`.zibara-text-inner-${uid}`));
+        if (!innerNodes.length) {
+          setInitialized(true);
+          return;
+        }
+
+        gsap.set(innerNodes, { y: '110%', opacity: 0, filter: 'blur(4px)', force3D: true });
+        splitWidth = el.getBoundingClientRect().width;
+        window.addEventListener('resize', handleResize, { passive: true });
+        setInitialized(true);
+
+        if (onScroll && 'IntersectionObserver' in window) {
+          io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) reveal();
+                else reverseReveal();
+              });
+            },
+            { rootMargin: '0px 0px -12% 0px', threshold: 0 },
+          );
+          io.observe(el);
+        } else {
+          reveal();
+        }
       } catch {
-        /* noop */
+        split?.revert();
+        split = null;
+        setInitialized(true);
       }
     };
-  }, [children, delay, duration, stagger, onScroll]);
+
+    setupFrame = window.requestAnimationFrame(setup);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
+      if (setupFrame) window.cancelAnimationFrame(setupFrame);
+      io?.disconnect();
+      animation?.kill();
+      split?.revert();
+    };
+  }, [children, delay, duration, stagger, onScroll, uid]);
 
   return (
-    <Tag ref={ref} className={className}>
+    <Tag
+      ref={ref}
+      className={className}
+      style={{ visibility: initialized ? undefined : 'hidden' }}
+    >
       {children}
     </Tag>
   );

@@ -12,6 +12,9 @@ interface PreloaderProps {
   onComplete?: () => void;
 }
 
+const INTRO_DURATION_MS = 4000;
+const INTRO_FALLBACK_MS = INTRO_DURATION_MS + 750;
+
 export default function Preloader({ onComplete }: PreloaderProps) {
   const rootRef    = useRef<HTMLDivElement>(null);
   const barRef     = useRef<HTMLDivElement>(null);
@@ -53,55 +56,50 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       gsap.set(tagline, { opacity: 0, y: 8 });
       gsap.set(counter, { opacity: 1 });
 
-      const tl = gsap.timeline({
-        onComplete: () => {
-          gsap.timeline({ onComplete: finish })
-            .to(letters, {
-              y: '-115%',
-              duration: 1.1,
-              ease: 'zibaraOut',
-              stagger: 0.04,
-            })
-            .to([tagline, counter], {
-              opacity: 0,
-              duration: 0.6,
-              ease: 'power2.out',
-            }, 0)
-            .to(root, {
-              opacity: 0,
-              duration: 0.9,
-              ease: 'power2.inOut',
-            }, 0.4);
-        },
-      });
+      const tl = gsap.timeline({ onComplete: finish });
 
       tl.to(bar, {
         scaleX: 1,
-        duration: 3.8,
+        duration: 3.0,
         ease: 'power2.inOut',
       })
       .to(letters, {
         y: '0%',
-        duration: 1.6,
+        duration: 1.05,
         ease: 'hop',
-        stagger: 0.085,
-      }, 0.4)
+        stagger: 0.055,
+      }, 0.25)
       .to(tagline, {
         opacity: 1,
         y: 0,
-        duration: 1.0,
+        duration: 0.65,
         ease: 'power3.out',
-      }, 1.1)
+      }, 0.9)
       .to(counter, {
         textContent: '100',
-        duration: 3.6,
+        duration: 3.0,
         ease: 'power2.inOut',
         snap: { textContent: 1 },
         modifiers: {
           textContent: (v: string) => `${Math.round(Number(v)).toString().padStart(3, '0')}`,
         },
-      }, 0.2)
-      .to({}, { duration: 0.9 });
+      }, 0.15)
+      .to([tagline, counter], {
+        opacity: 0,
+        duration: 0.35,
+        ease: 'power2.out',
+      }, 3.05)
+      .to(letters, {
+        y: '-115%',
+        duration: 0.65,
+        ease: 'zibaraOut',
+        stagger: 0.025,
+      }, 3.05)
+      .to(root, {
+        opacity: 0,
+        duration: 0.35,
+        ease: 'power2.inOut',
+      }, 3.65);
     }, root);
 
     const fallbackTimer = window.setTimeout(() => {
@@ -114,7 +112,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
         ease: 'power2.out',
         onComplete: finish,
       });
-    }, 7000);
+    }, INTRO_FALLBACK_MS);
 
     return () => {
       window.clearTimeout(fallbackTimer);

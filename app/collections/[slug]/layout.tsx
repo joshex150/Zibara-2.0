@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import connectDB from '@/lib/mongodb';
 import Collection from '@/models/Collection';
+import { absoluteUrl, BRAND_ICON, getCloudinaryOgImage, SITE_NAME } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -13,11 +14,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       return {
         title: 'Collection Not Found',
         description: 'The collection you are looking for does not exist.',
+        robots: { index: false, follow: false },
       };
     }
 
     const collectionUrl = `https://zibarastudio.com/collections/${slug}`;
-    const collectionImage = collection.coverImage || 'https://zibarastudio.com/android-chrome-512x512.png';
+    const collectionImage = getCloudinaryOgImage(absoluteUrl(collection.coverImage || BRAND_ICON));
 
     return {
       title: `${collection.name} Collection`,
@@ -43,7 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
             alt: `${collection.name} Collection`,
           },
         ],
-        siteName: 'ZIBARASTUDIO',
+        siteName: SITE_NAME,
       },
       twitter: {
         card: 'summary_large_image',
@@ -64,10 +66,48 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export default function CollectionLayout({
+export default async function CollectionLayout({
+  params,
   children,
 }: {
+  params: Promise<{ slug: string }>;
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  const { slug } = await params;
+  let collectionJsonLd = null;
+
+  try {
+    await connectDB();
+    const collection = await Collection.findOne({ slug, published: true }).lean();
+
+    if (collection) {
+      collectionJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'CollectionPage',
+        name: `${collection.name} Collection`,
+        description: collection.description,
+        url: `https://zibarastudio.com/collections/${slug}`,
+        image: absoluteUrl(collection.coverImage || BRAND_ICON),
+        isPartOf: {
+          '@type': 'WebSite',
+          name: SITE_NAME,
+          url: 'https://zibarastudio.com',
+        },
+      };
+    }
+  } catch (error) {
+    console.error('Error generating collection JSON-LD:', error);
+  }
+
+  return (
+    <>
+      {collectionJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionJsonLd) }}
+        />
+      )}
+      {children}
+    </>
+  );
 }

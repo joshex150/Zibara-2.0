@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import connectDB from '@/lib/mongodb';
 import Product from '@/models/Product';
+import { absoluteUrl, BRAND_ICON, getCloudinaryOgImage, SITE_NAME } from '@/lib/seo';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
@@ -13,36 +14,20 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       return {
         title: 'Product Not Found',
         description: 'The product you are looking for does not exist.',
+        robots: { index: false, follow: false },
       };
     }
 
     const productUrl = `https://zibarastudio.com/product/${id}`;
     
     // Get the first product image and ensure it's an absolute URL
-    let productImage = product.images?.[0] || 'https://zibarastudio.com/android-chrome-512x512.png';
+    let productImage = product.images?.[0] || BRAND_ICON;
     
     // Ensure the image URL is absolute
-    if (productImage && !productImage.startsWith('http://') && !productImage.startsWith('https://')) {
-      productImage = `https://zibarastudio.com${productImage.startsWith('/') ? '' : '/'}${productImage}`;
-    }
+    productImage = absoluteUrl(productImage);
     
     // If it's a Cloudinary URL, optimize it for Open Graph (1200x630 is the recommended size)
-    // Cloudinary transformation: w_1200,h_630,c_fill for optimal social sharing
-    if (productImage.includes('res.cloudinary.com') && productImage.includes('/image/upload/')) {
-      // Check if a transformation already exists (there's a segment between /image/upload/ and the filename)
-      // Cloudinary URL format: .../image/upload/{transformation}/{public_id}.{format}
-      // or: .../image/upload/{public_id}.{format} (no transformation)
-      const uploadIndex = productImage.indexOf('/image/upload/');
-      if (uploadIndex !== -1) {
-        const afterUpload = productImage.substring(uploadIndex + '/image/upload/'.length);
-        // If there's no slash before the filename (no transformation), add one
-        // Or if the first segment doesn't look like a transformation (contains dots, which would be the filename)
-        if (!afterUpload.includes('/') || afterUpload.split('/')[0].includes('.')) {
-          // No transformation exists, add it
-          productImage = productImage.replace('/image/upload/', '/image/upload/w_1200,h_630,c_fill/');
-        }
-      }
-    }
+    productImage = getCloudinaryOgImage(productImage);
 
     return {
       title: product.name,
@@ -68,7 +53,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
             alt: product.name,
           },
         ],
-        siteName: 'ZIBARASTUDIO',
+        siteName: SITE_NAME,
       },
       twitter: {
         card: 'summary_large_image',
@@ -89,10 +74,58 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 }
 
-export default function ProductLayout({
+export default async function ProductLayout({
+  params,
   children,
 }: {
+  params: Promise<{ id: string }>;
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  const { id } = await params;
+  let productJsonLd = null;
+
+  try {
+    await connectDB();
+    const product = await Product.findById(id).lean();
+
+    if (product) {
+      const image = absoluteUrl(getCloudinaryOgImage(product.images?.[0] || BRAND_ICON));
+      productJsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        name: product.name,
+        description: product.description,
+        image,
+        brand: {
+          '@type': 'Brand',
+          name: SITE_NAME,
+        },
+        category: product.category,
+        offers: {
+          '@type': 'Offer',
+          url: `https://zibarastudio.com/product/${id}`,
+          priceCurrency: 'USD',
+          price: product.price,
+          availability: product.inStock
+            ? 'https://schema.org/InStock'
+            : 'https://schema.org/OutOfStock',
+          itemCondition: 'https://schema.org/NewCondition',
+        },
+      };
+    }
+  } catch (error) {
+    console.error('Error generating product JSON-LD:', error);
+  }
+
+  return (
+    <>
+      {productJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+        />
+      )}
+      {children}
+    </>
+  );
 }

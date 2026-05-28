@@ -43,7 +43,7 @@ const OrderSchema = new Schema({
   },
   paymentMethod: {
     type: String,
-    enum: ['flutterwave', 'paystack'],
+    enum: ['flutterwave', 'paystack', 'test'],
   },
   paymentStatus: {
     type: String,
