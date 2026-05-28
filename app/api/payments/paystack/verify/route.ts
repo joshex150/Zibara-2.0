@@ -137,7 +137,7 @@ export async function POST(request: NextRequest) {
       })),
       total: order.total,
       paymentMethod: 'Paystack',
-    });
+    }).catch((err) => console.error('[email] receipt failed for', order.orderNumber, err));
 
     return NextResponse.json({ success: true, data: order });
   } catch (error: any) {

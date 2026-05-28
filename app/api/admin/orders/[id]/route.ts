@@ -1,13 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/lib/auth';
 import connectDB from '@/lib/mongodb';
 import Order from '@/models/Order';
 import '@/models/Product';
+
+async function requireAdmin() {
+  const session = await getServerSession(authOptions);
+  if (!session) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+  return null;
+}
 
 // GET single order
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     await connectDB();
     const { id } = await params;
@@ -34,6 +45,9 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     await connectDB();
     const { id } = await params;
@@ -66,6 +80,9 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const authError = await requireAdmin();
+  if (authError) return authError;
+
   try {
     await connectDB();
     const { id } = await params;

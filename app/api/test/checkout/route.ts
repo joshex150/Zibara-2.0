@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
       })),
       total: order.total,
       paymentMethod: 'Test Checkout',
-    });
+    }).catch((err) => console.error('[email] receipt failed for', order.orderNumber, err));
 
     return NextResponse.json({ success: true, data: order }, { status: 201 });
   } catch (error) {

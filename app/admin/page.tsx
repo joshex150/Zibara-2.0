@@ -17,7 +17,8 @@ import {
   Ruler,
   Palette,
   Megaphone,
-  Coins
+  Coins,
+  Mail
 } from 'lucide-react';
 import BrandLoader from '@/components/BrandLoader';
 
@@ -282,6 +283,12 @@ export default function AdminDashboard() {
       description: 'Manage currency conversion rates',
       href: '/admin/currency',
       icon: Coins,
+    },
+    {
+      title: 'Email Templates',
+      description: 'Edit order receipt emails',
+      href: '/admin/email-templates',
+      icon: Mail,
     },
     {
       title: 'View Site',

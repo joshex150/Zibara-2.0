@@ -81,9 +81,8 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
     const { data: products } = await productsRes.json();
     const product = products[0];
 
-    // Seed cart via localStorage
-    await page.goto('/cart');
-    await page.evaluate(
+    // Seed cart via addInitScript so it's set before React hydrates
+    await page.addInitScript(
       ({ p }) => {
         localStorage.setItem(
           'zibara_cart',
@@ -102,21 +101,21 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
       },
       { p: product },
     );
-    await page.reload();
+    await page.goto('/cart');
 
-    await expect(page.getByText(product.name).first()).toBeVisible();
+    await expect(page.getByText(product.name).first()).toBeVisible({ timeout: 10_000 });
 
-    // Increment quantity
-    const plus = page.locator('button').filter({ has: page.locator('svg') }).nth(1);
+    // Quantity control row: target the inline-flex border container with +/- buttons
+    const quantityRow = page.locator('.inline-flex.items-center.border');
+    await expect(quantityRow).toBeVisible();
+
+    const plus = quantityRow.getByRole('button').last();
     await plus.click();
+    await expect(quantityRow.locator('span')).toHaveText('2', { timeout: 5_000 });
 
-    // Re-find the quantity display (text "2")
-    await expect(page.locator('span.w-8.text-center').filter({ hasText: '2' })).toBeVisible();
-
-    // Decrement back to 1
-    const minus = page.locator('button').filter({ has: page.locator('svg') }).first();
+    const minus = quantityRow.getByRole('button').first();
     await minus.click();
-    await expect(page.locator('span.w-8.text-center').filter({ hasText: '1' })).toBeVisible();
+    await expect(quantityRow.locator('span')).toHaveText('1', { timeout: 5_000 });
   });
 
   test('full checkout flow: cart → shipping form → test payment → order confirmation', async ({ page }) => {
@@ -124,9 +123,8 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
     const { data: products } = await productsRes.json();
     const product = products.find((p: { price: number }) => p.price > 0) || products[0];
 
-    // Seed the cart via localStorage
-    await page.goto('/checkout');
-    await page.evaluate(
+    // Seed cart before page loads so React hydration sees items immediately
+    await page.addInitScript(
       ({ p }) => {
         localStorage.setItem(
           'zibara_cart',
@@ -145,10 +143,10 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
       },
       { p: product },
     );
-    await page.reload();
+    await page.goto('/checkout');
 
     // Checkout page must load with items
-    await expect(page.getByRole('heading', { name: /checkout/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /checkout/i })).toBeVisible({ timeout: 10_000 });
     await expect(page.getByText(product.name).first()).toBeVisible();
 
     // Fill shipping form
@@ -174,7 +172,7 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
     await expect(page.getByRole('heading', { name: /order confirmed/i })).toBeVisible();
 
     // Confirmation page content checks
-    await expect(page.getByText(CUSTOMER.firstName)).toBeVisible();
+    await expect(page.getByText(`Thank you, ${CUSTOMER.firstName}.`)).toBeVisible();
     await expect(page.getByText(product.name).first()).toBeVisible();
 
     // Order number is shown
@@ -184,9 +182,10 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
     const orderNumber = orderText?.match(/CRL-[\dA-Z-]+/)?.[0];
     expect(orderNumber).toBeTruthy();
 
-    // Shipping address shown on confirmation
+    // Shipping address shown in the confirmation's "Shipping To" section
     await expect(page.getByText(CUSTOMER.address)).toBeVisible();
-    await expect(page.getByText(CUSTOMER.city, { exact: false })).toBeVisible();
+    // city + state appear together as "Lagos, Lagos" in the address block
+    await expect(page.getByText(`${CUSTOMER.city}, ${CUSTOMER.state}`)).toBeVisible();
 
     // Cart should now be cleared in localStorage
     const cartData = await page.evaluate(() => localStorage.getItem('zibara_cart'));
@@ -201,8 +200,13 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
   });
 
   test('order tracking API returns the created order', async ({ request }) => {
+    // Fetch a real product to get a valid ObjectId (required by Order schema)
+    const productsRes = await request.get('/api/admin/products');
+    const { data: products } = await productsRes.json();
+    const realProduct = products[0];
+
     // Create an order via the test checkout API directly (API-level probe)
-    const testItems = [{ id: 'probe-id', name: 'Probe Garment', price: 120, quantity: 1, size: 'S' }];
+    const testItems = [{ id: realProduct._id, name: realProduct.name, price: realProduct.price, quantity: 1, size: realProduct.sizes?.[0] ?? 'M' }];
     const res = await request.post('/api/test/checkout', {
       data: {
         reference: `CRL-PROBE-${Date.now()}`,
@@ -234,7 +238,7 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
     expect(trackPayload.success).toBe(true);
     expect(trackPayload.data.orderStatus).toBe('processing');
     expect(trackPayload.data.paymentStatus).toBe('paid');
-    expect(trackPayload.data.items[0].name).toBe('Probe Garment');
+    expect(trackPayload.data.items[0].name).toBe(realProduct.name);
   });
 
   test('checkout with empty cart redirects / shows empty state', async ({ page }) => {
@@ -252,8 +256,7 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
     const { data: products } = await productsRes.json();
     const product = products[0];
 
-    await page.goto('/checkout');
-    await page.evaluate(
+    await page.addInitScript(
       ({ p }) => {
         localStorage.setItem(
           'zibara_cart',
@@ -272,7 +275,8 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
       },
       { p: product },
     );
-    await page.reload();
+    await page.goto('/checkout');
+    await expect(page.getByRole('heading', { name: /checkout/i })).toBeVisible({ timeout: 10_000 });
 
     // Click Place Order without filling anything
     await page.getByRole('button', { name: /place order/i }).click();

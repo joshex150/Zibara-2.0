@@ -170,8 +170,8 @@ export default function CheckoutClient() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             reference: newTxRef,
-            amount: total,
-            currency: selectedCurrency,
+            amount: totalInUSD,
+            currency: "USD",
             customer: formData,
             items: cart,
           }),
@@ -197,7 +197,7 @@ export default function CheckoutClient() {
               color: item.color,
               image: item.image,
             })),
-            total,
+            total: totalInUSD,
             paymentMethod: "Test Checkout",
           }),
         );
@@ -230,7 +230,7 @@ export default function CheckoutClient() {
                   headers: { "Content-Type": "application/json" },
                   body: JSON.stringify({
                     transactionId: String(response.transaction_id),
-                    txRef: newTxRef,
+                    txRef: txRef,
                     amount: total,
                     currency: selectedCurrency,
                     customer: formData,
@@ -260,7 +260,7 @@ export default function CheckoutClient() {
                     color: item.color,
                     image: item.image,
                   })),
-                  total,
+                  total: totalInUSD,
                   paymentMethod: "Flutterwave",
                 }),
               );
@@ -328,7 +328,7 @@ export default function CheckoutClient() {
                   color: item.color,
                   image: item.image,
                 })),
-                total,
+                total: totalInUSD,
                 paymentMethod: "Paystack",
               }),
             );

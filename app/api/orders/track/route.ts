@@ -24,8 +24,8 @@ export async function POST(request: NextRequest) {
 
     const order = await Order.findOne({
       orderNumber,
-      'customer.email': email,
-    });
+      'customer.email': { $regex: `^${email.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, $options: 'i' },
+    }).select('orderNumber orderStatus paymentStatus customer items total paymentMethod createdAt');
 
     if (!order) {
       return NextResponse.json(
