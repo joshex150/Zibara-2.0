@@ -132,7 +132,7 @@ export default function AdminPopupPage() {
 
   return (
     <div className="min-h-screen bg-zibara-black text-zibara-cream scroll-mt-32">
-      <div className="max-w-4xl mx-auto px-4 pt-24 pb-8">
+      <div className="max-w-4xl mx-auto px-4 pt-24 md:pt-28 pb-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-0 mb-6 md:mb-8">
           <div className="flex items-center gap-3 md:gap-4">

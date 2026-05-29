@@ -112,43 +112,46 @@ export default function AdminEmailTemplatesPage() {
   if (status === 'loading' || loading)
     return <BrandLoader label="Email Templates" sublabel="ZIBARASTUDIO" tone="deep" />;
 
-  // Preview render (simplified in-page HTML preview)
+  // Preview render — mirrors lib/email.ts buildOrderReceiptHtml exactly
   const previewHtml = `
-    <div style="background:#030303;color:#EFEFC9;font-family:monospace;padding:56px;min-height:100%;box-sizing:border-box;">
-      <p style="margin:0 0 40px;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(239,239,201,0.4);border-bottom:1px solid rgba(239,239,201,0.08);padding-bottom:36px;">ZIBARASTUDIO</p>
-      <h1 style="margin:0 0 8px;font-family:Georgia,serif;font-weight:300;font-size:38px;letter-spacing:0.28em;text-transform:uppercase;line-height:1.1;">Order<br/>Confirmed</h1>
-      <p style="margin:0 0 40px;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(239,239,201,0.5);">Hi Preview — CRL-PREVIEW-0000</p>
-      <p style="margin:0 0 48px;font-size:12px;line-height:1.85;color:rgba(239,239,201,0.72);">${tpl.intro.replace(/{{firstName}}/g, 'Preview').replace(/{{orderNumber}}/g, 'CRL-PREVIEW-0000').replace(/{{total}}/g, '$730.00')}</p>
-      <div style="border-top:1px solid rgba(239,239,201,0.08);padding-top:32px;">
-        <p style="margin:0 0 0;font-size:9px;letter-spacing:0.5em;text-transform:uppercase;color:rgba(239,239,201,0.4);">Order Details</p>
-        <div style="padding:20px 0;border-bottom:1px solid rgba(239,239,201,0.08);">
-          <p style="margin:0 0 4px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;">LUMA SHEATH DRESS</p>
-          <p style="margin:0 0 4px;font-size:10px;color:rgba(239,239,201,0.55);">Size: M &nbsp;·&nbsp; Color: Onyx</p>
-          <p style="margin:0;font-size:10px;color:rgba(239,239,201,0.55);">Qty: 1 &nbsp;·&nbsp; $430.00</p>
+    <div style="background:#f5f4ee;color:#030303;font-family:monospace;min-height:100%;box-sizing:border-box;">
+      <div style="padding:40px 56px 36px;background:#030303;">
+        <p style="margin:0;font-family:monospace;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:#EFEFC9;">ZIBARASTUDIO</p>
+      </div>
+      <div style="padding:64px 56px 0;">
+        <h1 style="margin:0 0 8px;font-family:Georgia,serif;font-weight:300;font-size:38px;letter-spacing:0.28em;text-transform:uppercase;color:#030303;line-height:1.1;">Order<br/>Confirmed</h1>
+        <p style="margin:0 0 40px;font-family:monospace;font-size:10px;letter-spacing:0.35em;text-transform:uppercase;color:rgba(3,3,3,0.5);">Hi Preview — ZBR-PREVIEW-0000</p>
+        <p style="margin:0 0 48px;font-family:monospace;font-size:12px;line-height:1.85;color:#1a1a0f;">${tpl.intro.replace(/{{firstName}}/g, 'Preview').replace(/{{orderNumber}}/g, 'ZBR-PREVIEW-0000').replace(/{{total}}/g, '$730.00')}</p>
+        <div style="border-top:1px solid rgba(3,3,3,0.15);"></div>
+        <p style="margin:32px 0 0;font-family:monospace;font-size:9px;letter-spacing:0.5em;text-transform:uppercase;color:rgba(3,3,3,0.4);">Order Details</p>
+        <div style="padding:20px 0;border-bottom:1px solid rgba(3,3,3,0.12);">
+          <p style="margin:0 0 4px;font-family:monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#030303;">LUMA SHEATH DRESS</p>
+          <p style="margin:0 0 4px;font-family:monospace;font-size:10px;color:#1a1a0f;">Size: M &nbsp;·&nbsp; Color: Onyx</p>
+          <p style="margin:0;font-family:monospace;font-size:10px;color:#1a1a0f;">Qty: 1 &nbsp;·&nbsp; $430.00</p>
         </div>
-        <div style="padding:20px 0;border-bottom:1px solid rgba(239,239,201,0.08);">
-          <p style="margin:0 0 4px;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;">ADIRE WRAP COAT</p>
-          <p style="margin:0 0 4px;font-size:10px;color:rgba(239,239,201,0.55);">Size: S</p>
-          <p style="margin:0;font-size:10px;color:rgba(239,239,201,0.55);">Qty: 1 &nbsp;·&nbsp; $290.00</p>
+        <div style="padding:20px 0;border-bottom:1px solid rgba(3,3,3,0.12);">
+          <p style="margin:0 0 4px;font-family:monospace;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#030303;">ADIRE WRAP COAT</p>
+          <p style="margin:0 0 4px;font-family:monospace;font-size:10px;color:#1a1a0f;">Size: S</p>
+          <p style="margin:0;font-family:monospace;font-size:10px;color:#1a1a0f;">Qty: 1 &nbsp;·&nbsp; $290.00</p>
+        </div>
+        <div style="border-top:1px solid rgba(3,3,3,0.15);padding:24px 0;">
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-family:monospace;font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(3,3,3,0.5);">Total Paid</span>
+            <span style="font-family:monospace;font-size:15px;color:#030303;">$730.00</span>
+          </div>
+          <p style="font-family:monospace;font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(3,3,3,0.35);margin:6px 0 0;">Via Test Preview</p>
         </div>
       </div>
-      <div style="border-top:1px solid rgba(239,239,201,0.08);padding:24px 0;">
-        <div style="display:flex;justify-content:space-between;">
-          <span style="font-size:10px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(239,239,201,0.55);">Total Paid</span>
-          <span style="font-size:15px;">$730.00</span>
-        </div>
-        <p style="font-size:9px;letter-spacing:0.3em;text-transform:uppercase;color:rgba(239,239,201,0.35);margin:6px 0 0;">Via Test Preview</p>
-      </div>
-      <div style="border-top:1px solid rgba(239,239,201,0.08);padding:40px 0 56px;">
-        <p style="margin:0 0 32px;font-size:11px;line-height:1.8;color:rgba(239,239,201,0.55);">${tpl.footer.replace(/{{firstName}}/g, 'Preview')}</p>
-        <p style="margin:0;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(239,239,201,0.3);">ZIBARASTUDIO &nbsp;·&nbsp; AFRO-FUTURIST LUXURY</p>
+      <div style="margin-top:56px;padding:40px 56px 56px;background:#030303;">
+        <p style="margin:0 0 32px;font-family:monospace;font-size:11px;line-height:1.8;color:#EFEFC9;">${tpl.footer.replace(/{{firstName}}/g, 'Preview')}</p>
+        <p style="margin:0;font-family:monospace;font-size:9px;letter-spacing:0.45em;text-transform:uppercase;color:rgba(239,239,201,0.45);">ZIBARASTUDIO &nbsp;·&nbsp; AFRO-FUTURIST LUXURY</p>
       </div>
     </div>
   `;
 
   return (
     <div className="min-h-screen bg-zibara-black text-zibara-cream">
-      <div className="max-w-[1200px] mx-auto px-6 md:px-8 py-10 md:py-14">
+      <div className="max-w-[1200px] mx-auto px-6 md:px-8 pt-24 md:pt-28 pb-14">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-12 pb-6 border-b border-zibara-cream/8">

@@ -98,7 +98,7 @@ export default function AdminSiteContentPage() {
 
   return (
     <div className="min-h-screen bg-zibara-black text-zibara-cream">
-      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-24 pb-16">
+      <div className="max-w-7xl mx-auto px-6 md:px-8 pt-24 md:pt-28 pb-16">
         {/* Header */}
         <div className="flex items-start gap-4 border-b border-zibara-cream/5 pb-8 mb-10">
           <Link
