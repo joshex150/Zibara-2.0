@@ -8,6 +8,7 @@ import { useData } from "@/context/DataContext";
 import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import AnimatedHeading from "@/components/AnimatedHeading";
+import ProductCardMedia from "@/components/ProductCardMedia";
 import ProductImage, { pickTone } from "@/components/ProductImage";
 import BrandLoader from "@/components/BrandLoader";
 import toast from "react-hot-toast";
@@ -371,18 +372,15 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {relatedProducts.map((p, i) => (
               <Link key={p._id} href={`/product/${p._id}`} className="group">
-                <div className="aspect-[3/4] overflow-hidden bg-zibara-espresso mb-3">
-                  <ProductImage
-                    src={p.images[0]}
-                    name={p.name}
-                    sublabel={p.category || "RELATED"}
-                    variant="compact"
-                    tone={
-                      (["espresso", "crimson", "deep", "olive"] as const)[i % 4]
-                    }
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
+                <ProductCardMedia
+                  product={p}
+                  sublabel={p.category || "RELATED"}
+                  variant="compact"
+                  tone={
+                    (["espresso", "crimson", "deep", "olive"] as const)[i % 4]
+                  }
+                  className="aspect-[3/4] mb-3"
+                />
                 <p className="text-[9px] uppercase tracking-wider font-mono text-zibara-cream/80 mb-0.5">
                   {p.name}
                 </p>

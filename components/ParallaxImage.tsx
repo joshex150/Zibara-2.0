@@ -3,7 +3,7 @@
 import { useRef, useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import ZibaraPlaceholder from './ZibaraPlaceholder';
+import ProductImage from './ProductImage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,6 +18,7 @@ interface ParallaxImageProps {
 }
 
 export default function ParallaxImage({
+  src,
   alt,
   className = '',
   speed = 0.3,
@@ -96,8 +97,9 @@ export default function ParallaxImage({
   return (
     <div ref={wrapRef} className={`overflow-hidden ${className}`}>
       <div ref={mediaRef} className="w-full h-full will-change-transform origin-center">
-        <ZibaraPlaceholder
-          label={alt}
+        <ProductImage
+          src={src}
+          name={alt}
           sublabel={sublabel}
           tone={tone}
           variant={variant}

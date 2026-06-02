@@ -31,7 +31,9 @@ export default function ProductImage({
   variant = 'default',
   className = '',
 }: ProductImageProps) {
-  const [isBroken, setIsBroken] = useState(false);
+  const [brokenSrc, setBrokenSrc] = useState<string>();
+  const isBroken = Boolean(src && brokenSrc === src);
+
   const isStub =
     isBroken ||
     !src ||
@@ -57,7 +59,7 @@ export default function ProductImage({
       alt={name}
       loading="lazy"
       decoding="async"
-      onError={() => setIsBroken(true)}
+      onError={() => setBrokenSrc(src)}
       className={`${className} object-cover object-center`}
     />
   );

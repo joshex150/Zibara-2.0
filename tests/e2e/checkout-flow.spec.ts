@@ -196,7 +196,7 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
       page.locator('main').getByRole('link', { name: /track order/i }),
     ).toBeVisible();
 
-    return orderNumber; // passed for API probe below
+    expect(orderNumber).toBeTruthy();
   });
 
   test('order tracking API returns the created order', async ({ request }) => {

@@ -5,7 +5,7 @@ import { Link } from 'next-view-transitions';
 import { useData } from '@/context/DataContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import AnimatedHeading from '@/components/AnimatedHeading';
-import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import ProductCardMedia from '@/components/ProductCardMedia';
 import BrandLoader from '@/components/BrandLoader';
 
 export default function CategoryPage() {
@@ -68,23 +68,14 @@ export default function CategoryPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5">
               {catProducts.map((product, i) => (
                 <Link key={product._id} href={`/product/${product._id}`} className="group [view-transition-name:none]">
-                  <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-3">
-                    <ZibaraPlaceholder
-                      label={product.name}
-                      sublabel={category.name}
-                      variant="default"
-                      tone={i % 2 === 0 ? 'olive' : 'espresso'}
-                      className="w-full h-full group-hover:scale-105 transition-transform duration-700"
-                    />
-                    {i === 0 && (
-                      <span className="absolute top-3 left-3 text-[7px] tracking-[0.3em] font-mono border border-zibara-cream/40 text-zibara-cream/80 px-1.5 py-0.5 uppercase">
-                        New
-                      </span>
-                    )}
-                    <div className="absolute bottom-0 inset-x-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out bg-gradient-to-t from-zibara-black to-transparent">
-                      <span className="text-[9px] tracking-widest font-mono text-zibara-cream/80 uppercase">View →</span>
-                    </div>
-                  </div>
+                  <ProductCardMedia
+                    product={product}
+                    sublabel={category.name}
+                    variant="default"
+                    tone={i % 2 === 0 ? 'olive' : 'espresso'}
+                    className="aspect-[3/4] mb-3"
+                    showNew={i === 0}
+                  />
                   <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/80 mb-0.5">{product.name}</p>
                   <p className="text-[11px] font-mono text-zibara-cream">{formatPrice(product.price)}</p>
                 </Link>

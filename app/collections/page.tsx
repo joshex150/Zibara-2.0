@@ -5,7 +5,7 @@ import { Link } from 'next-view-transitions';
 import AnimatedHeading from '@/components/AnimatedHeading';
 import AnimatedText from '@/components/AnimatedText';
 import ParallaxImage from '@/components/ParallaxImage';
-import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import ProductImage from '@/components/ProductImage';
 import BrandLoader from '@/components/BrandLoader';
 
 export default function CollectionsPage() {
@@ -68,6 +68,7 @@ export default function CollectionsPage() {
               <Link key={col._id} href={`/collections/${col.slug}`} className="group block relative overflow-hidden [view-transition-name:none]">
                 <div className={`relative overflow-hidden ${i === 0 ? 'aspect-[16/9] md:aspect-[21/8]' : 'aspect-[16/7] md:aspect-[21/6]'}`}>
                   <ParallaxImage
+                    src={col.coverImage}
                     alt={col.name}
                     sublabel={`${col.season} ${col.year}`}
                     tone={i === 0 ? 'crimson' : 'deep'}
@@ -111,11 +112,14 @@ export default function CollectionsPage() {
             {remaining.map((col) => (
               <Link key={col._id} href={`/collections/${col.slug}`} className="group [view-transition-name:none]">
                 <div className="relative overflow-hidden aspect-[4/3]">
-                  {col.coverImage ? (
-                    <ZibaraPlaceholder label={col.name} sublabel={`${col.season} ${col.year}`} variant="default" tone="crimson" className="w-full h-full group-hover:scale-105 transition-transform duration-700" />
-                  ) : (
-                    <ZibaraPlaceholder label={col.name} sublabel={`${col.season} ${col.year}`} variant="default" tone="espresso" className="w-full h-full group-hover:scale-105 transition-transform duration-700" />
-                  )}
+                  <ProductImage
+                    src={col.coverImage}
+                    name={col.name}
+                    sublabel={`${col.season} ${col.year}`}
+                    variant="default"
+                    tone={col.coverImage ? "crimson" : "espresso"}
+                    className="w-full h-full group-hover:scale-105 transition-transform duration-700"
+                  />
                   <div className="absolute inset-0 bg-zibara-black/30 group-hover:bg-zibara-black/15 transition-all duration-400" />
                 </div>
                 <div className="pt-4 pb-2">

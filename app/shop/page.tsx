@@ -6,11 +6,11 @@ import { useSearchParams } from 'next/navigation';
 import { useData } from '@/context/DataContext';
 import { useCurrency } from '@/context/CurrencyContext';
 import AnimatedHeading from '@/components/AnimatedHeading';
-import ProductImage, { pickTone } from '@/components/ProductImage';
+import ProductCardMedia from '@/components/ProductCardMedia';
 import BrandLoader from '@/components/BrandLoader';
 
 function ShopContent() {
-  const { products, productsLoading, categories } = useData();
+  const { products, productsLoading } = useData();
   const { formatPrice } = useCurrency();
   const searchParams = useSearchParams();
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -117,48 +117,11 @@ function ShopContent() {
                       className="group"
                     >
                       {/* Image */}
-                      <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-3">
-                        <ProductImage
-                          src={product.images[0]}
-                          name={product.name}
-                          sublabel={product.category || 'THE COLLECTION'}
-                          variant="default"
-                          tone={pickTone(product._id)}
-                          className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
-                        />
-
-                        {/* Second image reveal on hover (if available) */}
-                        {product.images[1] && (
-                          <ProductImage
-                            src={product.images[1]}
-                            name={product.name}
-                            sublabel="SECOND LOOK"
-                            variant="default"
-                            tone="deep"
-                            className="absolute inset-0 w-full h-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                          />
-                        )}
-
-                        {/* Tag */}
-                        {i < 4 && (
-                          <span className="absolute top-3 left-3 text-[7px] tracking-[0.3em] font-mono border border-zibara-cream/40 text-zibara-cream/80 px-1.5 py-0.5 uppercase">
-                            New
-                          </span>
-                        )}
-
-                        {!product.inStock && (
-                          <span className="absolute top-3 right-3 text-[7px] tracking-[0.3em] font-mono bg-zibara-espresso/80 text-zibara-cream/70 px-1.5 py-0.5 uppercase">
-                            Sold out
-                          </span>
-                        )}
-
-                        {/* CTA overlay */}
-                        <div className="absolute bottom-0 inset-x-0 p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-400 ease-out bg-gradient-to-t from-zibara-black to-transparent">
-                          <span className="text-[9px] tracking-widest font-mono text-zibara-cream/70 uppercase">
-                            View piece →
-                          </span>
-                        </div>
-                      </div>
+                      <ProductCardMedia
+                        product={product}
+                        className="aspect-[3/4] mb-3"
+                        showNew={i < 4}
+                      />
 
                       {/* Meta */}
                       <div className="space-y-0.5">

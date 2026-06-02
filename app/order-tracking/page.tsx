@@ -3,7 +3,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import ProductImage from '@/components/ProductImage';
 import BrandLoader from '@/components/BrandLoader';
 
 type TrackedOrder = {
@@ -148,8 +148,9 @@ function OrderTrackingContent() {
               {order.items.map((item) => (
                 <div key={`${item.id}-${item.size}-${item.color ?? 'default'}`} className="flex gap-4">
                   <div className="w-16 aspect-[3/4] bg-zibara-espresso overflow-hidden flex-shrink-0">
-                    <ZibaraPlaceholder
-                      label={item.name}
+                    <ProductImage
+                      src={item.image}
+                      name={item.name}
                       sublabel={item.color || item.size || 'TRACKED ITEM'}
                       variant="compact"
                       tone="olive"

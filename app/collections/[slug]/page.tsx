@@ -5,7 +5,8 @@ import { Link } from 'next-view-transitions';
 import { ArrowLeft } from 'lucide-react';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useData, Product } from '@/context/DataContext';
-import ZibaraPlaceholder from '@/components/ZibaraPlaceholder';
+import ProductImage from '@/components/ProductImage';
+import ProductCardMedia from '@/components/ProductCardMedia';
 import BrandLoader from '@/components/BrandLoader';
 
 export default function CollectionDetailPage() {
@@ -42,8 +43,9 @@ export default function CollectionDetailPage() {
     <div className="min-h-screen bg-zibara-black text-zibara-cream scroll-mt-32">
       {/* Hero Section */}
       <div className="relative w-full h-[60vh] md:h-[70vh]">
-        <ZibaraPlaceholder
-          label={collection.name}
+        <ProductImage
+          src={collection.coverImage}
+          name={collection.name}
           sublabel={`${collection.season} ${collection.year}`}
           tone="crimson"
           variant="hero"
@@ -94,8 +96,9 @@ export default function CollectionDetailPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
             {collection.images.map((image, index) => (
               <div key={index} className="relative aspect-[3/4] bg-zibara-espresso overflow-hidden">
-                <ZibaraPlaceholder
-                  label={collection.name}
+                <ProductImage
+                  src={image}
+                  name={collection.name}
                   sublabel={`FRAME ${index + 1}`}
                   variant="default"
                   tone={index % 2 === 0 ? 'espresso' : 'deep'}
@@ -119,15 +122,13 @@ export default function CollectionDetailPage() {
                 href={`/product/${product._id}`}
                 className="group cursor-pointer [view-transition-name:none]"
               >
-                <div className="relative aspect-[3/4] bg-zibara-espresso mb-3 overflow-hidden">
-                  <ZibaraPlaceholder
-                    label={product.name}
-                    sublabel={product.category || 'COLLECTION'}
-                    variant="default"
-                    tone="olive"
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
+                <ProductCardMedia
+                  product={product}
+                  sublabel={product.category || 'COLLECTION'}
+                  variant="default"
+                  tone="olive"
+                  className="aspect-[3/4] mb-3"
+                />
                 <div className="space-y-1">
                   <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/80">
                     {product.name}

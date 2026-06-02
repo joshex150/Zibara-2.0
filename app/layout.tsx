@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NoticePopup from "@/components/NoticePopup";
+import RouteScrollReset from "@/components/RouteScrollReset";
 import ScrollTriggerRefresh from "@/components/ScrollTriggerRefresh";
 import Toastie from "@/components/toastie/Toastie";
 import { CartProvider } from "@/context/CartContext";
@@ -160,6 +161,7 @@ export default function RootLayout({
             <CurrencyProvider>
               <CartProvider>
                 <Header />
+                <RouteScrollReset />
                 <ScrollTriggerRefresh />
                 <main id="main">{children}</main>
                 <Footer />

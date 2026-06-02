@@ -10,9 +10,12 @@ import Preloader from "@/components/Preloader";
 import AnimatedHeading from "@/components/AnimatedHeading";
 import AnimatedText from "@/components/AnimatedText";
 import ParallaxImage from "@/components/ParallaxImage";
-import ZibaraPlaceholder from "@/components/ZibaraPlaceholder";
+import ProductCardMedia from "@/components/ProductCardMedia";
+import ProductImage from "@/components/ProductImage";
 
 gsap.registerPlugin(ScrollTrigger);
+
+let hasPlayedHomeIntro = false;
 
 export default function Home() {
   const {
@@ -24,9 +27,10 @@ export default function Home() {
     getContentValue,
   } = useData();
   const { formatPrice } = useCurrency();
-  const [preloaderDone, setPreloaderDone] = useState(false);
+  const [preloaderDone, setPreloaderDone] = useState(() => hasPlayedHomeIntro);
 
   const handlePreloaderComplete = () => {
+    hasPlayedHomeIntro = true;
     setPreloaderDone(true);
   };
 
@@ -58,7 +62,10 @@ export default function Home() {
         <Preloader onComplete={handlePreloaderComplete} />
       )}
 
-      <div className="min-h-screen bg-zibara-black text-zibara-cream">
+      <div
+        className="min-h-screen bg-zibara-black text-zibara-cream"
+        style={{ visibility: preloaderDone ? "visible" : "hidden" }}
+      >
         {/* ── HERO ─────────────────────────────────────── */}
         <section className="relative w-full h-screen overflow-hidden">
           <ParallaxImage
@@ -168,25 +175,14 @@ export default function Home() {
                   href={`/product/${product._id}`}
                   className="group"
                 >
-                  <div className="relative overflow-hidden aspect-[3/4] bg-zibara-espresso mb-3">
-                    <ZibaraPlaceholder
-                      label={product.name}
-                      sublabel={product.category || "NEW SEASON"}
-                      variant="default"
-                      tone={i % 2 === 0 ? "espresso" : "crimson"}
-                      className="w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-zibara-black/0 group-hover:bg-zibara-black/40 transition-all duration-500 flex items-end p-5">
-                      <span className="text-[10px] tracking-widest font-mono text-zibara-cream opacity-0 group-hover:opacity-100 transition-opacity duration-300 uppercase">
-                        View piece →
-                      </span>
-                    </div>
-                    {i === 0 && (
-                      <span className="absolute top-3 left-3 text-[8px] tracking-[0.3em] font-mono border border-zibara-cream/40 text-zibara-cream/80 px-2 py-1 uppercase">
-                        New
-                      </span>
-                    )}
-                  </div>
+                  <ProductCardMedia
+                    product={product}
+                    sublabel={product.category || "NEW SEASON"}
+                    variant="default"
+                    tone={i % 2 === 0 ? "espresso" : "crimson"}
+                    className="aspect-[3/4] mb-3"
+                    showNew={i === 0}
+                  />
                   <p className="text-[10px] md:text-[11px] uppercase tracking-wider font-mono text-zibara-cream/70 mb-1">
                     {product.name}
                   </p>
@@ -267,15 +263,13 @@ export default function Home() {
                       href={`/product/${product._id}`}
                       className="group"
                     >
-                      <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-2">
-                        <ZibaraPlaceholder
-                          label={product.name}
-                          sublabel={product.category || "EDITORIAL"}
-                          variant="compact"
-                          tone="deep"
-                          className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                        />
-                      </div>
+                      <ProductCardMedia
+                        product={product}
+                        sublabel={product.category || "EDITORIAL"}
+                        variant="compact"
+                        tone="deep"
+                        className="aspect-[3/4] mb-2"
+                      />
                       <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/75">
                         {product.name}
                       </p>
@@ -304,23 +298,14 @@ export default function Home() {
                   className="group"
                 >
                   <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-3">
-                    {cat.image ? (
-                      <ZibaraPlaceholder
-                        label={cat.name}
-                        sublabel="CATEGORY"
-                        variant="default"
-                        tone="espresso"
-                        className="w-full h-full group-hover:scale-105 transition-transform duration-700"
-                      />
-                    ) : (
-                      <ZibaraPlaceholder
-                        label={cat.name}
-                        sublabel="CATEGORY"
-                        variant="default"
-                        tone="olive"
-                        className="w-full h-full"
-                      />
-                    )}
+                    <ProductImage
+                      src={cat.image}
+                      name={cat.name}
+                      sublabel="CATEGORY"
+                      variant="default"
+                      tone={cat.image ? "espresso" : "olive"}
+                      className="w-full h-full group-hover:scale-105 transition-transform duration-700"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-zibara-black/80 via-transparent to-transparent flex items-end p-4">
                       <div>
                         <p className="text-[11px] uppercase tracking-wider font-mono text-zibara-cream mb-0.5">
@@ -395,12 +380,13 @@ export default function Home() {
                 className="row-span-2 relative overflow-hidden group bg-zibara-espresso"
                 style={{ minHeight: "600px" }}
               >
-                <ZibaraPlaceholder
-                  label={products[0].name}
+                <ProductCardMedia
+                  product={products[0]}
                   sublabel={products[0].category || "CURATED"}
                   variant="hero"
                   tone="crimson"
-                  className="w-full h-full group-hover:scale-105 transition-transform duration-700 absolute inset-0"
+                  className="absolute inset-0"
+                  showCta={false}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-zibara-black/85 via-zibara-black/10 to-transparent flex items-end p-6">
                   <div>
@@ -420,12 +406,13 @@ export default function Home() {
                   href={`/product/${p._id}`}
                   className="relative overflow-hidden group bg-zibara-espresso aspect-[4/3]"
                 >
-                  <ZibaraPlaceholder
-                    label={p.name}
+                  <ProductCardMedia
+                    product={p}
                     sublabel={p.category || "CURATED"}
                     variant="compact"
                     tone="espresso"
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full"
+                    showCta={false}
                   />
                   <div className="absolute inset-0 bg-zibara-black/0 group-hover:bg-zibara-black/50 transition-all duration-500 flex items-end p-4">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -445,15 +432,13 @@ export default function Home() {
             <div className="md:hidden grid grid-cols-2 gap-3">
               {products.slice(0, 6).map((p) => (
                 <Link key={p._id} href={`/product/${p._id}`} className="group">
-                  <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso mb-2">
-                    <ZibaraPlaceholder
-                      label={p.name}
-                      sublabel={p.category || "CURATED"}
-                      variant="compact"
-                      tone="deep"
-                      className="w-full h-full group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
+                  <ProductCardMedia
+                    product={p}
+                    sublabel={p.category || "CURATED"}
+                    variant="compact"
+                    tone="deep"
+                    className="aspect-[3/4] mb-2"
+                  />
                   <p className="text-[10px] uppercase tracking-wider font-mono text-zibara-cream/75">
                     {p.name}
                   </p>
