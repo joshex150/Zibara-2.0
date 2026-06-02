@@ -74,12 +74,8 @@ export const metadata: Metadata = {
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
       { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
       { url: BRAND_ICON, sizes: '512x512', type: 'image/png' },
-      { url: '/icon.svg', type: 'image/svg+xml' },
     ],
     apple: '/apple-icon.png',
-    other: [
-      { rel: 'mask-icon', url: '/icon.svg', color: '#030303' },
-    ],
   },
   openGraph: {
     type: 'website',
