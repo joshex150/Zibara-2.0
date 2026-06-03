@@ -11,7 +11,24 @@ export default function ScrollTriggerRefresh() {
   const pathname = usePathname();
 
   useEffect(() => {
-    const timer = window.setTimeout(() => ScrollTrigger.refresh(), 120);
+    const shouldResetScroll = !window.location.hash;
+
+    if (shouldResetScroll) {
+      ScrollTrigger.clearScrollMemory('manual');
+    }
+
+    const timer = window.setTimeout(() => {
+      if (shouldResetScroll) {
+        ScrollTrigger.clearScrollMemory('manual');
+      }
+
+      ScrollTrigger.refresh();
+
+      if (shouldResetScroll) {
+        window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
+    }, 120);
+
     return () => window.clearTimeout(timer);
   }, [pathname]);
 

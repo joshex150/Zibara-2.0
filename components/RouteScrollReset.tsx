@@ -1,34 +1,26 @@
 'use client';
 
-import { useLayoutEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function RouteScrollReset() {
   const pathname = usePathname();
 
+  useEffect(() => {
+    if (!('scrollRestoration' in window.history)) return;
+
+    const previous = window.history.scrollRestoration;
+    window.history.scrollRestoration = 'manual';
+
+    return () => {
+      window.history.scrollRestoration = previous;
+    };
+  }, []);
+
   useLayoutEffect(() => {
     if (window.location.hash) return;
 
-    let active = true;
-    const reset = () => {
-      if (active) window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    };
-
-    reset();
-    const frame = window.requestAnimationFrame(() => {
-      reset();
-      Promise.allSettled(document.getAnimations().map((animation) => animation.finished))
-        .then(reset);
-    });
-    const timer = window.setTimeout(() => {
-      reset();
-    }, 500);
-
-    return () => {
-      active = false;
-      window.cancelAnimationFrame(frame);
-      window.clearTimeout(timer);
-    };
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
   }, [pathname]);
 
   return null;
