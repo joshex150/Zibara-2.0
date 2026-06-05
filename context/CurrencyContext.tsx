@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { countryToCurrency, COUNTRY_COOKIE } from '@/lib/geo-currency';
 
 export interface Currency {
   code: string;
@@ -20,8 +21,19 @@ interface CurrencyContextType {
 }
 
 const CurrencyContext = createContext<CurrencyContextType | undefined>(undefined);
+// Stores the currency the visitor *manually* picked. A manual choice always
+// wins over geo auto-selection, so it's only written when the user changes it.
 const CURRENCY_STORAGE_KEY = 'zibara_currency';
 const LEGACY_CURRENCY_STORAGE_KEY = `cro${'chella_currency'}`;
+
+/** Read a cookie value on the client (used for the geo country the edge set). */
+function readCookie(name: string): string | null {
+  if (typeof document === 'undefined') return null;
+  const match = document.cookie.match(
+    new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
+  );
+  return match ? decodeURIComponent(match[1]) : null;
+}
 
 const defaultCurrencies: Currency[] = [
   { code: 'USD', name: 'US Dollar', symbol: '$', rate: 1 },
@@ -31,7 +43,6 @@ const defaultCurrencies: Currency[] = [
 export function CurrencyProvider({ children }: { children: ReactNode }) {
   const [selectedCurrency, setSelectedCurrencyState] = useState<string>('USD');
   const [currencies, setCurrencies] = useState<Currency[]>([]); // Start empty, will be populated from DB
-  const [isInitialized, setIsInitialized] = useState(false);
   const [, setIsLoading] = useState(true);
 
   // Fetch currency rates from API first, then load saved preference
@@ -44,23 +55,31 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
         if (data.success && data.rates && data.rates.length > 0) {
           // Only use currencies from database (admin-declared currencies)
           setCurrencies(data.rates);
-          
-          // Load saved currency preference
-          const savedCurrency =
+
+          const currencyCodes: string[] = data.rates.map((c: Currency) => c.code);
+
+          // 1. A manual choice (from a previous visit) always wins.
+          const manualCurrency =
             localStorage.getItem(CURRENCY_STORAGE_KEY) ||
             localStorage.getItem(LEGACY_CURRENCY_STORAGE_KEY);
-          const currencyCodes = data.rates.map((c: Currency) => c.code);
-          
-          // Validate saved currency exists in DB currencies, otherwise use first available
-          if (savedCurrency && currencyCodes.includes(savedCurrency)) {
-            setSelectedCurrencyState(savedCurrency);
-            localStorage.setItem(CURRENCY_STORAGE_KEY, savedCurrency);
+
+          if (manualCurrency && currencyCodes.includes(manualCurrency)) {
+            setSelectedCurrencyState(manualCurrency);
+            localStorage.setItem(CURRENCY_STORAGE_KEY, manualCurrency);
             localStorage.removeItem(LEGACY_CURRENCY_STORAGE_KEY);
           } else {
-            const defaultCurrency = currencyCodes[0] || 'USD';
-            setSelectedCurrencyState(defaultCurrency);
-            localStorage.setItem(CURRENCY_STORAGE_KEY, defaultCurrency);
-            localStorage.removeItem(LEGACY_CURRENCY_STORAGE_KEY);
+            // 2. Auto-select from the visitor's country (detected server-side
+            //    from their IP — no permission prompt). Not persisted, so it
+            //    stays "automatic" and can update if their location changes.
+            const geoCurrency = countryToCurrency(readCookie(COUNTRY_COOKIE));
+
+            const resolved =
+              geoCurrency && currencyCodes.includes(geoCurrency)
+                ? geoCurrency
+                : // 3. Fall back to the first available currency / USD.
+                  currencyCodes[0] || 'USD';
+
+            setSelectedCurrencyState(resolved);
           }
         } else {
           // No currencies in DB - use defaults as fallback
@@ -76,7 +95,6 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
       setCurrencies(defaultCurrencies);
     } finally {
       setIsLoading(false);
-      setIsInitialized(true);
     }
   };
 
@@ -85,19 +103,15 @@ export function CurrencyProvider({ children }: { children: ReactNode }) {
     refreshRates();
   }, []);
 
-  // Save currency preference to localStorage when it changes
-  useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem(CURRENCY_STORAGE_KEY, selectedCurrency);
-      localStorage.removeItem(LEGACY_CURRENCY_STORAGE_KEY);
-    }
-  }, [selectedCurrency, isInitialized]);
-
   const setSelectedCurrency = (currency: string) => {
     // Validate currency exists in available currencies from DB
     const currencyCodes = currencies.map(c => c.code);
     if (currencyCodes.includes(currency)) {
       setSelectedCurrencyState(currency);
+      // This is an explicit user choice — persist it so it sticks across visits
+      // and takes priority over geo auto-selection.
+      localStorage.setItem(CURRENCY_STORAGE_KEY, currency);
+      localStorage.removeItem(LEGACY_CURRENCY_STORAGE_KEY);
     } else {
       console.warn(`Currency ${currency} not found in available currencies`);
     }
