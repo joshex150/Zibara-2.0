@@ -11,6 +11,24 @@ import BrandLoader from '@/components/BrandLoader';
 export default function AboutPage() {
   const { getContentValue, siteContentLoading } = useData();
 
+  // Returns the first real uploaded image among the given content keys,
+  // skipping empty values and branded `zibara://` / placeholder stubs so admin
+  // uploads always show regardless of which key name holds them.
+  const pickImage = (...keys: string[]): string => {
+    for (const key of keys) {
+      const v = getContentValue(key, '');
+      if (
+        typeof v === 'string' &&
+        v.trim() &&
+        !v.startsWith('zibara://') &&
+        !v.includes('placehold.co')
+      ) {
+        return v;
+      }
+    }
+    return '';
+  };
+
   if (siteContentLoading) return <BrandLoader label="About" sublabel="ZIBARASTUDIO" tone="deep" />;
 
   return (
@@ -19,7 +37,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative w-full h-screen overflow-hidden">
         <ParallaxImage
-          src={getContentValue('about_hero_image', '')}
+          src={pickImage('about_hero_image')}
           alt="ZIBARASTUDIO — About"
           sublabel="THE STUDIO"
           tone="deep"
@@ -58,7 +76,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
           <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso">
             <ParallaxImage
-              src={getContentValue('about_workspace_image', '')}
+              src={pickImage('about_studio_image', 'about_workspace_image')}
               alt="ZIBARASTUDIO workspace"
               sublabel="WORKSPACE"
               tone="espresso"
@@ -143,7 +161,7 @@ export default function AboutPage() {
       {/* Full-width editorial image */}
       <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden mb-24">
         <ParallaxImage
-          src={getContentValue('about_editorial_image', '')}
+          src={pickImage('about_banner_image', 'about_editorial_image')}
           alt="ZIBARASTUDIO editorial"
           sublabel="EDITORIAL"
           tone="crimson"

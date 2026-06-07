@@ -58,14 +58,14 @@ export const SITE_CONTENT_DEFAULTS: SiteContentDefault[] = [
     description: 'Hero section subtext below headline',
   },
   {
-    key: 'home_editorial_image',
+    key: 'home_banner_image',
     type: 'image',
     value: '',
     section: 'home',
     description: 'Editorial split image ("Minutes Before Midnight")',
   },
   {
-    key: 'home_custom_order_bg',
+    key: 'home_customs_image',
     type: 'image',
     value: '',
     section: 'home',
@@ -109,7 +109,7 @@ export const SITE_CONTENT_DEFAULTS: SiteContentDefault[] = [
     description: 'Main story section title',
   },
   {
-    key: 'about_workspace_image',
+    key: 'about_studio_image',
     type: 'image',
     value: '',
     section: 'about',
@@ -130,7 +130,7 @@ export const SITE_CONTENT_DEFAULTS: SiteContentDefault[] = [
     description: 'Main story section text',
   },
   {
-    key: 'about_editorial_image',
+    key: 'about_banner_image',
     type: 'image',
     value: '',
     section: 'about',
@@ -263,6 +263,16 @@ export const SITE_CONTENT_DEFAULTS: SiteContentDefault[] = [
   },
 ];
 
+// Earlier iterations provisioned these image keys before they were aligned to
+// the canonical storefront keys. They are removed below only when still empty,
+// so they don't clutter the admin control page as duplicate blank slots.
+const LEGACY_IMAGE_KEYS = [
+  'home_custom_order_bg',
+  'home_editorial_image',
+  'about_workspace_image',
+  'about_editorial_image',
+];
+
 /**
  * Ensures every canonical content block exists in the database.
  * Inserts any missing keys (non-destructively — existing values are preserved),
@@ -271,6 +281,7 @@ export const SITE_CONTENT_DEFAULTS: SiteContentDefault[] = [
  */
 export async function ensureSiteContentDefaults(model: {
   bulkWrite: (ops: any[], options?: any) => Promise<any>;
+  deleteMany?: (filter: any) => Promise<any>;
 }): Promise<void> {
   const ops = SITE_CONTENT_DEFAULTS.map((item) => ({
     updateOne: {
@@ -282,5 +293,19 @@ export async function ensureSiteContentDefaults(model: {
 
   if (ops.length > 0) {
     await model.bulkWrite(ops, { ordered: false });
+  }
+
+  // Drop legacy duplicate image slots, but never one that holds a real upload
+  // (those are still read via the page's fallback until the admin migrates).
+  if (model.deleteMany) {
+    await model.deleteMany({
+      key: { $in: LEGACY_IMAGE_KEYS },
+      $or: [
+        { value: '' },
+        { value: null },
+        { value: { $exists: false } },
+        { value: { $regex: '^zibara://' } },
+      ],
+    });
   }
 }

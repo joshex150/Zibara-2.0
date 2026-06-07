@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import SiteContent from '@/models/SiteContent';
 
+// Always read live from the database so admin edits/uploads appear immediately.
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // GET site content (public)
 export async function GET(request: NextRequest) {
   try {

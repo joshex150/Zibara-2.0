@@ -385,7 +385,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setSiteContentLoading(true);
     try {
       const url = section ? `/api/site-content?section=${section}` : '/api/site-content';
-      const response = await fetch(url);
+      const response = await fetch(url, { cache: 'no-store' });
       if (response.ok) {
         const data = await response.json();
         setSiteContent(data.data || []);

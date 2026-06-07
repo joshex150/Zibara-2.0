@@ -29,6 +29,24 @@ export default function Home() {
   const { formatPrice } = useCurrency();
   const [preloaderDone, setPreloaderDone] = useState(() => hasPlayedHomeIntro);
 
+  // Returns the first real uploaded image among the given content keys,
+  // skipping empty values and branded `zibara://` / placeholder stubs. This
+  // tolerates legacy/alternate key names so admin uploads always show.
+  const pickImage = (...keys: string[]): string => {
+    for (const key of keys) {
+      const v = getContentValue(key, '');
+      if (
+        typeof v === 'string' &&
+        v.trim() &&
+        !v.startsWith('zibara://') &&
+        !v.includes('placehold.co')
+      ) {
+        return v;
+      }
+    }
+    return '';
+  };
+
   const handlePreloaderComplete = () => {
     hasPlayedHomeIntro = true;
     setPreloaderDone(true);
@@ -69,7 +87,7 @@ export default function Home() {
         {/* ── HERO ─────────────────────────────────────── */}
         <section className="relative w-full h-screen overflow-hidden">
           <ParallaxImage
-            src={getContentValue('home_hero_image', '')}
+            src={pickImage('home_hero_image')}
             alt="ZIBARASTUDIO hero"
             sublabel="SEASON III"
             tone="crimson"
@@ -202,7 +220,7 @@ export default function Home() {
             {/* Left — large image */}
             <div className="relative aspect-[4/5] md:aspect-auto md:h-[80vh] overflow-hidden">
               <ParallaxImage
-                src={getContentValue('home_editorial_image', '')}
+                src={pickImage('home_banner_image', 'home_editorial_image')}
                 alt="ZIBARASTUDIO editorial"
                 sublabel="MINUTES BEFORE MIDNIGHT"
                 tone="espresso"
@@ -329,7 +347,7 @@ export default function Home() {
         <section className="relative w-full mb-24 overflow-hidden">
           <div className="relative h-[420px] md:h-auto md:aspect-[21/7]">
             <ParallaxImage
-              src={getContentValue('home_custom_order_bg', '')}
+              src={pickImage('home_customs_image', 'home_custom_order_bg')}
               alt="Zibara Custom Order"
               sublabel="BESPOKE"
               tone="deep"

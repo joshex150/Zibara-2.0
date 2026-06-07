@@ -515,7 +515,7 @@ const siteContent = [
     type: 'image',
     value: 'zibara://banner/home',
     section: 'home',
-    description: 'Full width banner image at bottom of homepage',
+    description: 'Editorial split image ("Minutes Before Midnight")',
   },
   {
     key: 'home_customs_title',
@@ -536,7 +536,7 @@ const siteContent = [
     type: 'image',
     value: 'zibara://customs/atelier',
     section: 'home',
-    description: 'Main image for customs section',
+    description: 'Custom order / bespoke banner background image',
   },
   {
     key: 'about_hero_image',
