@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectDB from '@/lib/mongodb';
 import SiteContent from '@/models/SiteContent';
+import { ensureSiteContentDefaults } from '@/lib/siteContentDefaults';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
 async function requireAdmin() {
@@ -15,15 +16,19 @@ export async function GET(request: NextRequest) {
   const authError = await requireAdmin(); if (authError) return authError;
   try {
     await connectDB();
-    
+
+    // Make sure all editable content blocks (incl. hero / custom-order images)
+    // exist so they show up in the control page without re-seeding.
+    await ensureSiteContentDefaults(SiteContent);
+
     const { searchParams } = new URL(request.url);
     const section = searchParams.get('section');
     const key = searchParams.get('key');
-    
+
     let query: any = {};
     if (section) query.section = section;
     if (key) query.key = key;
-    
+
     const content = await SiteContent.find(query).sort({ section: 1, key: 1 });
     
     return NextResponse.json({ success: true, data: content });

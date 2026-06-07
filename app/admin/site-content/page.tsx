@@ -163,12 +163,18 @@ export default function AdminSiteContentPage() {
                   <p className="text-[9px] font-mono text-zibara-cream/40 tracking-[0.2em] uppercase mb-3">{content.description}</p>
 
                   {content.type === 'image' ? (
-                    <div className="aspect-video bg-zibara-deep overflow-hidden">
-                      <img
-                        src={content.value}
-                        alt={content.key}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="aspect-video bg-zibara-deep overflow-hidden flex items-center justify-center">
+                      {content.value ? (
+                        <img
+                          src={content.value}
+                          alt={content.key}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-[9px] font-mono uppercase tracking-[0.3em] text-zibara-cream/35">
+                          No image set
+                        </span>
+                      )}
                     </div>
                   ) : (
                     <p className="text-[11px] font-mono text-zibara-cream/65 line-clamp-3 leading-relaxed">

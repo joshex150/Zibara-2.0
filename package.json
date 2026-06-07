@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test:e2e": "playwright test",
     "seed-db": "ts-node -P tsconfig.json scripts/seed-storefront.ts",
+    "seed-site-content": "ts-node -P tsconfig.json scripts/seed-site-content.ts",
     "seed-products": "ts-node -P tsconfig.json scripts/seed-products.ts",
     "seed-admin": "ts-node -P tsconfig.json scripts/seed-admin.ts",
     "seed-currency": "ts-node -P tsconfig.json scripts/seed-currency-rates.ts",

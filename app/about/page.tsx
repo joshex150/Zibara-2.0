@@ -19,6 +19,7 @@ export default function AboutPage() {
       {/* Hero */}
       <section className="relative w-full h-screen overflow-hidden">
         <ParallaxImage
+          src={getContentValue('about_hero_image', '')}
           alt="ZIBARASTUDIO — About"
           sublabel="THE STUDIO"
           tone="deep"
@@ -57,6 +58,7 @@ export default function AboutPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-24 items-center">
           <div className="relative aspect-[3/4] overflow-hidden bg-zibara-espresso">
             <ParallaxImage
+              src={getContentValue('about_workspace_image', '')}
               alt="ZIBARASTUDIO workspace"
               sublabel="WORKSPACE"
               tone="espresso"
@@ -141,6 +143,7 @@ export default function AboutPage() {
       {/* Full-width editorial image */}
       <section className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden mb-24">
         <ParallaxImage
+          src={getContentValue('about_editorial_image', '')}
           alt="ZIBARASTUDIO editorial"
           sublabel="EDITORIAL"
           tone="crimson"

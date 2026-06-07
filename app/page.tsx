@@ -69,6 +69,7 @@ export default function Home() {
         {/* ── HERO ─────────────────────────────────────── */}
         <section className="relative w-full h-screen overflow-hidden">
           <ParallaxImage
+            src={getContentValue('home_hero_image', '')}
             alt="ZIBARASTUDIO hero"
             sublabel="SEASON III"
             tone="crimson"
@@ -201,6 +202,7 @@ export default function Home() {
             {/* Left — large image */}
             <div className="relative aspect-[4/5] md:aspect-auto md:h-[80vh] overflow-hidden">
               <ParallaxImage
+                src={getContentValue('home_editorial_image', '')}
                 alt="ZIBARASTUDIO editorial"
                 sublabel="MINUTES BEFORE MIDNIGHT"
                 tone="espresso"
@@ -327,6 +329,7 @@ export default function Home() {
         <section className="relative w-full mb-24 overflow-hidden">
           <div className="relative h-[420px] md:h-auto md:aspect-[21/7]">
             <ParallaxImage
+              src={getContentValue('home_custom_order_bg', '')}
               alt="Zibara Custom Order"
               sublabel="BESPOKE"
               tone="deep"
