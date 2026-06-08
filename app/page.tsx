@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "next-view-transitions";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -28,6 +28,7 @@ export default function Home() {
   } = useData();
   const { formatPrice } = useCurrency();
   const [preloaderDone, setPreloaderDone] = useState(() => hasPlayedHomeIntro);
+  const heroRef = useRef<HTMLElement>(null);
 
   // Returns the first real uploaded image among the given content keys,
   // skipping empty values and branded `zibara://` / placeholder stubs. This
@@ -59,6 +60,37 @@ export default function Home() {
     const id = window.setTimeout(() => ScrollTrigger.refresh(), 50);
     return () => window.clearTimeout(id);
   }, [isLoading, preloaderDone]);
+
+  // Lock the hero to the real visible viewport height. The `h-screen`
+  // (100dvh) class is only an SSR fallback: `dvh` is recalculated every time
+  // the mobile address bar shows/hides, which under-measures on first paint
+  // and reflows the page mid-scroll. We measure window.innerHeight once and
+  // only re-measure on a true width/orientation change, so the hero fills the
+  // screen and stays stable while scrolling.
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    const apply = () => {
+      hero.style.height = `${window.innerHeight}px`;
+    };
+    apply();
+
+    let lastWidth = window.innerWidth;
+    const onResize = () => {
+      if (window.innerWidth === lastWidth) return;
+      lastWidth = window.innerWidth;
+      apply();
+    };
+    const onOrientation = () => window.setTimeout(apply, 250);
+
+    window.addEventListener('resize', onResize, { passive: true });
+    window.addEventListener('orientationchange', onOrientation);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onOrientation);
+    };
+  }, [preloaderDone]);
   const featuredProducts = products.slice(0, 4);
   const editorialProducts = products.slice(4, 8);
 
@@ -85,7 +117,7 @@ export default function Home() {
         style={{ visibility: preloaderDone ? "visible" : "hidden" }}
       >
         {/* ── HERO ─────────────────────────────────────── */}
-        <section className="relative w-full h-screen overflow-hidden">
+        <section ref={heroRef} className="relative w-full h-screen overflow-hidden">
           <ParallaxImage
             src={pickImage('home_hero_image')}
             alt="ZIBARASTUDIO hero"
