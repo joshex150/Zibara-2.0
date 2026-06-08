@@ -23,6 +23,38 @@ export function pickTone(key: string): Tone {
   return TONE_CYCLE[Math.abs(hash) % TONE_CYCLE.length];
 }
 
+// Cloudinary stores full-resolution originals. Without a transform the browser
+// downloads the multi-MB source even for a 64px thumbnail, so we insert a
+// width/quality/format transform sized to how the image is actually displayed.
+const VARIANT_WIDTH: Record<Variant, number> = {
+  hero: 1400,
+  default: 900,
+  compact: 400,
+};
+
+export function optimizeImageSrc(src: string, variant: Variant): string {
+  if (!src.includes('res.cloudinary.com') || !src.includes('/image/upload/')) {
+    return src;
+  }
+
+  const uploadSegment = '/image/upload/';
+  const uploadIndex = src.indexOf(uploadSegment);
+  const afterUpload = src.substring(uploadIndex + uploadSegment.length);
+  const firstSegment = afterUpload.split('/')[0];
+
+  // Only transform a plain delivery URL (first segment is the version or the
+  // public id itself). If a transform segment is already present, leave it.
+  const hasExistingTransform =
+    firstSegment.includes(',') || /^[a-z]{1,3}_/.test(firstSegment);
+  if (hasExistingTransform) return src;
+
+  const width = VARIANT_WIDTH[variant];
+  return src.replace(
+    uploadSegment,
+    `${uploadSegment}w_${width},c_limit,q_auto,f_auto/`,
+  );
+}
+
 export default function ProductImage({
   src,
   name,
@@ -55,7 +87,7 @@ export default function ProductImage({
 
   return (
     <img
-      src={src}
+      src={optimizeImageSrc(src!, variant)}
       alt={name}
       loading="lazy"
       decoding="async"

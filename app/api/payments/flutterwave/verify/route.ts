@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
       transactionId: String(payload.data.id),
     });
 
-    await sendOrderReceipt({
+    const emailResult = await sendOrderReceipt({
       orderNumber: order.orderNumber,
       customer: {
         firstName: order.customer.firstName,
@@ -146,7 +146,11 @@ export async function POST(request: NextRequest) {
       })),
       total: order.total,
       paymentMethod: 'Flutterwave',
-    }).catch((err) => console.error('[email] receipt failed for', order.orderNumber, err));
+    }).catch((err) => {
+      console.error('[email] receipt failed for', order.orderNumber, err);
+      return { error: err instanceof Error ? err.message : String(err) };
+    });
+    console.log('[email] receipt result for', order.orderNumber, emailResult);
 
     return NextResponse.json({ success: true, data: order });
   } catch (error: any) {

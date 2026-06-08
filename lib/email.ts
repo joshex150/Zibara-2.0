@@ -255,7 +255,19 @@ export const sendOrderReceipt = async (order: OrderReceipt, tpl?: EmailTemplateD
   const transporter = getTransporter();
   const from = process.env.SMTP_FROM;
 
-  if (!transporter || !from) return { skipped: true };
+  if (!transporter || !from) {
+    const missing = [
+      !process.env.SMTP_HOST && 'SMTP_HOST',
+      !process.env.SMTP_PORT && 'SMTP_PORT',
+      !process.env.SMTP_USER && 'SMTP_USER',
+      !process.env.SMTP_PASS && 'SMTP_PASS',
+      !from && 'SMTP_FROM',
+    ].filter(Boolean);
+    console.warn(
+      `[email] order receipt for ${order.orderNumber} skipped — SMTP not configured (missing: ${missing.join(', ') || 'unknown'})`,
+    );
+    return { skipped: true, reason: 'smtp-not-configured', missing };
+  }
 
   let lastError: unknown;
   for (let attempt = 1; attempt <= 2; attempt++) {
@@ -264,6 +276,10 @@ export const sendOrderReceipt = async (order: OrderReceipt, tpl?: EmailTemplateD
       return { sent: true };
     } catch (err) {
       lastError = err;
+      console.error(
+        `[email] order receipt for ${order.orderNumber} send attempt ${attempt}/2 failed:`,
+        err instanceof Error ? err.message : err,
+      );
       if (attempt < 2) await new Promise((r) => setTimeout(r, 1000));
     }
   }

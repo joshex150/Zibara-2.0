@@ -117,17 +117,62 @@ export default function ProductDetailPage() {
       <section className="max-w-[1400px] mx-auto px-6 md:px-8 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 lg:gap-24">
           {/* ── LEFT: Image gallery ───────────── */}
-          <div className="flex gap-3">
+          <div className="flex flex-col gap-3">
+            <div className="flex gap-3">
+              {productImages.length > 1 && (
+                <div className="hidden md:flex flex-col gap-2 w-[68px] flex-shrink-0">
+                  {productImages.map((img, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setSelectedImageIndex(i)}
+                      className={`relative w-full aspect-[3/4] overflow-hidden transition-all duration-300 ${
+                        activeImageIndex === i
+                          ? "border-b-2 border-zibara-cream"
+                          : "opacity-40 hover:opacity-75"
+                      }`}
+                    >
+                      <ProductImage
+                        src={img}
+                        name={product.name}
+                        sublabel={`VIEW ${i + 1}`}
+                        variant="compact"
+                        tone={pickTone(`${product._id}-${i}`)}
+                        className="w-full h-full"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
+              <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-zibara-espresso">
+                <ProductImage
+                  src={productImages[activeImageIndex]}
+                  name={product.name}
+                  sublabel={activeColor || product.category || "ZIBARASTUDIO"}
+                  variant="hero"
+                  tone={pickTone(`${product._id}-${activeImageIndex}`)}
+                  className="w-full h-full transition-opacity duration-400"
+                />
+                {!product.inStock && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-zibara-black/50">
+                    <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream uppercase border border-zibara-cream/40 px-4 py-2">
+                      Sold Out
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Mobile thumbnail strip — desktop uses the vertical column above */}
             {productImages.length > 1 && (
-              <div className="hidden md:flex flex-col gap-2 w-[68px] flex-shrink-0">
+              <div className="flex md:hidden gap-2 overflow-x-auto pb-1 -mx-1 px-1">
                 {productImages.map((img, i) => (
                   <button
                     key={i}
                     onClick={() => setSelectedImageIndex(i)}
-                    className={`relative w-full aspect-[3/4] overflow-hidden transition-all duration-300 ${
+                    className={`relative w-16 aspect-[3/4] flex-shrink-0 overflow-hidden transition-all duration-300 ${
                       activeImageIndex === i
                         ? "border-b-2 border-zibara-cream"
-                        : "opacity-40 hover:opacity-75"
+                        : "opacity-40"
                     }`}
                   >
                     <ProductImage
@@ -142,23 +187,6 @@ export default function ProductDetailPage() {
                 ))}
               </div>
             )}
-            <div className="relative flex-1 aspect-[3/4] overflow-hidden bg-zibara-espresso">
-              <ProductImage
-                src={productImages[activeImageIndex]}
-                name={product.name}
-                sublabel={activeColor || product.category || "ZIBARASTUDIO"}
-                variant="hero"
-                tone={pickTone(`${product._id}-${activeImageIndex}`)}
-                className="w-full h-full transition-opacity duration-400"
-              />
-              {!product.inStock && (
-                <div className="absolute inset-0 flex items-center justify-center bg-zibara-black/50">
-                  <span className="text-[11px] tracking-[0.4em] font-mono text-zibara-cream uppercase border border-zibara-cream/40 px-4 py-2">
-                    Sold Out
-                  </span>
-                </div>
-              )}
-            </div>
           </div>
 
           {/* ── RIGHT: Product info ───────────── */}
