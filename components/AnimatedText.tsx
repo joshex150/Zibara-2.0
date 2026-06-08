@@ -56,12 +56,10 @@ export default function AnimatedText({
     let resizeFrame = 0;
     let splitWidth = 0;
     let setupFrame = 0;
-    let played = false;
     let firstReveal = true;
 
     const restoreResponsiveText = () => {
       if (!split) return;
-      played = true;
       io?.disconnect();
       io = null;
       animation?.kill();
@@ -83,13 +81,7 @@ export default function AnimatedText({
       });
     };
 
-    const reverseReveal = () => {
-      if (!split || !played) return;
-      animation?.reverse();
-    };
-
     const reveal = () => {
-      played = true;
       if (animation) {
         animation.play();
         return;
@@ -149,11 +141,20 @@ export default function AnimatedText({
           io = new IntersectionObserver(
             (entries) => {
               entries.forEach((entry) => {
-                if (entry.isIntersecting) reveal();
-                else reverseReveal();
+                if (!entry.isIntersecting) return;
+                // Reveal once, then stop observing. Reversing on exit makes the
+                // lines re-hide whenever the mobile address bar resizes the
+                // viewport (which re-fires this observer), causing flicker and a
+                // visible dark gap below the hero. Play-once keeps it stable.
+                reveal();
+                io?.disconnect();
+                io = null;
               });
             },
-            { rootMargin: '0px 0px -12% 0px', threshold: 0 },
+            // Positive bottom margin reveals slightly *before* the element
+            // enters the viewport, so a fast scroll never lands on the empty
+            // (still hidden) section below the hero.
+            { rootMargin: '0px 0px 12% 0px', threshold: 0 },
           );
           io.observe(el);
         } else {

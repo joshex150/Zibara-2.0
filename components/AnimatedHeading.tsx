@@ -42,7 +42,6 @@ export default function AnimatedHeading({
     let io: IntersectionObserver | null = null;
     let tween: gsap.core.Tween | null = null;
     let setupFrame = 0;
-    let hasPlayed = false;
     let firstReveal = true;
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -53,7 +52,6 @@ export default function AnimatedHeading({
     }
 
     const reveal = () => {
-      hasPlayed = true;
       if (tween) {
         tween.play();
         return;
@@ -71,11 +69,6 @@ export default function AnimatedHeading({
       firstReveal = false;
     };
 
-    const reverse = () => {
-      if (!hasPlayed) return;
-      tween?.reverse();
-    };
-
     const setup = () => {
       el.style.willChange = 'transform, opacity';
       gsap.set(el, {
@@ -89,11 +82,20 @@ export default function AnimatedHeading({
         io = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
-              if (entry.isIntersecting) reveal();
-              else reverse();
+              if (!entry.isIntersecting) return;
+              // Reveal once, then stop observing. Reversing on exit makes the
+              // text re-hide whenever the mobile address bar resizes the
+              // viewport (which re-fires this observer), causing flicker and a
+              // visible dark gap. Play-once keeps it stable after first reveal.
+              reveal();
+              io?.disconnect();
+              io = null;
             });
           },
-          { rootMargin: '0px 0px -12% 0px', threshold: 0 },
+          // Positive bottom margin reveals slightly *before* the element enters
+          // the viewport, so a fast scroll never lands on the empty (still
+          // hidden) section below the hero.
+          { rootMargin: '0px 0px 12% 0px', threshold: 0 },
         );
         io.observe(el);
       } else {
