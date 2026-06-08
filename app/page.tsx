@@ -183,7 +183,7 @@ export default function Home() {
         </section>
 
         {/* ── BRAND STATEMENT ──────────────────────────── */}
-        <section className="max-w-[900px] mx-auto px-6 md:px-8 py-24 md:py-32">
+        <section className="max-w-[900px] mx-auto px-6 md:px-8 py-24 md:py-32 bg-zibara-black">
           <AnimatedHeading
             tag="h2"
             onScroll
