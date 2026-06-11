@@ -574,7 +574,7 @@ export default function CheckoutClient() {
                       </span>
                     </label>
 
-                    <label
+                    {/* <label
                       className={`flex items-center gap-4 p-4 border cursor-pointer transition-colors ${paymentMethod === "paystack" ? "border-zibara-cream/40 bg-zibara-cream/5" : "border-zibara-cream/10 hover:border-zibara-cream/25"} ${!isPaystackKeyValid ? "opacity-40 cursor-not-allowed" : ""}`}
                     >
                       <input
@@ -591,7 +591,7 @@ export default function CheckoutClient() {
                       <span className="text-[11px] font-mono text-zibara-cream/80">
                         Paystack — Card, Bank Transfer
                       </span>
-                    </label>
+                    </label> */}
                   </div>
                 </div>
               </div>
