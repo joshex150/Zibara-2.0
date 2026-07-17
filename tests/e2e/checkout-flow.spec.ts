@@ -155,9 +155,19 @@ test.describe('Shopping cart → checkout → order confirmation flow', () => {
     await page.locator('input[name="email"]').fill(CUSTOMER.email);
     await page.locator('input[name="phone"]').fill(CUSTOMER.phone);
     await page.locator('input[name="address"]').fill(CUSTOMER.address);
-    await page.locator('input[name="city"]').fill(CUSTOMER.city);
-    await page.locator('input[name="state"]').fill(CUSTOMER.state);
-    await page.locator('input[name="country"]').fill(CUSTOMER.country);
+    const country = page.locator('select[name="country"]');
+    await expect(country).toBeEnabled({ timeout: 10_000 });
+    await country.selectOption('NG');
+
+    const state = page.locator('select[name="state"]');
+    await expect(state).toBeEnabled({ timeout: 10_000 });
+    await expect(state.locator('option[value="LA"]')).toHaveCount(1);
+    await state.selectOption('LA');
+
+    const city = page.locator('select[name="city"]');
+    await expect(city).toBeEnabled({ timeout: 10_000 });
+    await expect(city.locator('option[value="Lagos"]')).toHaveCount(1);
+    await city.selectOption('Lagos');
 
     // Select E2E test payment method (only visible when NEXT_PUBLIC_E2E_TEST_MODE=1)
     const testOption = page.getByLabel(/e2e test checkout/i);

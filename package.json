@@ -16,6 +16,7 @@
     "update-prices": "ts-node -P tsconfig.json scripts/update-product-prices.ts"
   },
   "dependencies": {
+    "@countrystatecity/countries": "1.0.7",
     "@gsap/react": "^2.1.2",
     "@studio-freight/react-lenis": "^0.0.47",
     "bcryptjs": "^3.0.3",

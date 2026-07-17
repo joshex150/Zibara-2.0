@@ -16,6 +16,12 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@countrystatecity/countries"],
+  outputFileTracingIncludes: {
+    "/api/locations": [
+      "./node_modules/@countrystatecity/countries/dist/data/**/*",
+    ],
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "res.cloudinary.com" },

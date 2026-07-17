@@ -8,6 +8,7 @@ import { useFlutterwave, closePaymentModal } from "flutterwave-react-v3";
 import { usePaystackPayment } from "react-paystack";
 import toast from "react-hot-toast";
 import ProductImage from "@/components/ProductImage";
+import CheckoutLocationFields from "@/components/CheckoutLocationFields";
 
 const inputClass =
   "w-full px-0 py-3 bg-transparent border-b border-zibara-cream/40 text-zibara-cream text-[11px] font-mono placeholder:text-zibara-cream/40 focus:outline-none focus:border-zibara-cream/70 transition-colors";
@@ -57,6 +58,12 @@ export default function CheckoutClient() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleLocationChange = (
+    patch: Partial<Pick<typeof formData, "country" | "state" | "city">>,
+  ) => {
+    setFormData((current) => ({ ...current, ...patch }));
   };
 
   const generateOrderReference = () =>
@@ -119,6 +126,7 @@ export default function CheckoutClient() {
       "email",
       "phone",
       "address",
+      "country",
       "city",
       "state",
     ];
@@ -469,54 +477,26 @@ export default function CheckoutClient() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className={labelClass}>City *</label>
-                    <input
-                      type="text"
-                      name="city"
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      required
-                      className={inputClass}
-                    />
-                  </div>
-                  <div>
-                    <label className={labelClass}>State *</label>
-                    <input
-                      type="text"
-                      name="state"
-                      value={formData.state}
-                      onChange={handleInputChange}
-                      required
-                      className={inputClass}
-                    />
-                  </div>
-                </div>
+                <CheckoutLocationFields
+                  value={{
+                    country: formData.country,
+                    state: formData.state,
+                    city: formData.city,
+                  }}
+                  onChange={handleLocationChange}
+                />
 
-                <div className="grid grid-cols-2 gap-6">
-                  <div>
-                    <label className={labelClass}>Zip / Postal Code</label>
-                    <input
-                      type="text"
-                      name="zipCode"
-                      value={formData.zipCode}
-                      onChange={handleInputChange}
-                      placeholder="12345"
-                      className={inputClass}
-                    />
-                  </div>
-                  <div>
-                    <label className={labelClass}>Country</label>
-                    <input
-                      type="text"
-                      name="country"
-                      value={formData.country}
-                      onChange={handleInputChange}
-                      placeholder="Nigeria"
-                      className={inputClass}
-                    />
-                  </div>
+                <div>
+                  <label className={labelClass}>Zip / Postal Code</label>
+                  <input
+                    type="text"
+                    name="zipCode"
+                    value={formData.zipCode}
+                    onChange={handleInputChange}
+                    autoComplete="postal-code"
+                    placeholder="12345"
+                    className={inputClass}
+                  />
                 </div>
 
                 {/* PAYMENT METHOD */}
